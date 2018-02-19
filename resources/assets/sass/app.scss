@@ -1,0 +1,84 @@
+
+// Fonts
+@import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
+
+// Variables
+@import "variables";
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+
+// Font Awesome
+@import '~@fortawesome/fontawesome-free-webfonts/scss/fa-brands';
+@import '~@fortawesome/fontawesome-free-webfonts/scss/fa-solid';
+@import '~@fortawesome/fontawesome-free-webfonts/scss/fontawesome';
+
+@include media-breakpoint-only(md) {
+  .container {
+    max-width: 900px
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  .table-condensed-sm > thead > tr > th,
+  .table-condensed-sm > tbody > tr > th,
+  .table-condensed-sm > tfoot > tr > th,
+  .table-condensed-sm > thead > tr > td,
+  .table-condensed-sm > tbody > tr > td,
+  .table-condensed-sm > tfoot > tr > td {
+    padding: 8px;
+  }
+}
+
+.navbar-laravel {
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.panel-nav a:hover {
+  text-decoration: none;
+}
+
+.panel-nav .list-group-item.active {
+  cursor: default;
+}
+
+main aside .list-group-item {
+  background-color: $body-bg;
+}
+
+#content {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+a:active, a:focus {
+  outline: 0;
+  border: none;
+  -moz-outline-style: none
+}
+
+.btn-primary {
+  color: $white;
+}
+
+.btn-outline-primary:hover {
+  color: $white
+}
+
+
+.loading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background-color: $primary;
+  width: 0%;
+  z-index: 1100;
+  transition: width .2s;
+}
+
+.selectable-list-item:hover {
+  background-color: $primary;
+  color: $white !important;
+  cursor: pointer
+}
