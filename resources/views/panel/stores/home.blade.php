@@ -32,7 +32,7 @@ Negozi
       <form class="fakelink-get" data-action="{{ route("panel.stores.home") }}" method="get">
         <div class="row">
           <div class="input-group mb-3 col-sm-6">
-              <input type="text" name="s" value="{{ Request::query("s") }}" class="form-control" placeholder="Nome, email, ID...">
+              <input type="text" name="s" value="{{ Request::query("s") }}" class="form-control" placeholder="Nome negozio, nome impresa, partita IVA...">
               <div class="input-group-append">
                 <button class="btn btn-outline-secondary" type="submit">
                   <i class="fa fa-fw fa-search"></i>
