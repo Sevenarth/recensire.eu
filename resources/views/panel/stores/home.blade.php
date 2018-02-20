@@ -47,13 +47,13 @@ Negozi
           <thead class="thead-light">
             <tr>
               <th scope="col" class="p-2">
-                @orderable('id', '#')
+                @orderable('store.id', '#')
               </th>
               <th scope="col" class="p-2">
-                @orderable('name', 'Nome negozio')
+                @orderable('store.name', 'Nome negozio')
               </th>
               <th scope="col" class="p-2">
-                @orderable('seller_id', 'Venditore')
+                @orderable('seller.name', 'Venditore')
               </th>
               <th scope="col" class="p-2"></th>
             </tr>
@@ -71,10 +71,10 @@ Negozi
                 @endif
               </td>
               <td class="align-middle">
-                <a title="Visualizza" href="{{ route('panel.sellers.view', ['seller' => $store->seller->id]) }}" class="btn btn-sm btn-primary">
+                <a title="Visualizza" href="{{ route('panel.sellers.view', ['seller' => $store->seller_id]) }}" class="btn btn-sm btn-primary">
                   <i class="fa fa-user"></i>
                 </a>
-                  {{ $store->seller->name }}
+                  {{ $store->seller_name }}
               </td>
               <td class="align-middle">
                 <a href="{{ route('panel.stores.view', ['store' => $store->id]) }}" class="btn btn-sm btn-primary">
@@ -85,7 +85,7 @@ Negozi
             @empty
               <tr>
                 <td colspan="4" class="text-center">
-                  <i>Non ci sono negozi nel sistema al momento.</i>
+                  <i>Non ci sono negozi con questi criteri di ricerca.</i>
                 </td>
               </tr>
             @endforelse

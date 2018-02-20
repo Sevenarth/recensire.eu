@@ -77,7 +77,7 @@ Venditori
           @empty
             <tr>
               <td colspan="5" class="text-center">
-                <i>Non ci sono venditori nel sistema al momento.</i>
+                <i>Non ci sono venditori con questi criteri di ricerca.</i>
               </td>
             </tr>
           @endforelse
