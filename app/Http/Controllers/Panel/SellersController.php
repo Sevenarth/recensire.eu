@@ -11,7 +11,11 @@ class SellersController extends Controller
 {
   public function index(Request $request) {
     $orderBy = $request->query('orderBy', null);
+    if(!empty($orderBy) && !in_array($orderBy, ['id', 'nickname', 'name', 'email']))
+      $orderBy = null;
     $sort = $request->query('sort', 'asc');
+    if($sort != "asc" && $sort != "desc")
+      $sort = "asc";
     $search = trim($request->query('s', null));
 
     if(!empty($search)) {

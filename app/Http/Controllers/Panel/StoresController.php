@@ -15,7 +15,7 @@ class StoresController extends Controller
     if(!empty($orderBy) && !in_array($orderBy, ['seller.name', 'store.name', 'store.id']))
       $orderBy = null;
     $sort = $request->query('sort', 'asc');
-    if(!empty($sort) && $sort != "asc" && $sort != "desc")
+    if($sort != "asc" && $sort != "desc")
       $sort = "asc";
     $search = trim($request->query('s', null));
 
