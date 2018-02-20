@@ -10,10 +10,10 @@
 
 @section('content')
   <div class="px-4 py-3 h3 border-bottom">
-    @php echo !empty($seller) ? 'Modifica negozio #'.$seller->id : 'Nuovo negozio' @endphp
+    @php echo !empty($store) ? 'Modifica negozio #'.$store->id : 'Nuovo negozio' @endphp
   </div>
   <div class="px-4 py-3">
-    @if(!empty($seller))
+    @if(!empty($store))
     @openForm('panel.stores.update', 'patch', arg="store->id")
     @else
     @openForm('panel.stores.put', 'put')
@@ -42,8 +42,8 @@
           <div class="input-group-prepend">
             <button class="btn btn-outline-secondary" data-toggle="modal" data-target="#select-seller" type="button">Cerca</button>
           </div>
-          <input type="hidden" id="seller-id" name="seller_id">
-          <input class="form-control{{ $errors->has('seller_id') ? ' is-invalid' : '' }}" id="seller-name" type="text" placeholder="Nessun venditore selezionato" required readonly>
+          <input type="hidden" value="{{ isset($store) ? $store->seller->id : '' }}" id="seller-id" name="seller_id">
+          <input class="form-control{{ $errors->has('seller_id') ? ' is-invalid' : '' }}" id="seller-name" type="text" value="{{ isset($store) ? $store->seller->name : '' }}" placeholder="Nessun venditore selezionato" required readonly>
           @if($errors->has('seller_id'))
           <div class="invalid-feedback">
             @php foreach($errors->get('seller_id') as $error) echo $error . "<br>"; @endphp

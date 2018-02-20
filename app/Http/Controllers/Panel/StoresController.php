@@ -56,6 +56,33 @@ class StoresController extends Controller
     return view("panel/stores/form");
   }
 
+  public function edit(Request $request, Store $store) {
+    return view("panel/stores/form", ['store' => $store]);
+  }
+
+  public function update(StoreFormRequest $request, Store $store) {
+    $store->fill($request->only([
+      'name', 'company_name', 'company_registration_no', 'url', 'VAT', 'country', 'seller_id'
+    ]));
+    $store->save();
+
+    return redirect()
+      ->route('panel.stores.view', $store->id)
+      ->with('status', 'Negozio aggiornato con successo!');
+  }
+
+  public function delete(Request $request, Store $store) {
+    $store->delete();
+
+    return redirect()
+      ->route('panel.stores.home')
+      ->with('status', 'Negozio eliminato con successo!');
+  }
+
+  public function view(Request $request, Store $store) {
+    return view("panel/stores/view", ['store' => $store, 'products' => $store->products()->paginate(5)]);
+  }
+
   public function put(StoreFormRequest $request) {
     Store::create($request->only([
       'name', 'company_name', 'company_registration_no', 'url', 'VAT', 'country', 'seller_id'
