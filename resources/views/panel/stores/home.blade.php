@@ -17,10 +17,10 @@ Negozi
       Negozi
     </div>
     <div class="px-4 py-3">
-      <a href="{{ route('panel.stores.create') }}"><button type="button" class="mb-4 btn-block btn btn-outline-primary d-block d-md-none">
+      <a href="{{ route('panel.stores.create') }}" type="button" class="mb-4 btn-block btn btn-outline-primary d-block d-md-none">
         <i class="fa fa-fw fa-plus"></i>
         Nuovo negozio
-      </button></a>
+      </a>
 
       @if (session('status'))
       <div class="alert alert-success">
