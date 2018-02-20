@@ -20,7 +20,7 @@ class CreateProductsTable extends Migration
             $table->text("description");
             $table->string("ASIN");
             $table->string("URL");
-            $table->json("images");
+            $table->text("images");
             $table->softDeletes();
             $table->timestamps();
         });

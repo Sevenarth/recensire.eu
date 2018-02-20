@@ -15,8 +15,8 @@ class CreateTestersTable extends Migration
     {
         Schema::create('tester', function (Blueprint $table) {
             $table->increments('id');
-            $table->json('amazon_profiles');
-            $table->json('facebook_profiles');
+            $table->text('amazon_profiles');
+            $table->text('facebook_profiles');
             $table->string("name");
             $table->string("email");
             $table->string("wechat");
