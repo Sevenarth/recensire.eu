@@ -17,7 +17,7 @@ Prodotti
     Prodotti
   </div>
   <div class="px-4 py-3">
-    <a href="{{ route('panel.products.create') }}" type="button" class="mb-4 btn-block btn btn-outline-primary d-block d-md-none">
+    <a href="{{ route('panel.products.create') }}" class="mb-4 btn-block btn btn-outline-primary d-block d-md-none">
       <i class="fa fa-fw fa-plus"></i>
       Nuovo prodotto
     </a>
