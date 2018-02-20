@@ -58,7 +58,7 @@
             </div>
         </nav>
 
-        <main class="container py-4">
+        <main class="container px-0 px-sm-2 py-sm-4 pt-4">
           @yield('breadcrumb')
 
           <div class="row no-gutters">
