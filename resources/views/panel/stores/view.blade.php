@@ -72,47 +72,11 @@ Negozio #{{ $store->id }}
       <input type="text" readonly class="form-control-plaintext" name="VAT" value="{{ !empty($store->VAT)? $store->VAT : '-' }}">
     </fieldset>
 
-    <div class="h5">
-      Prodotti
-    </div>
+    <h5>Visualizza:</h5>
 
-    <div class="table-responsive">
-      <table class="table table-condensed-sm">
-        <thead class="thead-light">
-          <tr>
-            <th scope="col" class="p-2">#</th>
-            <th scope="col" class="p-2">Nome prodotto</th>
-            <th scope="col" class="p-2"></th>
-          </tr>
-        </thead>
-        <tbody>
-          @forelse ($products as $product)
-          <tr>
-            <th class="align-middle" scope="row">{{ $product->id }}</th>
-            <td class="align-middle">
-              {{ $product->name }}
-              @if(!empty($product->url))
-                <a title="Vai al prodotto su Amazon" target="_blank" href="{{ $product->url }}" class="btn btn-sm btn-primary">
-                  <i class="fa fa-external-link-alt"></i>
-                </a>
-              @endif
-            </td>
-            <td class="align-middle">
-              <a href="{{ route('panel.products.view', ['product' => $product->id]) }}" class="btn btn-sm btn-primary">
-                <i class="fa fa-fw fa-external-link-alt"></i> Visualizza
-              </a>
-            </td>
-          </tr>
-          @empty
-            <tr>
-              <td colspan="5" class="text-center">
-                <i>Questo negozio non ha prodotti al momento.</i>
-              </td>
-            </tr>
-          @endforelse
-        </tbody>
-      </table>
+    <div class="mb-2 btn-group" role="group">
+      <a href="{{ route("panel.testOrders.home", ['s' => ':store='.$store->id]) }}" type="button" class="btn btn-outline-secondary"><i class="fa fa-fw fa-archive"></i> Ordini di lavoro</a>
+      <a href="{{ route("panel.products.home", ['s' => ':store='.$store->id]) }}" type="button" class="btn btn-outline-secondary"><i class="fa fa-fw fa-shopping-bag"></i> Prodotti</a>
     </div>
-    {{ $products->links() }}
   </div>
 @endsection

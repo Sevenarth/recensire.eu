@@ -80,7 +80,7 @@ class StoresController extends Controller
   }
 
   public function view(Request $request, Store $store) {
-    return view("panel/stores/view", ['store' => $store, 'products' => $store->products()->paginate(5)]);
+    return view("panel/stores/view", ['store' => $store]);
   }
 
   public function put(StoreFormRequest $request) {
