@@ -13870,7 +13870,7 @@ $(function () {
   $("body").on('click', 'a[data-evt=select-seller]', function () {
     $('#select-seller').modal('toggle');
     $("#seller-id").val($(this).attr("data-id"));
-    $("#seller-name").val($(this).text());
+    $("#seller-name").val($(this).html().replace(/<[\w]+>.*<\/[\w]+>/ig, '').trim());
   });
 });
 
