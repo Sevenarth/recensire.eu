@@ -83,7 +83,7 @@ $(function () {
     axios.post($(this).attr("data-action"), $(this).serialize())
     .then(function (response) {
       response.data.forEach(function(elt) {
-        $(result).append('<a class="list-group-item selectable-list-item" data-evt="'+evt+'" data-id="'+elt.id+'">'+elt.name+'</a>')
+        $(result).append('<a class="list-group-item selectable-list-item" data-evt="'+evt+'" data-id="'+elt.id+'">'+elt.name+' <small><i>'+elt.email+'</i></small></a>')
       });
     })
     .catch(function (error) {

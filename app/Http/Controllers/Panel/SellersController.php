@@ -89,11 +89,11 @@ class SellersController extends Controller
           ->orWhere("facebook", $search)
           ->orWhere("wechat", $search)
           ->limit(15)
-          ->get(['id', 'name']);
+          ->get(['id', 'name', 'email']);
     } else
       $sellers = Seller::orderBy('name', 'asc')
         ->limit(15)
-        ->get(['id', 'name']);
+        ->get(['id', 'name', 'email']);
 
     return $sellers;
   }
