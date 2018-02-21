@@ -25,6 +25,6 @@
     </div>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}?k"></script>
+    <script src="{{ asset('js/upload.js') }}"></script>
 </body>
 </html>

@@ -7,12 +7,11 @@
 
 require('./bootstrap');
 var Pjax = require('pjax')
-var axios = require('axios')
 
-// var pjax = new Pjax({
-//   selectors: ["title", "main", "#header-nav"],
-//   cacheBust: false
-// })
+var pjax = new Pjax({
+  selectors: ["title", "main", "#header-nav"],
+  cacheBust: false
+})
 
 $(function () {
   document.addEventListener('pjax:send', function() {
