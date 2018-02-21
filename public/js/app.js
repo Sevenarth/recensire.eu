@@ -13786,10 +13786,10 @@ __webpack_require__(18);
 var Pjax = __webpack_require__(41);
 var axios = __webpack_require__(9);
 
-var pjax = new Pjax({
-  selectors: ["title", "main", "#header-nav"],
-  cacheBust: false
-});
+// var pjax = new Pjax({
+//   selectors: ["title", "main", "#header-nav"],
+//   cacheBust: false
+// })
 
 $(function () {
   document.addEventListener('pjax:send', function () {
@@ -13822,21 +13822,24 @@ $(function () {
     $(this).attr("data-popover-toggled", "false");
   });
 
-  $("body").on('focusout', '.image-preview', function () {
-    var fieldName = $(this).attr("name");
-    var thumbnail = $("#" + fieldName + "-thumbnail");
-    if ($(this).val().length > 0) {
-      //thumbnail.attr("data-original", thumbnail.attr("src"));
-      thumbnail.attr("src", $(this).val());
-    } else {
-      thumbnail.attr("src", thumbnail.attr("data-original"));
-    }
-  });
+  var updateProfileImage = function updateProfileImage(obj) {
+    var thumbnail = $("#profile_image-thumbnail");
+    if ($('#profile_image').val().length > 0) thumbnail.attr("src", $('#profile_image').val());else thumbnail.attr("src", thumbnail.attr("data-original"));
+  };
+
+  $("body").on('focusout', '.image-preview', updateProfileImage);
+  window.updateProfileImage = updateProfileImage;
+
   $("body").on('click', '.facebook-img-fetch', function () {
     if ($("#" + $(this).attr("data-field")).val().length > 0) {
       $("#" + $(this).attr("data-target")).val("https://graph.facebook.com/" + $("#" + $(this).attr("data-field")).val() + "/picture?type=large");
       $("#" + $(this).attr("data-target")).focus().blur();
     }
+  });
+
+  $("body").on('click', '.upload-image', function () {
+    uploadWindow = window.open($(this).attr("data-page"), 'uploader', 'height=480,width=350');
+    if (window.focus) uploadWindow.focus();
   });
 
   $("body").on('submit', '.fakelink-get', function () {

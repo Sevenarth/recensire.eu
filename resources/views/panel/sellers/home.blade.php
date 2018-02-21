@@ -50,6 +50,8 @@ Venditori
               @orderable('id', '#')
             </th>
             <th scope="col" class="p-2">
+            </th>
+            <th scope="col" class="p-2">
               @orderable('nickname', 'Pseudonimo')
             </th>
             <th scope="col" class="p-2">
@@ -65,6 +67,9 @@ Venditori
           @forelse ($sellers as $seller)
           <tr>
             <th class="align-middle" scope="row">{{ $seller->id }}</th>
+            <td class="align-middle">
+              <img style="min-width: 50px; max-height: 50px" id="profile_image" src="@if(empty($seller->profile_image)) /images/profile_image.svg @else{{ $seller->profile_image }}@endif" class="img-fluid img-thumbnail rounded border">
+            </td>
             <td class="align-middle">@php echo !empty($seller->nickname) ? $seller->nickname : '-' @endphp</td>
             <td class="align-middle">{{ $seller->name }}</td>
             <td class="align-middle">{{ $seller->email}}</td>

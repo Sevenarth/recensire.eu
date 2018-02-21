@@ -30,6 +30,7 @@
         <div class="col-9">
           @formTextfield('profile_image', 'Immagine del profilo', placeholder="http://", class="form-control image-preview", required="false", editMode="seller")
           <button class="btn btn-primary facebook-img-fetch" type="button" data-target="profile_image" data-field="facebook">Immagine da Facebook</button>
+          <button class="btn btn-primary upload-image" id="upload-image" data-page="{{ route("panel.upload") }}" data-target="profile_image" type="button">Carica immagine</button>
         </div>
       </div>
       <button type="submit" class="mt-3 mb-2 btn btn-primary">@php echo !empty($seller) ? 'Modifica venditore' : 'Aggiungi nuovo venditore' @endphp</button>

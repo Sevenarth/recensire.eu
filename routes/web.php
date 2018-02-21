@@ -19,6 +19,8 @@ Auth::routes();
 
 Route::namespace('Panel')->name('panel.')->middleware('auth')->prefix('pannello')->group(function () {
     Route::get('/', 'HomeController@index')->name('home');
+    Route::get('/upload', 'HomeController@upload')->name('upload');
+    Route::post('/upload', 'HomeController@postUpload')->name('postUpload');
 
     Route::prefix('venditori')->name('sellers.')->group(function () {
       Route::get('/', 'SellersController@index')->name('home');
