@@ -80,7 +80,30 @@ class ProductsController extends Controller
   }
 
   public function view(Request $request, Product $product) {
-    return view("panel/products/view", ['product' => $product]);
+
+    $orderBy = $request->query('orderBy', null);
+    if(!empty($orderBy) && !in_array($orderBy, ['name', 'id']))
+      $orderBy = null;
+    $sort = $request->query('sort', 'asc');
+    if($sort != "asc" && $sort != "desc")
+      $sort = "asc";
+    $search = trim($request->query('s', null));
+
+    $stores = $product->stores();
+
+    if(!empty($search))
+      $stores = $stores->where("id", $search)
+      ->orWhere("name", "like", "%".$search."%")
+      ->orWhere("company_name", "like", "%".$search."%")
+      ->orWhere("company_registration_no", $search)
+      ->orWhere("VAT", $search);
+
+    if(!empty($orderBy))
+      $stores = $stores->orderBy($orderBy, $sort);
+
+    $stores = $stores->paginate(15);
+
+    return view("panel/products/view", ['product' => $product, 'stores' => $stores]);
   }
 
   public function edit(Request $request, Product $product) {

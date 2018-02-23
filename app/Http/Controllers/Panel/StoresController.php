@@ -30,8 +30,7 @@ class StoresController extends Controller
       ->orWhere("company_name", "like", "%".$search."%")
       ->orWhere("company_registration_no", $search)
       ->orWhere("VAT", $search)
-      ->orWhere("seller.name", "like", "%".$search."%")
-      ->select("store.*", "seller.id AS seller_id", "seller.name AS seller_name");
+      ->orWhere("seller.name", "like", "%".$search."%");
 
     if(!empty($orderBy))
       $stores = $stores->orderBy($orderBy, $sort);

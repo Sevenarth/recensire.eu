@@ -31,29 +31,6 @@ Prodotto #{{ $product->id }}
     </div>
     @closeForm
 
-        <form action="{{ route('panel.products.attachStore', $product->id) }}" method="post">
-          @csrf
-          @method('put')
-          <fieldset class="form-group">
-            <label for="store_id">Associa negozi</label>
-            <div class="input-group">
-              <div class="input-group-prepend">
-                <button class="btn btn-outline-secondary" data-toggle="modal" data-target="#select-store" type="button">Cerca</button>
-              </div>
-              <input type="hidden" id="store-id" name="store_id">
-              <input class="form-control{{ $errors->has('store_id') ? ' is-invalid' : '' }}" id="store-name" type="text" placeholder="Nessun negozio selezionato" required readonly>
-              <div class="input-group-append">
-                <button type="submit" class="btn btn-primary">Associa</button>
-              </div>
-              @if($errors->has('store_id'))
-              <div class="invalid-feedback">
-                @php foreach($errors->get('store_id') as $error) echo $error . "<br>"; @endphp
-              </div>
-              @endif
-            </div>
-          </fieldset>
-        </form>
-        
     <div class="row">
       <div class="col-sm-3">
         <fieldset class="form-group">
@@ -110,7 +87,7 @@ Prodotto #{{ $product->id }}
 
     <label><b>Immagini</b></label>
     @php $images = $product->images; @endphp
-    <div id="image-slideshow" class="mb-3 bg-secondary form-control carousel slide" data-ride="carousel">
+    <div id="image-slideshow" class="mb-5 bg-secondary form-control carousel slide" data-ride="carousel">
       <ol class="carousel-indicators">
         @forelse(array_keys($images) as $id)
         <li data-target="#image-slideshow" data-slide-to="{{ $id }}"{{ $id === 0 ? ' class="active"' : '' }}></li>
@@ -138,6 +115,96 @@ Prodotto #{{ $product->id }}
         <span class="sr-only">Successivo</span>
       </a>
     </div>
+
+    <h5 class="mb-3">Negozi associati</h5>
+
+    <div class="row">
+      <form class="fakelink-get col-sm-5" data-action="{{ route("panel.products.view", $product->id) }}" method="get">
+          <div class="input-group mb-3">
+              <input type="text" name="s" value="{{ Request::query("s") }}" class="form-control" placeholder="Nome negozio, nome impresa, partita IVA...">
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="submit">
+                  <i class="fa fa-fw fa-search"></i>
+                </button>
+              </div>
+          </div>
+      </form>
+
+      <form class="col-sm-7" action="{{ route('panel.products.attachStore', $product->id) }}" method="post">
+        @csrf
+        @method('put')
+        <fieldset class="form-group">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <button class="btn btn-outline-secondary" data-toggle="modal" data-target="#select-store" type="button">Cerca</button>
+            </div>
+            <input type="hidden" id="store-id" name="store_id">
+            <input class="form-control{{ $errors->has('store_id') ? ' is-invalid' : '' }}" id="store-name" type="text" placeholder="Nessun negozio selezionato" required readonly>
+            <div class="input-group-append">
+              <button type="submit" class="btn btn-primary">Associa</button>
+            </div>
+            @if($errors->has('store_id'))
+            <div class="invalid-feedback">
+              @php foreach($errors->get('store_id') as $error) echo $error . "<br>"; @endphp
+            </div>
+            @endif
+          </div>
+        </fieldset>
+      </form>
+    </div>
+
+  <div class="table-responsive">
+    <table class="table table-condensed-sm">
+      <thead class="thead-light">
+        <tr>
+          <th scope="col" class="p-2">
+            @orderable('id', '#')
+          </th>
+          <th scope="col" class="p-2">
+            @orderable('name', 'Nome negozio')
+          </th>
+          <th scope="col" class="p-2">
+            @orderable('company_name', 'Nome impresa')
+          </th>
+          <th scope="col" class="p-2"></th>
+        </tr>
+      </thead>
+      <tbody>
+        @forelse ($stores as $store)
+        <tr>
+          <th class="align-middle" scope="row">{{ $store->id }}</th>
+          <td class="align-middle">
+            {{ $store->name }}
+            @if(!empty($store->url))
+              <a title="Apri il sito del negozio" target="_blank" href="{{ $store->url }}" class="btn btn-sm btn-primary">
+                <i class="fa fa-external-link-alt"></i>
+              </a>
+            @endif
+          </td>
+          <td class="align-middle">
+            {{ $store->company_name }}
+          </td>
+          <td class="align-middle">
+            <a href="{{ route('panel.stores.view', ['store' => $store->id]) }}" class="btn btn-sm btn-primary">
+              <i class="fa fa-fw fa-external-link-alt"></i> Visualizza
+            </a>
+          </td>
+        </tr>
+        @empty
+          <tr>
+            <td colspan="4" class="text-center">
+              <i>Non ci sono negozi con questi criteri di ricerca.</i>
+            </td>
+          </tr>
+        @endforelse
+      </tbody>
+    </table>
+  </div>
+  <div class="float-right mb-2">
+    Mostrando pagina {{ $stores->currentPage() }} di {{ $stores->lastPage() }}
+  </div>
+  {{ $stores->links() }}
+  <div class="clearfix"></div>
 
   </div>
   <div id="select-store" class="modal fade" tabindex="-1" role="dialog">
