@@ -98,11 +98,11 @@ Prodotto #{{ $product->id }}
       <div class="carousel-inner">
         @forelse($images as $id => $image)
         <div class="text-center carousel-item{{ $id === 0 ? ' active' : '' }}">
-          <img style="max-height: 300px" src="{{ !empty($image) ? $image : '/images/package.svg' }}" alt="image-{{ $id+1 }}">
+          <img style="max-height: 300px" class="mw-100" src="{{ !empty($image) ? $image : '/images/package.svg' }}" alt="image-{{ $id+1 }}">
         </div>
         @empty
           <div class="text-center carousel-item active">
-            <img style="max-height: 300px" src="/images/package.svg" alt="default image">
+            <img style="max-height: 300px" class="mw-100" src="/images/package.svg" alt="default image">
           </div>
       @endforelse
       </div>
