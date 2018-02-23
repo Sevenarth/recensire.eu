@@ -145,4 +145,21 @@ class StoresController extends Controller
     } else
       return response('Bad request', 400);
   }
+
+  public function fetch(Request $request) {
+    $search = trim($request->input('s', null));
+
+    if(!empty($search)) {
+        $stores = Store::where("id", $search)
+          ->orWhere("name", "like", "%".$search."%")
+          ->orWhere("company_name", "like", "%".$search."%")
+          ->limit(15)
+          ->get(['id', 'name']);
+    } else
+      $stores = Store::orderBy('name', 'asc')
+        ->limit(15)
+        ->get(['id', 'name']);
+
+    return $stores;
+  }
 }

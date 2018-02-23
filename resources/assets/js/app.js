@@ -23,7 +23,7 @@ $(function () {
   $(".markdown").each(function() {
     $(this).html(MD.render($(this).text()));
   });
-  
+
   document.addEventListener('pjax:send', function() {
     $("body").css("cursor", "progress");
     $(".loading").css("width", "40%");
@@ -102,7 +102,7 @@ $(function () {
     axios.post($(this).attr("data-action"), $(this).serialize())
     .then(function (response) {
       response.data.forEach(function(elt) {
-        $(result).append('<a class="list-group-item selectable-list-item" data-evt="'+evt+'" data-id="'+elt.id+'">'+elt.name+' <small><i>'+elt.email+'</i></small></a>')
+        $(result).append('<a class="list-group-item selectable-list-item" data-evt="'+evt+'" data-id="'+elt.id+'">'+(elt.nickname && elt.nickname.length > 0 ? elt.nickname + " - " : '')+elt.name+(elt.email ? ' <small><i>'+elt.email+'</i></small>': '') + '</a>')
       });
     })
     .catch(function (error) {
@@ -115,6 +115,12 @@ $(function () {
     $('#select-seller').modal('toggle');
     $("#seller-id").val($(this).attr("data-id"));
     $("#seller-name").val($(this).html().replace(/<[\w]+>.*<\/[\w]+>/ig, '').trim());
+  })
+
+  $("body").on('click', 'a[data-evt=select-store]', function() {
+    $('#select-store').modal('toggle');
+    $("#store-id").val($(this).attr("data-id"));
+    $("#store-name").val($(this).html().replace(/<[\w]+>.*<\/[\w]+>/ig, '').trim());
   })
 
   $("body").on('click', '.image-field', function() {

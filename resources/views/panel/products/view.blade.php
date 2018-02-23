@@ -115,5 +115,49 @@ Prodotto #{{ $product->id }}
         <span class="sr-only">Successivo</span>
       </a>
     </div>
+
+    <form action="{{ route('panel.products.attachStore', $product->id) }}" method="post">
+      @csrf
+      @method('put')
+      <fieldset class="form-group">
+        <label for="store_id">Associa negozi</label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <button class="btn btn-outline-secondary" data-toggle="modal" data-target="#select-store" type="button">Cerca</button>
+          </div>
+          <input type="hidden" id="store-id" name="store_id">
+          <input class="form-control{{ $errors->has('store_id') ? ' is-invalid' : '' }}" id="store-name" type="text" placeholder="Nessun negozio selezionato" required readonly>
+          <div class="input-group-append">
+            <button type="submit" class="btn btn-primary">Associa</button>
+          </div>
+          @if($errors->has('store_id'))
+          <div class="invalid-feedback">
+            @php foreach($errors->get('store_id') as $error) echo $error . "<br>"; @endphp
+          </div>
+          @endif
+        </div>
+      </fieldset>
+    </form>
+  </div>
+  <div id="select-store" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content border-0 mb-3">
+            <form class="json-request" data-event="select-store" data-action="{{ route('panel.stores.fetch' )}}" data-result="#store-search-results">
+              @csrf
+              <fieldset class="form-group mb-0">
+                <div class="input-group input-group-lg">
+                  <input type="text" class="form-control" id="seller-search" name="s" placeholder="Ricerca negozio...">
+                  <div class="input-group-append">
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-fw fa-search"></i></button>
+                  </div>
+                </div>
+              </fieldset>
+            </form>
+        </div>
+        <div class="modal-content border-0">
+            <ul class="list-group" id="store-search-results">
+            </ul>
+        </div>
+      </div>
   </div>
 @endsection

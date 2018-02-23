@@ -43,7 +43,7 @@
             <button class="btn btn-outline-secondary" data-toggle="modal" data-target="#select-seller" type="button">Cerca</button>
           </div>
           <input type="hidden" value="{{ isset($store) ? $store->seller->id : '' }}" id="seller-id" name="seller_id">
-          <input class="form-control{{ $errors->has('seller_id') ? ' is-invalid' : '' }}" id="seller-name" type="text" value="{{ isset($store) ? $store->seller->name : '' }}" placeholder="Nessun venditore selezionato" required readonly>
+          <input class="form-control{{ $errors->has('seller_id') ? ' is-invalid' : '' }}" id="seller-name" type="text" value="{{ isset($store) ? ((!empty($store->seller->nickname) ? $store->seller->nickname . " - " : '') .$store->seller->name) : '' }}" placeholder="Nessun venditore selezionato" required readonly>
           @if($errors->has('seller_id'))
           <div class="invalid-feedback">
             @php foreach($errors->get('seller_id') as $error) echo $error . "<br>"; @endphp

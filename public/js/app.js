@@ -48125,7 +48125,7 @@ $(function () {
     $(result).html('');
     axios.post($(this).attr("data-action"), $(this).serialize()).then(function (response) {
       response.data.forEach(function (elt) {
-        $(result).append('<a class="list-group-item selectable-list-item" data-evt="' + evt + '" data-id="' + elt.id + '">' + elt.name + ' <small><i>' + elt.email + '</i></small></a>');
+        $(result).append('<a class="list-group-item selectable-list-item" data-evt="' + evt + '" data-id="' + elt.id + '">' + (elt.nickname && elt.nickname.length > 0 ? elt.nickname + " - " : '') + elt.name + (elt.email ? ' <small><i>' + elt.email + '</i></small>' : '') + '</a>');
       });
     }).catch(function (error) {
       console.err(error);
@@ -48137,6 +48137,12 @@ $(function () {
     $('#select-seller').modal('toggle');
     $("#seller-id").val($(this).attr("data-id"));
     $("#seller-name").val($(this).html().replace(/<[\w]+>.*<\/[\w]+>/ig, '').trim());
+  });
+
+  $("body").on('click', 'a[data-evt=select-store]', function () {
+    $('#select-store').modal('toggle');
+    $("#store-id").val($(this).attr("data-id"));
+    $("#store-name").val($(this).html().replace(/<[\w]+>.*<\/[\w]+>/ig, '').trim());
   });
 
   $("body").on('click', '.image-field', function () {

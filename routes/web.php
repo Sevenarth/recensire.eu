@@ -43,6 +43,7 @@ Route::namespace('Panel')->name('panel.')->middleware('auth')->prefix('pannello'
       Route::get('/prodotti-{store}', 'StoresController@products')->name('products');
       Route::put('/prodotti-{store}', 'StoresController@attachProduct')->name('attachProduct');
       Route::delete('/prodotti-{store}/disassocia-{product}', 'StoresController@detachProduct')->name('detachProduct');
+      Route::post('/fetch', 'StoresController@fetch')->name('fetch');
     });
     Route::prefix('prodotti')->name('products.')->group(function () {
       Route::get('/', 'ProductsController@index')->name('home');
@@ -53,6 +54,7 @@ Route::namespace('Panel')->name('panel.')->middleware('auth')->prefix('pannello'
       Route::get('/modifica-{product}', 'ProductsController@edit')->name('edit');
       Route::patch('/visualizza-{product}', 'ProductsController@update')->name('update');
       Route::delete('/visualizza-{product}', 'ProductsController@delete')->name('delete');
+      Route::put('/negozio-{product}', 'ProductsController@attachStore')->name('attachStore');
     });
     Route::prefix('ordini-di-lavoro')->name('testOrders.')->group(function () {
       Route::get('/', 'TestOrdersController@index')->name('home');

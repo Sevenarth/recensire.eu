@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Panel;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Http\Requests\ProductFormRequest;
 use App\Http\Controllers\Controller;
 use App\Product;
 use App\Category;
+use Validator;
 
 class ProductsController extends Controller
 {
@@ -122,5 +124,30 @@ class ProductsController extends Controller
     return redirect()
       ->route('panel.products.home')
       ->with('status', 'Prodotto eliminato con successo!');
+  }
+
+  public function attachStore(Request $request, Product $product) {
+    Validator::extend('unassociated', function ($attribute, $value, $parameters, $validator) use($product) {
+      return !(DB::table('store_product')->where('product_id', $product->id)->where('store_id', $value)->count() > 0);
+    });
+    $validator = Validator::make($request->all(), [
+      'store_id' => 'required|exists:store,id|unassociated'
+    ], [
+      'required' => 'Seleziona un negozio valido.',
+      'exists' => "Il negozio richiesto non è nel sistema.",
+      'unassociated' => "Il prodotto &egrave; gi&agrave; associato a questo negozio."
+    ]);
+
+    if ($validator->fails())
+      return redirect()
+        ->route('panel.products.view', $product->id)
+        ->withErrors($validator)
+        ->withInput();
+
+    $product->stores()->attach($request->input('store_id'));
+
+    return redirect()
+      ->route('panel.stores.products', $request->input('store_id'))
+      ->with('status', 'Prodotto associato con successo!');
   }
 }
