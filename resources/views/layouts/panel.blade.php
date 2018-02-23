@@ -76,5 +76,8 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
+    <div id="js-scripts">
+      @yield('scripts')
+    </div>
 </body>
 </html>

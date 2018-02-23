@@ -18,6 +18,10 @@ class CreateTestOrdersTable extends Migration
             $table->float("fee", 8, 2)->default(0);
             $table->text("description")->nullable();
             $table->integer("quantity");
+            $table->integer('product_id')->unsigned();
+            $table->integer('store_id')->unsigned();
+            $table->foreign('product_id')->references('id')->on('product');
+            $table->foreign('store_id')->references('id')->on('store');
             $table->softDeletes();
             $table->timestamps();
         });

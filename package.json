@@ -22,8 +22,13 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free-webfonts": "^1.0.3",
+    "bloodhound-js": "^1.2.2",
+    "bootstrap-tagsinput": "^0.7.1",
     "jquery-pjax": "^2.0.1",
+    "markdown-it": "^8.4.1",
     "select2": "^4.0.6-rc.1",
-    "select2-bootstrap4-theme": "^1.0.0"
+    "select2-bootstrap4-theme": "^1.0.0",
+    "simplemde": "^1.11.2",
+    "typeahead.js": "^0.11.1"
   }
 }

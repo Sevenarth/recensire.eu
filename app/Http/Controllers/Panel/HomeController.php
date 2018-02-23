@@ -21,10 +21,18 @@ class HomeController extends Controller
 
     public function postUpload(ImageUploadRequest $request) {
       $url = Storage::disk('public')->url($request->image->store('images', 'public'));
+
+      if($iid = $request->input('field')) {
+        $id = $iid . "-field";
+        $fn = "updateImageField('".$iid."')";
+      } else {
+        $id = "profile_image";
+        $fn = "updateImage()";
+      }
+
       return "<script>
-      var fieldId = window.opener.document.getElementById('upload-image').dataset.target;
-      window.opener.document.getElementById(fieldId).value = '{$url}'
-      window.opener.updateProfileImage()
+      window.opener.document.getElementById('{$id}').value = '{$url}'
+      window.opener.{$fn}
       window.close()
       </script>";
     }

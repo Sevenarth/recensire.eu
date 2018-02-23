@@ -17,8 +17,8 @@ class CreateProductsTable extends Migration
             $table->increments('id');
             $table->string("title");
             $table->string("brand");
-            $table->text("description");
-            $table->string("ASIN");
+            $table->text("description")->nullable();
+            $table->string("ASIN")->unique();
             $table->string("URL");
             $table->text("images");
             $table->softDeletes();

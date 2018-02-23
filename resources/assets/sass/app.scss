@@ -13,6 +13,8 @@
 @import '~@fortawesome/fontawesome-free-webfonts/scss/fa-solid';
 @import '~@fortawesome/fontawesome-free-webfonts/scss/fontawesome';
 
+@import 'tagsinput';
+
 @include media-breakpoint-only(md) {
   .container {
     max-width: 900px
@@ -57,11 +59,7 @@ a:active, a:focus {
   -moz-outline-style: none
 }
 
-.btn-primary {
-  color: $white;
-}
-
-.btn-outline-primary:hover {
+.btn-primary, .btn-outline-primary:hover {
   color: $white
 }
 
@@ -81,4 +79,35 @@ a:active, a:focus {
   background-color: $primary;
   color: $white !important;
   cursor: pointer
+}
+
+.image-field {
+  &:hover {
+    -webkit-box-shadow: 0 0 0 0.2rem rgba(108, 117, 125, 0.5);
+    box-shadow: 0 0 0 0.2rem rgba(108, 117, 125, 0.5);
+  }
+
+  -webkit-transition: box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+  transition: box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+  max-height: 135px;
+  cursor: pointer;
+}
+
+.svg-outline-secondary {
+  path {
+    fill: $secondary;
+    stroke: $secondary;
+    -webkit-transition: fill 0.15s ease-in-out, stroke 0.15s ease-in-out;
+    transition: fill 0.15s ease-in-out, stroke 0.15s ease-in-out;
+  }
+
+  &:hover path {
+    fill: $white;
+    stroke: $white;
+  }
+}
+
+.active-image {
+  -webkit-box-shadow: 0 0 0 0.2rem rgba(108, 117, 125, 0.5);
+  box-shadow: 0 0 0 0.2rem rgba(108, 117, 125, 0.5);
 }

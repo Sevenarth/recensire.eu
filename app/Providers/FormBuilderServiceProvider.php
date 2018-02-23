@@ -29,7 +29,7 @@ class FormBuilderServiceProvider extends ServiceProvider
             return '<form action="<?php echo !empty($'.$arg.') ? route(\''.$route.'\', $'.$arg.') : route(\''.$route.'\') ?>" method="post">
           <?php echo method_field(\''.$method.'\'). PHP_EOL . csrf_field(); ?>';
           else
-            return '<form action="<?php route(\''.$route.'\') ?>" method="post">
+            return '<form action="<?php echo route(\''.$route.'\') ?>" method="post">
           <?php echo method_field(\''.$method.'\'). PHP_EOL . csrf_field(); ?>';
       });
 

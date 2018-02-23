@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Store;
 use App\Http\Requests\StoreFormRequest;
+use Validator;
+use App\Product;
 
 class StoresController extends Controller
 {
@@ -91,5 +93,48 @@ class StoresController extends Controller
     return redirect()
       ->route('panel.stores.home')
       ->with('status', 'Nuovo negozio inserito con successo!');
+  }
+
+  public function products(Request $request, Store $store) {
+    $products = $store->products()->paginate(15);
+
+    return view("panel/stores/products", ['store' => $store, 'products' => $products]);
+  }
+
+  public function attachProduct(Request $request, Store $store) {
+    Validator::extend('unassociated', function ($attribute, $value, $parameters, $validator) use($store) {
+      return !(DB::table('store_product')->where('product_id', $value)->where('store_id', $store->id)->count() > 0);
+    });
+    $validator = Validator::make($request->all(), [
+      'product_id' => 'required|exists:product,ASIN|unassociated'
+    ], [
+      'required' => 'Inserisci un ASIN prodotto valido.',
+      'exists' => "Il prodotto richiesto non è nel sistema.",
+      'unassociated' => "Il prodotto &egrave; gi&agrave; associato a questo negozio."
+    ]);
+
+    if ($validator->fails())
+      return redirect()
+        ->route('panel.stores.products', $store->id)
+        ->withErrors($validator)
+        ->withInput();
+
+    $store->products()->attach(Product::where('ASIN', $request->input('product_id'))->first());
+    // $store->save();
+
+    return redirect()
+      ->route('panel.stores.products', $store->id)
+      ->with('status', 'Prodotto associato con successo!');
+  }
+
+  public function detachProduct(Request $request, Store $store, Product $product) {
+    if(DB::table('store_product')->where('product_id', $product->id)->where('store_id', $store->id)->count() > 0) {
+      $store->products()->detach($product);
+
+      return redirect()
+        ->route('panel.stores.products', $store->id)
+        ->with('status', 'Prodotto disassociato con successo!');
+    } else
+      return response('Bad request', 400);
   }
 }

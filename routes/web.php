@@ -40,15 +40,33 @@ Route::namespace('Panel')->name('panel.')->middleware('auth')->prefix('pannello'
       Route::get('/modifica-{store}', 'StoresController@edit')->name('edit');
       Route::patch('/visualizza-{store}', 'StoresController@update')->name('update');
       Route::delete('/visualizza-{store}', 'StoresController@delete')->name('delete');
+      Route::get('/prodotti-{store}', 'StoresController@products')->name('products');
+      Route::put('/prodotti-{store}', 'StoresController@attachProduct')->name('attachProduct');
+      Route::delete('/prodotti-{store}/disassocia-{product}', 'StoresController@detachProduct')->name('detachProduct');
     });
     Route::prefix('prodotti')->name('products.')->group(function () {
       Route::get('/', 'ProductsController@index')->name('home');
       Route::get('/nuovo', 'ProductsController@create')->name('create');
+      Route::put('/nuovo', 'ProductsController@put')->name('put');
+      Route::get('/tags', 'ProductsController@tags')->name('tags');
+      Route::get('/visualizza-{product}', 'ProductsController@view')->name('view');
+      Route::get('/modifica-{product}', 'ProductsController@edit')->name('edit');
+      Route::patch('/visualizza-{product}', 'ProductsController@update')->name('update');
+      Route::delete('/visualizza-{product}', 'ProductsController@delete')->name('delete');
     });
     Route::prefix('ordini-di-lavoro')->name('testOrders.')->group(function () {
       Route::get('/', 'TestOrdersController@index')->name('home');
+      Route::get('/nuovo-{product}-{store}', 'TestOrdersController@create')->name('create');
     });
     Route::prefix('testers')->name('testers.')->group(function () {
       Route::get('/', 'TestersController@index')->name('home');
+    });
+    Route::prefix('categorie')->name('categories.')->group(function () {
+      Route::get('/', 'CategoriesController@index')->name('home');
+      Route::get('/nuovo', 'CategoriesController@create')->name('create');
+      Route::put('/nuovo', 'CategoriesController@put')->name('put');
+      Route::get('/modifica-{cat}', 'CategoriesController@edit')->name('edit');
+      Route::patch('/modifica-{cat}', 'CategoriesController@update')->name('update');
+      Route::delete('/elimina-{cat}', 'CategoriesController@delete')->name('delete');
     });
 });

@@ -10,6 +10,9 @@
       <form action ="{{ route('panel.postUpload') }}" method="post" enctype="multipart/form-data">
         @method('post')
         @csrf
+        @if(Request::query('field', false))
+        <input type="hidden" name="field" value="{{ Request::query('field') }}">
+        @endif
         <div class="input-group mb-3">
           <div class="custom-file">
             <label class="custom-file-label" for="file_input">Seleziona immagine</label>

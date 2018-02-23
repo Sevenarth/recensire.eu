@@ -19,6 +19,11 @@ Breadcrumbs::register('products', function ($breadcrumbs) {
     $breadcrumbs->push('Prodotti', route('panel.products.home'));
 });
 
+Breadcrumbs::register('categories', function ($breadcrumbs) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push('Categorie', route('panel.categories.home'));
+});
+
 Breadcrumbs::register('testOrders', function ($breadcrumbs) {
     $breadcrumbs->parent('home');
     $breadcrumbs->push('Ordini di lavoro', route('panel.testOrders.home'));
@@ -28,17 +33,6 @@ Breadcrumbs::register('testers', function ($breadcrumbs) {
     $breadcrumbs->parent('home');
     $breadcrumbs->push('Testers', route('panel.testers.home'));
 });
-
-/*
-Breadcrumbs::register('stores.create', function ($breadcrumbs, $category) {
-    $breadcrumbs->parent('blog');
-    $breadcrumbs->push($category->title, route('category', $category->id));
-});
-
-Breadcrumbs::register('sellers.create', function ($breadcrumbs, $post) {
-    $breadcrumbs->parent('category', $post->category);
-    $breadcrumbs->push($post->title, route('post', $post));
-});*/
 
 Breadcrumbs::register('sellers.create', function ($breadcrumbs) {
     $breadcrumbs->parent('sellers');
@@ -54,6 +48,7 @@ Breadcrumbs::register('sellers.edit', function ($breadcrumbs, $seller) {
     $breadcrumbs->parent('sellers.view', $seller);
     $breadcrumbs->push('Modifica', route('panel.sellers.edit', $seller->id));
 });
+
 Breadcrumbs::register('stores.create', function ($breadcrumbs) {
     $breadcrumbs->parent('stores');
     $breadcrumbs->push('Nuovo negozio', route('panel.stores.create'));
@@ -69,7 +64,32 @@ Breadcrumbs::register('stores.edit', function ($breadcrumbs, $store) {
     $breadcrumbs->push('Modifica', route('panel.stores.edit', $store->id));
 });
 
+Breadcrumbs::register('stores.products', function ($breadcrumbs, $store) {
+    $breadcrumbs->parent('stores.view', $store);
+    $breadcrumbs->push('Prodotti', route('panel.stores.products', $store->id));
+});
+
 Breadcrumbs::register('products.create', function ($breadcrumbs) {
     $breadcrumbs->parent('products');
     $breadcrumbs->push('Nuovo prodotto', route('panel.products.create'));
+});
+
+Breadcrumbs::register('products.view', function ($breadcrumbs, $product) {
+    $breadcrumbs->parent('products');
+    $breadcrumbs->push('Prodotto #'.$product->id, route('panel.products.view', $product->id));
+});
+
+Breadcrumbs::register('products.edit', function ($breadcrumbs, $product) {
+    $breadcrumbs->parent('products.view', $product);
+    $breadcrumbs->push('Modifica', route('panel.products.edit', $product->id));
+});
+
+Breadcrumbs::register('categories.create', function ($breadcrumbs) {
+    $breadcrumbs->parent('categories');
+    $breadcrumbs->push('Nuova categoria', route('panel.categories.create'));
+});
+
+Breadcrumbs::register('categories.edit', function ($breadcrumbs, $category) {
+    $breadcrumbs->parent('categories');
+    $breadcrumbs->push('Modifica categoria #'.$category->id, route('panel.categories.edit', $category->id));
 });
