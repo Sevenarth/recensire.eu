@@ -55,6 +55,7 @@ Route::namespace('Panel')->name('panel.')->middleware('auth')->prefix('pannello'
       Route::patch('/visualizza-{product}', 'ProductsController@update')->name('update');
       Route::delete('/visualizza-{product}', 'ProductsController@delete')->name('delete');
       Route::put('/negozio-{product}', 'ProductsController@attachStore')->name('attachStore');
+      Route::delete('/visualizza-{product}/disassocia-{store}', 'ProductsController@detachStore')->name('detachStore');
     });
     Route::prefix('ordini-di-lavoro')->name('testOrders.')->group(function () {
       Route::get('/', 'TestOrdersController@index')->name('home');

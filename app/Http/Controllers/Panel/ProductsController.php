@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\ProductFormRequest;
 use App\Http\Controllers\Controller;
 use App\Product;
+use App\Store;
 use App\Category;
 use Validator;
 
@@ -170,7 +171,18 @@ class ProductsController extends Controller
     $product->stores()->attach($request->input('store_id'));
 
     return redirect()
-      ->route('panel.stores.products', $request->input('store_id'))
+      ->route('panel.products.view', $product->id)
       ->with('status', 'Prodotto associato con successo!');
+  }
+
+  public function detachStore(Request $request, Product $product, Store $store) {
+    if(DB::table('store_product')->where('product_id', $product->id)->where('store_id', $store->id)->count() > 0) {
+      $store->products()->detach($product);
+
+      return redirect()
+        ->route('panel.products.view', $product->id)
+        ->with('status', 'Prodotto disassociato con successo!');
+    } else
+      return response('Bad request', 400);
   }
 }

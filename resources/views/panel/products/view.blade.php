@@ -185,9 +185,18 @@ Prodotto #{{ $product->id }}
             {{ $store->company_name }}
           </td>
           <td class="align-middle">
-            <a href="{{ route('panel.stores.view', ['store' => $store->id]) }}" class="btn btn-sm btn-primary">
-              <i class="fa fa-fw fa-external-link-alt"></i> Visualizza
-            </a>
+            <form action="{{ route('panel.products.detachStore', ['store' => $store, 'product' => $product]) }}" method="post">
+              @method('delete')
+              @csrf()
+              <div class="btn-group">
+                <button type="submit" class="btn btn-sm btn-danger">
+                  <i class="fas fa-unlink"></i> Disassocia
+                </button>
+                <a href="{{ route('panel.stores.view', ['store' => $store->id]) }}" class="btn btn-sm btn-primary">
+                  <i class="fa fa-fw fa-external-link-alt"></i> Visualizza
+                </a>
+              </div>
+            </form>
           </td>
         </tr>
         @empty
