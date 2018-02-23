@@ -31,6 +31,29 @@ Prodotto #{{ $product->id }}
     </div>
     @closeForm
 
+        <form action="{{ route('panel.products.attachStore', $product->id) }}" method="post">
+          @csrf
+          @method('put')
+          <fieldset class="form-group">
+            <label for="store_id">Associa negozi</label>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <button class="btn btn-outline-secondary" data-toggle="modal" data-target="#select-store" type="button">Cerca</button>
+              </div>
+              <input type="hidden" id="store-id" name="store_id">
+              <input class="form-control{{ $errors->has('store_id') ? ' is-invalid' : '' }}" id="store-name" type="text" placeholder="Nessun negozio selezionato" required readonly>
+              <div class="input-group-append">
+                <button type="submit" class="btn btn-primary">Associa</button>
+              </div>
+              @if($errors->has('store_id'))
+              <div class="invalid-feedback">
+                @php foreach($errors->get('store_id') as $error) echo $error . "<br>"; @endphp
+              </div>
+              @endif
+            </div>
+          </fieldset>
+        </form>
+        
     <div class="row">
       <div class="col-sm-3">
         <fieldset class="form-group">
@@ -116,28 +139,6 @@ Prodotto #{{ $product->id }}
       </a>
     </div>
 
-    <form action="{{ route('panel.products.attachStore', $product->id) }}" method="post">
-      @csrf
-      @method('put')
-      <fieldset class="form-group">
-        <label for="store_id">Associa negozi</label>
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <button class="btn btn-outline-secondary" data-toggle="modal" data-target="#select-store" type="button">Cerca</button>
-          </div>
-          <input type="hidden" id="store-id" name="store_id">
-          <input class="form-control{{ $errors->has('store_id') ? ' is-invalid' : '' }}" id="store-name" type="text" placeholder="Nessun negozio selezionato" required readonly>
-          <div class="input-group-append">
-            <button type="submit" class="btn btn-primary">Associa</button>
-          </div>
-          @if($errors->has('store_id'))
-          <div class="invalid-feedback">
-            @php foreach($errors->get('store_id') as $error) echo $error . "<br>"; @endphp
-          </div>
-          @endif
-        </div>
-      </fieldset>
-    </form>
   </div>
   <div id="select-store" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
