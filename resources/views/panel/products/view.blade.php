@@ -176,7 +176,7 @@ Prodotto #{{ $product->id }}
           <td class="align-middle">
             {{ $store->name }}
             @if(!empty($store->url))
-              <a title="Apri il sito del negozio" target="_blank" href="{{ $store->url }}" class="btn btn-sm btn-primary">
+              <a title="Vai al negozio" href="{{ route('panel.stores.view', $store->id) }}" class="btn btn-sm btn-primary">
                 <i class="fa fa-external-link-alt"></i>
               </a>
             @endif
@@ -192,8 +192,8 @@ Prodotto #{{ $product->id }}
                 <button type="submit" class="btn btn-sm btn-danger">
                   <i class="fas fa-unlink"></i> Disassocia
                 </button>
-                <a href="{{ route('panel.stores.view', ['store' => $store->id]) }}" class="btn btn-sm btn-primary">
-                  <i class="fa fa-fw fa-external-link-alt"></i> Visualizza
+                <a href="{{ route('panel.testOrders.create', ['store' => $store, 'product' => $product]) }}" class="btn btn-sm btn-secondary">
+                  <i class="fas fa-bug"></i> Crea ordine
                 </a>
               </div>
             </form>
