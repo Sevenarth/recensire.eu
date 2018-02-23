@@ -96,10 +96,11 @@ class StoresController extends Controller
     $products = $store->products();
 
     if(!empty($search))
-      $products = $products
-        ->where('ASIN', $search)
-        ->orWhere('title', 'like', '%'.$search.'%')
-        ->orWhere('brand', 'like', $search.'%');
+      $products = $products->where(function($query) use ($search) {
+        $query->where('ASIN', $search)
+          ->orWhere('title', 'like', '%'.$search.'%')
+          ->orWhere('brand', 'like', $search.'%');
+      });
 
     if(!empty($orderBy))
       $products = $products->orderBy($orderBy, $sort);

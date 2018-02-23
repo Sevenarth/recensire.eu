@@ -158,7 +158,7 @@ Prodotto #{{ $product->id }}
       <thead class="thead-light">
         <tr>
           <th scope="col" class="p-2">
-            @orderable('id', '#')
+            @orderable('store.id', '#')
           </th>
           <th scope="col" class="p-2">
             @orderable('name', 'Nome negozio')

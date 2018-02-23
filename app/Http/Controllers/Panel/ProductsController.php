@@ -83,7 +83,7 @@ class ProductsController extends Controller
   public function view(Request $request, Product $product) {
 
     $orderBy = $request->query('orderBy', null);
-    if(!empty($orderBy) && !in_array($orderBy, ['name', 'id']))
+    if(!empty($orderBy) && !in_array($orderBy, ['name', 'store.id']))
       $orderBy = null;
     $sort = $request->query('sort', 'asc');
     if($sort != "asc" && $sort != "desc")
@@ -93,11 +93,13 @@ class ProductsController extends Controller
     $stores = $product->stores();
 
     if(!empty($search))
-      $stores = $stores->where("id", $search)
-      ->orWhere("name", "like", "%".$search."%")
-      ->orWhere("company_name", "like", "%".$search."%")
-      ->orWhere("company_registration_no", $search)
-      ->orWhere("VAT", $search);
+      $stores = $stores->where(function($query) use($search) {
+        $query->where("store.id", $search)
+          ->orWhere("name", "like", "%".$search."%")
+          ->orWhere("company_name", "like", "%".$search."%")
+          ->orWhere("company_registration_no", $search)
+          ->orWhere("VAT", $search);
+      });
 
     if(!empty($orderBy))
       $stores = $stores->orderBy($orderBy, $sort);
