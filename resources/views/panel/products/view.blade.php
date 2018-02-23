@@ -164,7 +164,7 @@ Prodotto #{{ $product->id }}
             @orderable('name', 'Nome negozio')
           </th>
           <th scope="col" class="p-2">
-            @orderable('company_name', 'Nome impresa')
+            Ordini di lavoro
           </th>
           <th scope="col" class="p-2"></th>
         </tr>
@@ -182,7 +182,7 @@ Prodotto #{{ $product->id }}
             @endif
           </td>
           <td class="align-middle">
-            {{ $store->company_name }}
+            {{ $product->storeTestOrders($store)->count() }}
           </td>
           <td class="align-middle">
             <form action="{{ route('panel.products.detachStore', ['store' => $store, 'product' => $product]) }}" method="post">
