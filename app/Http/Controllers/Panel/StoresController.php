@@ -21,34 +21,24 @@ class StoresController extends Controller
       $sort = "asc";
     $search = trim($request->query('s', null));
 
-    if(!empty($search)) {
-        $stores = DB::table('store')
-            ->leftJoin('seller', 'store.seller_id', '=', 'seller.id')
-            ->where("store.id", $search)
-            ->orWhere("store.name", "like", "%".$search."%")
-            ->orWhere("company_name", "like", "%".$search."%")
-            ->orWhere("company_registration_no", $search)
-            ->orWhere("VAT", $search)
-            ->orWhere("seller.name", "like", "%".$search."%")
-            ->select("store.*", "seller.id AS seller_id", "seller.name AS seller_name");
+    $stores = DB::table('store')
+        ->leftJoin('seller', 'store.seller_id', '=', 'seller.id');
 
-        if(!empty($orderBy))
-          $stores = $stores->orderBy($orderBy, $sort)->paginate(15);
-        else
-          $stores = $stores->paginate(15);
-    } else {
-        if(!empty($orderBy)) {
-          $stores = DB::table('store')
-              ->leftJoin('seller', 'store.seller_id', '=', 'seller.id')
-              ->orderBy($orderBy, $sort)
-              ->select("store.*", "seller.id AS seller_id", "seller.name AS seller_name")
-              ->paginate(15);
-        } else
-          $stores = DB::table('store')
-              ->leftJoin('seller', 'store.seller_id', '=', 'seller.id')
-              ->select("store.*", "seller.id AS seller_id", "seller.name AS seller_name")
-              ->paginate(15);
-    }
+    if(!empty($search))
+      $stores = $stores->where("store.id", $search)
+      ->orWhere("store.name", "like", "%".$search."%")
+      ->orWhere("company_name", "like", "%".$search."%")
+      ->orWhere("company_registration_no", $search)
+      ->orWhere("VAT", $search)
+      ->orWhere("seller.name", "like", "%".$search."%")
+      ->select("store.*", "seller.id AS seller_id", "seller.name AS seller_name");
+
+    if(!empty($orderBy))
+      $stores = $stores->orderBy($orderBy, $sort);
+
+    $stores = $stores
+        ->select("store.*", "seller.id AS seller_id", "seller.name AS seller_name")
+        ->paginate(15);
 
     return view("panel/stores/home")->with('stores', $stores);
   }
@@ -96,7 +86,26 @@ class StoresController extends Controller
   }
 
   public function products(Request $request, Store $store) {
-    $products = $store->products()->paginate(15);
+    $orderBy = $request->query('orderBy', null);
+    if(!empty($orderBy) && !in_array($orderBy, ['ASIN', 'brand', 'title']))
+      $orderBy = null;
+    $sort = $request->query('sort', 'asc');
+    if($sort != "asc" && $sort != "desc")
+      $sort = "asc";
+    $search = trim($request->query('s', null));
+
+    $products = $store->products();
+
+    if(!empty($search))
+      $products = $products
+        ->where('ASIN', $search)
+        ->orWhere('title', 'like', '%'.$search.'%')
+        ->orWhere('brand', 'like', $search.'%');
+
+    if(!empty($orderBy))
+      $products = $products->orderBy($orderBy, $sort);
+
+    $products = $products->paginate(15);
 
     return view("panel/stores/products", ['store' => $store, 'products' => $products]);
   }
@@ -120,7 +129,6 @@ class StoresController extends Controller
         ->withInput();
 
     $store->products()->attach(Product::where('ASIN', $request->input('product_id'))->first());
-    // $store->save();
 
     return redirect()
       ->route('panel.stores.products', $store->id)
