@@ -41,18 +41,25 @@
       </div>
       <div class="col-sm-6">
         <fieldset class="form-group">
-          <label>Scadenza</label>
+          <label>Scadenza in <span class="text-muted">(dalla creazione)</span></label>
           <div class="input-group">
-            <input type="date" class="form-control{{ $errors->has('expires_on_date') ? ' is-invalid' : '' }}" name="expires_on_date" value="{{ old('expires_on_date', !empty($testUnit->id) ? $testUnit->expiresDate() : '') }}" required>
-            <input type="time" class="form-control{{ $errors->has('expires_on_time') ? ' is-invalid' : '' }}" name="expires_on_time" value="{{ old('expires_on_time', !empty($testUnit->id) ? $testUnit->expiresTime() : '') }}" required>
+            <input type="number" min="1" step="1" class="form-control{{ $errors->has('expires_on_time') ? ' is-invalid' : '' }}" name="expires_on_time" value="{{ old('expires_on_time', !empty($testUnit->id) ? $testUnit->expires_on_time : '') }}" required>
+            <select class="form-control{{ $errors->has('expires_on_space') ? ' is-invalid' : '' }}" name="expires_on_space" required>
+              @foreach(config('testUnit.timeSpaces') as $id => $timeSpace)
+                <option value="{{ $id }}" {{ $id == old('expires_on_space', !empty($testUnit->id) ? $testUnit->expires_on_space : null) ? 'selected' : '' }}>{{ $timeSpace }}</option>
+              @endforeach
+            </select>
             @foreach($errors->get('expires_on_time') as $err)
+              {{ $err}}<br>
+            @endforeach
+            @foreach($errors->get('expires_on_space') as $err)
               {{ $err}}<br>
             @endforeach
           </div>
         </fieldset>
       </div>
     </div>
-    @formTextfield('reference_url', 'Collegamento di riferimento', editMode="testUnit", placeholder="http://")
+    @formTextfield('reference_url', 'Link base di ricerca', editMode="testUnit", placeholder="http://")
     @formTextfield('review_url', 'Collegamento alla recensione', editMode="testUnit", required="false", placeholder="http://")
 
     <div class="row">

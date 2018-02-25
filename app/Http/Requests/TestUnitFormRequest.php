@@ -26,8 +26,8 @@ class TestUnitFormRequest extends FormRequest
     {
         return [
             'tester_id' => 'required|exists:tester,id',
-            'expires_on_date' => 'required|date',
-            'expires_on_time' => 'required|date_format:H:i',
+            'expires_on_time' => 'required|numeric',
+            'expires_on_space' => ['required', Rule::in(array_keys(config('testUnit.timeSpaces')))],
             'reference_url' => 'required|url',
             'review_url' => 'nullable|url',
             'amazon_order_id' => 'nullable|string',

@@ -79,6 +79,7 @@ Ordine di lavoro #{{ $testOrder->id }}
         <th>Indice</th>
         <th>Tester</th>
         <th>Ultimo stato</th>
+        <th>Scadenza in</th>
         <th></th>
       </thead>
       <tbody>@php $count = 0; @endphp
@@ -87,6 +88,9 @@ Ordine di lavoro #{{ $testOrder->id }}
           <th class="p-2" scope="row">{{ $unit->hash_code }}</th>
           <td class="p-2"><a href="{{ route('panel.testers.view', $unit->tester->id) }}">{{ $unit->tester->name }}</a></td>
           <td class="p-2">{{ config('testUnit.statuses')[$unit->status] }}</td>
+          <td class="p-2">
+            <div class="relative-time">{{ $unit->expires_on }}</div>
+          </td>
           <td>
             <a href="{{ route('panel.testOrders.testUnits.view', $unit->id) }}" class="btn btn-primary btn-sm"><i class="fa fa-fw fa-external-link-alt"></i> Visualizza</a>
           </td>
@@ -94,7 +98,7 @@ Ordine di lavoro #{{ $testOrder->id }}
         @endforeach
         @for($i = 0; $i < $testOrder->quantity-$count; $i++)
         <tr>
-          <td class="p-2" colspan="3"><i>Unità di test mancante.</i></td>
+          <td class="p-2" colspan="4"><i>Unità di test mancante.</i></td>
           <td>
             <a href="{{ route('panel.testOrders.testUnits.create', $testOrder->id) }}" class="btn btn-success btn-sm"><i class="fas fa-plus fa-fw"></i> Crea unità di test</a>
           </td>

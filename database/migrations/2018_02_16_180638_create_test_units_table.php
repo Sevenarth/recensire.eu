@@ -27,6 +27,8 @@ class CreateTestUnitsTable extends Migration
             $table->mediumInteger('status')->default(0);
             $table->string('paypal_account')->nullable();
             $table->float('refunded_amount', 8, 2)->nullable();
+            $table->int('expires_on_time');
+            $table->int('expires_on_space');
             $table->timestamp('expires_on');
             $table->softDeletes();
             $table->timestamps();

@@ -44,7 +44,7 @@ Unità di test #{{ $testUnit->hash_code }}
       <div class="col-sm-6">
         <fieldset class="form-group">
           <label><b>Scadenza</b></label>
-          <input type="text" readonly class="form-control-plaintext" value="{{ $testUnit->expires_on }}">
+          <div class="relative-time form-control p-2">{{ $testUnit->expires_on }}</div>
         </fieldset>
       </div>
     </div>

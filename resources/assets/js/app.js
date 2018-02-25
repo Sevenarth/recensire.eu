@@ -12,10 +12,19 @@ import SimpleMDE from 'simplemde';
 import 'simplemde/dist/simplemde.min.css';
 window.MD = require('markdown-it')();
 window.SimpleMDE = SimpleMDE;
+var moment = require('moment');
 
 $(function () {
+  moment.locale($("html").attr("lang"));
+
   $(".markdown").each(function() {
     $(this).html(MD.render($(this).text()));
+  });
+
+  $(".relative-time").each(function() {
+    var date = $(this).text();
+    $(this).attr("title", date);
+    $(this).text(moment(date).fromNow())
   });
 
   document.addEventListener('pjax:send', function() {

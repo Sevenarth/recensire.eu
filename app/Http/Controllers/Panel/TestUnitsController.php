@@ -24,15 +24,19 @@ class TestUnitsController extends Controller
       $testUnit->hash_code = "placeholder";
       $testUnit->fill($request->only([
         'amazon_order_id', 'review_url', 'reference_url',
-        'instructions', 'status', 'paypal_account', 'refunded_amount'
+        'instructions', 'status', 'paypal_account',
+        'refunded_amount', 'expires_on_time', 'expires_on_space'
       ]));
-      $testUnit->expires_on = new Carbon(
-        $request->input('expires_on_date') . " " . $request->input('expires_on_time'),
-        config('app.timezone')
-      );
+
+      $spaceSpecs = ['T%dS', 'T%dM', 'T%dH', '%dD', '%dW', '%dM', '%dY'];
+      $expires_on = Carbon::now(config('app.timezone'));
+      $expires_on->add(new \DateInterval(sprintf('P'.$spaceSpecs[$request->input('expires_on_space')], $request->input('expires_on_time'))));
+      $testUnit->expires_on = $expires_on;
+
       $testUnit->tester()->associate(Tester::find($request->input('tester_id')));
       $testUnit->testOrder()->associate($testOrder);
       $testUnit->save();
+
       $testUnit->statuses()->create([
         'status' => $request->input('status')
       ]);
@@ -53,13 +57,23 @@ class TestUnitsController extends Controller
     public function update(TestUnitFormRequest $request, TestUnit $testUnit) {
       $testUnit->fill($request->only([
         'amazon_order_id', 'review_url', 'reference_url',
-        'instructions', 'status', 'paypal_account', 'refunded_amount'
+        'instructions', 'status', 'paypal_account',
+        'refunded_amount'
       ]));
-      $testUnit->expires_on = new Carbon(
-        $request->input('expires_on_date') . " " . $request->input('expires_on_time'),
-        config('app.timezone')
-      );
+
+      if($testUnit->expires_on_time !== $request->input('expires_on_time')
+          || $testUnit->expires_on_space !== $request->input('expires_on_space'))
+      {
+        $testUnit->expires_on_time = $request->input('expires_on_time');
+        $testUnit->expires_on_space = $request->input('expires_on_space');
+        $spaceSpecs = ['T%dS', 'T%dM', 'T%dH', '%dD', '%dW', '%dM', '%dY'];
+        $expires_on = Carbon::now(config('app.timezone'));
+        $expires_on->add(new \DateInterval(sprintf('P'.$spaceSpecs[$request->input('expires_on_space')], $request->input('expires_on_time'))));
+        $testUnit->expires_on = $expires_on;
+      }
+
       $testUnit->save();
+
       if($testUnit->status != $request->input('status'))
         $testUnit->statuses()->create([
           'status' => $request->input('status')
