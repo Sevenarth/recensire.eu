@@ -14,5 +14,8 @@ return [
     'settimane',
     'mesi',
     'anni'
+  ],
+  'refundingTypes' => [
+    'PayPal'
   ]
 ];

@@ -25,9 +25,11 @@ class TestUnitsController extends Controller
       $testUnit->fill($request->only([
         'amazon_order_id', 'review_url', 'reference_url',
         'instructions', 'status', 'paypal_account',
-        'refunded_amount', 'expires_on_time', 'expires_on_space'
+        'refunded_amount', 'expires_on_time', 'expires_on_space',
+        'refunding_type'
       ]));
 
+      $testUnit->refunded = $request->input('refunded') == 'on' ? 1 : 0;
       $spaceSpecs = ['T%dS', 'T%dM', 'T%dH', '%dD', '%dW', '%dM', '%dY'];
       $expires_on = Carbon::now(config('app.timezone'));
       $expires_on->add(new \DateInterval(sprintf('P'.$spaceSpecs[$request->input('expires_on_space')], $request->input('expires_on_time'))));
@@ -58,8 +60,10 @@ class TestUnitsController extends Controller
       $testUnit->fill($request->only([
         'amazon_order_id', 'review_url', 'reference_url',
         'instructions', 'status', 'paypal_account',
-        'refunded_amount'
+        'refunded_amount', 'refunding_type'
       ]));
+
+      $testUnit->refunded = $request->input('refunded') == 'on' ? 1 : 0;
 
       if($testUnit->expires_on_time !== $request->input('expires_on_time')
           || $testUnit->expires_on_space !== $request->input('expires_on_space'))

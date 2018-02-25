@@ -153,3 +153,6 @@ a:active, a:focus {
 .slick-dots {
   position: static
 }
+.slick-dots li button:before {
+  font-size: 15px
+}

@@ -36,6 +36,21 @@
                 </fieldset>
               </div>
             </div>
+            <div class="row">
+              <div class="col-sm-6">
+                <fieldset class="form-group">
+                  <label><b>Tipo di rimborso</b></label>
+                  <input type="text" class="form-control-plaintext" readonly value="{{ config('testUnit.refundingTypes')[$testUnit->refunding_type] }}">
+                </fieldset>
+              </div>
+              <div class="col-sm-6">
+                <fieldset class="form-group">
+                  <label><b>Nome tester</b></label>
+                  <input type="text" class="form-control-plaintext" readonly value="{{ $testUnit->tester->name }}">
+                </fieldset>
+              </div>
+            </div>
+            <a href="{{ route('tests.go', $testUnit->hash_code) }}" class="btn btn-primary my-2" target="_blank"><i class="fa fa-fw fa-external-link-alt"></i> Vai alla ricerca di Amazon</a>
           </div>
         </div>
       </div>

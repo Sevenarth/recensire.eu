@@ -13983,5 +13983,9 @@ a:focus {
   position: static;
 }
 
+.slick-dots li button:before {
+  font-size: 15px;
+}
+
 
 /*# sourceMappingURL=app.css.map*/

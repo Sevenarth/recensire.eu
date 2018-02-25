@@ -17,7 +17,8 @@ class TestUnit extends Model
     protected $fillable = [
       'amazon_order_id', 'review_url', 'reference_url',
       'instructions', 'status', 'paypal_account',
-      'refunded_amount', 'expires_on_time', 'expires_on_space'
+      'refunded_amount', 'expires_on_time', 'expires_on_space',
+      'refunded', 'refunding_type'
     ];
 
     public static function boot() {

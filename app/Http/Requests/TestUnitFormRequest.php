@@ -34,7 +34,8 @@ class TestUnitFormRequest extends FormRequest
             'refunded_amount' => 'required|numeric',
             'paypal_account' => 'nullable|email',
             'status' => ['required', Rule::in(array_keys(config('testUnit.statuses')))],
-            'instructions' => 'required'
+            'instructions' => 'required',
+            'refunding_type' => ['required', Rule::in(array_keys(config('testUnit.refundingTypes')))]
         ];
     }
 
@@ -47,8 +48,10 @@ class TestUnitFormRequest extends FormRequest
         'paypal_account.email' => 'L\'account PayPal deve essere una email valida',
         'refunded_amount.numeric' => "L'importo da rimborsare deve essere un numero valido",
         'status.in' => 'Lo stato scelto non è valido',
-        '*.date' => 'Devi inserire una data valida',
-        'tester_id.exists' => "Il tester scelto non esiste nel sistema"
+        'expires_on_time.numeric' => 'Devi inserire un numero valido',
+        'tester_id.exists' => "Il tester scelto non esiste nel sistema",
+        'refunding_types.in' => 'Il tipo di rimborso scelto non è valido',
+        'expires_on_space.in' => 'Il tipo di scadenza non è valido'
       ];
     }
 }

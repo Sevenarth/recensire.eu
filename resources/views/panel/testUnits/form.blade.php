@@ -20,7 +20,7 @@
       @method('put')
       @csrf
     @endif
-
+@foreach($errors->all() as $err) {{ $err}} <br> @endforeach
     <div class="row">
       <div class="col-sm-6">
         <fieldset class="form-group">
@@ -99,6 +99,30 @@
         @if($errors->has('status'))
         <div class="invalid-feedback">
           @foreach($errors->get('status') as $err)
+            {{$err}}<br>
+          @endforeach
+        </div>
+        @endif
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="custom-control custom-checkbox">
+          <input type="checkbox" class="custom-control-input" id="refunded" name="refunded" {{ old('refunded', $testUnit->refunded) ? 'checked' : ''}}>
+          <label class="custom-control-label" for="refunded">Rimborsato</label>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <label for="refunding_type">Metodo di rimborso</label>
+        <select class="custom-select{{ $errors->has("status") ? ' is-invalid' : '' }}" name="refunding_type">
+          @foreach(config('testUnit.refundingTypes') as $id => $name)
+            <option value="{{$id}}"{{ $id == old('refunding_type', $testUnit->refunding_type) ? ' selected' : ''}}>{{$name}}</option>
+          @endforeach
+        </select>
+        @if($errors->has('refunding_type'))
+        <div class="invalid-feedback">
+          @foreach($errors->get('refunding_type') as $err)
             {{$err}}<br>
           @endforeach
         </div>

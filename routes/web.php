@@ -20,6 +20,7 @@ Auth::routes();
 Route::name('tests.')->prefix('test')->group(function () {
   Route::get('/{testUnit}', 'TestUnitsController@view')->name('view');
 });
+Route::get('/go/{testUnit}', 'TestUnitsController@go')->name('tests.go');
 
 Route::namespace('Panel')->name('panel.')->middleware('auth')->prefix('pannello')->group(function () {
     Route::get('/', 'HomeController@index')->name('home');

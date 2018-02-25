@@ -79,6 +79,21 @@ Unità di test #{{ $testUnit->hash_code }}
       </div>
     </div>
 
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label><b>Rimborsato?</b></label>
+          <input class="form-control-plaintext" type="text" value="{{ !empty($testUnit->refunded) ? 'Sì' : 'No' }}" readonly>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <fieldset class="form-group">
+          <label><b>Metodo di rimborso</b></label>
+          <input type="text" class="form-control-plaintext" value="{{ config('testUnit.refundingTypes')[$testUnit->refunding_type] }}" readonly>
+        </fieldset>
+      </div>
+    </div>
+
     <fieldset class="form-group">
       <label><b>Collegamento alla recensione</b></label>
       <div class="input-group">
