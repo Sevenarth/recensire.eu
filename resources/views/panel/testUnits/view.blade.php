@@ -44,7 +44,7 @@ Unità di test #{{ $testUnit->hash_code }}
       <div class="col-sm-6">
         <fieldset class="form-group">
           <label><b>Scadenza</b></label>
-          <div class="relative-time form-control p-2">{{ $testUnit->expires_on }}</div>
+          <div class="relative-time form-control p-2">{{ (new \Carbon\Carbon($testUnit->expires_on, config('app.timezone')))->toIso8601String() }}</div>
         </fieldset>
       </div>
     </div>

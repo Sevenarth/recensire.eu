@@ -23,7 +23,7 @@ $(function () {
 
   $(".relative-time").each(function() {
     var date = $(this).text();
-    $(this).attr("title", date);
+    $(this).attr("title", moment(date).format('llll'));
     $(this).text(moment(date).fromNow())
   });
 

@@ -89,7 +89,7 @@ Ordine di lavoro #{{ $testOrder->id }}
           <td class="p-2"><a href="{{ route('panel.testers.view', $unit->tester->id) }}">{{ $unit->tester->name }}</a></td>
           <td class="p-2">{{ config('testUnit.statuses')[$unit->status] }}</td>
           <td class="p-2">
-            <div class="relative-time">{{ $unit->expires_on }}</div>
+            <div class="relative-time">{{ (new \Carbon\Carbon($unit->expires_on, config('app.timezone')))->toIso8601String() }}</div>
           </td>
           <td>
             <a href="{{ route('panel.testOrders.testUnits.view', $unit->id) }}" class="btn btn-primary btn-sm"><i class="fa fa-fw fa-external-link-alt"></i> Visualizza</a>

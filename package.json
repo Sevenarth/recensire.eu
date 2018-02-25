@@ -27,6 +27,7 @@
     "jquery-pjax": "^2.0.1",
     "markdown-it": "^8.4.1",
     "moment": "^2.20.1",
+    "moment-timezone": "^0.5.14",
     "select2": "^4.0.6-rc.1",
     "select2-bootstrap4-theme": "^1.0.0",
     "simplemde": "^1.11.2",
