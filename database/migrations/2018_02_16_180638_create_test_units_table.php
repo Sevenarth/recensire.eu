@@ -15,11 +15,13 @@ class CreateTestUnitsTable extends Migration
     {
         Schema::create('test_unit', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('hash_code')->index();
+            $table->string('hash_code')->unique()->index();
             $table->string('amazon_order_id')->nullable();
             $table->string('review_url')->nullable();
             $table->string('reference_url');
-            $table->text('instructions')->nullable();
+            $table->text('instructions');
+            $table->integer('test_order_id')->unsigned();
+            $table->foreign('test_order_id')->references('id')->on('test_order');
             $table->integer('tester_id')->unsigned();
             $table->foreign('tester_id')->references('id')->on('tester')->nullable();
             $table->mediumInteger('status')->default(0);

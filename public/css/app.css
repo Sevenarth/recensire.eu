@@ -13715,6 +13715,7 @@ a:focus {
 }
 
 .btn-primary,
+.btn-success,
 .btn-outline-primary:hover {
   color: #fff;
 }

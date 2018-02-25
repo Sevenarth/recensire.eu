@@ -19,7 +19,7 @@ class CreateTestersTable extends Migration
             $table->text('facebook_profiles');
             $table->string("name");
             $table->string("email");
-            $table->string("wechat");
+            $table->string("wechat")->nullable();
             $table->string("profile_image")->nullable();
             $table->softDeletes();
             $table->timestamps();

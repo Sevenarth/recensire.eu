@@ -48036,16 +48036,10 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 __webpack_require__(14);
 window.Bloodhound = __webpack_require__(52);
 __webpack_require__(55);
-// var Pjax = require('pjax')
 
 
 window.MD = __webpack_require__(77)();
 window.SimpleMDE = __WEBPACK_IMPORTED_MODULE_0_simplemde___default.a;
-
-// var pjax = new Pjax({
-//   selectors: ["title", "main", "#header-nav", "#js-scripts"],
-//   cacheBust: false
-// })
 
 $(function () {
   $(".markdown").each(function () {
@@ -48124,9 +48118,12 @@ $(function () {
     var evt = $(this).attr("data-event");
     $(result).html('');
     axios.post($(this).attr("data-action"), $(this).serialize()).then(function (response) {
-      response.data.forEach(function (elt) {
-        $(result).append('<a class="list-group-item selectable-list-item" data-evt="' + evt + '" data-id="' + elt.id + '">' + (elt.nickname && elt.nickname.length > 0 ? elt.nickname + " - " : '') + elt.name + (elt.email ? ' <small><i>' + elt.email + '</i></small>' : '') + '</a>');
-      });
+
+      if (response.data.length > 0) {
+        response.data.forEach(function (elt) {
+          $(result).append('<a class="list-group-item selectable-list-item" data-evt="' + evt + '" data-id="' + elt.id + '">' + (elt.nickname && elt.nickname.length > 0 ? elt.nickname + " - " : '') + elt.name + (elt.email ? ' <small><i>' + elt.email + '</i></small>' : '') + '</a>');
+        });
+      } else $(result).append('<li class="list-group-item"><i>Nessun elemento presente con questi criteri di ricerca</i></li>');
     }).catch(function (error) {
       console.err(error);
     });
@@ -48143,6 +48140,12 @@ $(function () {
     $('#select-store').modal('toggle');
     $("#store-id").val($(this).attr("data-id"));
     $("#store-name").val($(this).html().replace(/<[\w]+>.*<\/[\w]+>/ig, '').trim());
+  });
+
+  $("body").on('click', 'a[data-evt=select-tester]', function () {
+    $('#select-tester').modal('toggle');
+    $("#tester-id").val($(this).attr("data-id"));
+    $("#tester-name").val($(this).html().replace(/<[\w]+>.*<\/[\w]+>/ig, '').trim());
   });
 
   $("body").on('click', '.image-field', function () {
@@ -48205,6 +48208,26 @@ $(function () {
 
   $("body").on('change', '.markdown', function () {
     $(this).html(MD.render($(this).text()));
+  });
+
+  $("body").on('click', '.remove-ig', function () {
+    $(this).parent().parent().remove();
+  });
+
+  $("body").on('click', '#add-amazon-profile', function () {
+    $("#extra-amazon-profiles").append('\n    <div class="input-group mt-2">\n      <input class="form-control" type="text" name="amazon_profiles[]" placeholder="http://">\n      <div class="input-group-append">\n        <button type="button" class="remove-ig btn btn-danger"><i class="fas fa-times fa-fw"></i></button>\n      </div>\n    </div>');
+  });
+
+  $("body").on('click', '#add-facebook-profile', function () {
+    $("#extra-facebook-profiles").append('\n    <div class="input-group mt-2">\n      <input class="form-control" type="text" name="facebook_profiles[]" placeholder="0000000">\n      <div class="input-group-append">\n        <button type="button" class="set-profile-image btn btn-outline-primary" title="Imposta come immagine del profilo"><i class="fas fa-fw fa-user-circle"></i></button>\n        <button type="button" class="remove-ig btn btn-danger"><i class="fas fa-times fa-fw"></i></button>\n      </div>\n    </div>');
+  });
+
+  $("body").on('click', '.set-profile-image', function () {
+    var fbid = $($(this).parent().parent().children()[0]).val();
+    if (fbid.length > 0) {
+      $("#profile_image").val("https://graph.facebook.com/" + fbid + "/picture?type=large");
+      $("#profile_image").focus().blur();
+    }
   });
 });
 

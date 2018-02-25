@@ -82,6 +82,9 @@ Prodotti di {{ $store->name }}
             </td>
             <td class="align-middle">
               {{ $product->storeTestOrders($store)->count() }}
+              <a title="Vai agli ordini di lavoro" href="{{ route('panel.testOrders.home') }}?s={{ urlencode(':product='.$product->id.',store='.$store->id) }}" class="btn btn-sm btn-primary">
+                <i class="fa fa-external-link-alt"></i>
+              </a>
             </td>
             <td class="align-middle">
               <form action="{{ route('panel.stores.detachProduct', ['store' => $store, 'product' => $product]) }}" method="post">

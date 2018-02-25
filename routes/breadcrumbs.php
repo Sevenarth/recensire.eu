@@ -93,3 +93,48 @@ Breadcrumbs::register('categories.edit', function ($breadcrumbs, $category) {
     $breadcrumbs->parent('categories');
     $breadcrumbs->push('Modifica categoria #'.$category->id, route('panel.categories.edit', $category->id));
 });
+
+Breadcrumbs::register('testOrders.create', function ($breadcrumbs, $testOrder) {
+    $breadcrumbs->parent('testOrders');
+    $breadcrumbs->push('Nuovo', route('panel.testOrders.create', ['product' => $testOrder->product->id, 'store' => $testOrder->store->id]));
+});
+
+Breadcrumbs::register('testOrders.view', function ($breadcrumbs, $testOrder) {
+    $breadcrumbs->parent('testOrders');
+    $breadcrumbs->push('Ordine di lavoro #'.$testOrder->id, route('panel.testOrders.view', $testOrder->id));
+});
+
+Breadcrumbs::register('testOrders.edit', function ($breadcrumbs, $testOrder) {
+    $breadcrumbs->parent('testOrders');
+    $breadcrumbs->push('Modifica #'.$testOrder->id, route('panel.testOrders.edit', $testOrder->id));
+});
+
+Breadcrumbs::register('testUnits.create', function ($breadcrumbs, $testUnit) {
+    $breadcrumbs->parent('testOrders.view', $testUnit->testOrder);
+    $breadcrumbs->push('Nuova unità di test', route('panel.testOrders.testUnits.create', $testUnit->testOrder->id));
+});
+
+Breadcrumbs::register('testUnits.view', function ($breadcrumbs, $testUnit) {
+    $breadcrumbs->parent('testOrders.view', $testUnit->testOrder);
+    $breadcrumbs->push('Unità di test #'.$testUnit->id, route('panel.testOrders.testUnits.view', $testUnit->id));
+});
+
+Breadcrumbs::register('testUnits.edit', function ($breadcrumbs, $testUnit) {
+    $breadcrumbs->parent('testOrders.view', $testUnit->testOrder);
+    $breadcrumbs->push('Modifica #'.$testUnit->hash_code, route('panel.testOrders.testUnits.edit', $testUnit->id));
+});
+
+Breadcrumbs::register('testers.create', function ($breadcrumbs) {
+    $breadcrumbs->parent('testers');
+    $breadcrumbs->push('Nuovo tester', route('panel.testers.create'));
+});
+
+Breadcrumbs::register('testers.view', function ($breadcrumbs, $tester) {
+    $breadcrumbs->parent('testers');
+    $breadcrumbs->push('Tester #'.$tester->id, route('panel.testers.view', $tester->id));
+});
+
+Breadcrumbs::register('testers.edit', function ($breadcrumbs, $tester) {
+    $breadcrumbs->parent('testers.view', $tester);
+    $breadcrumbs->push('Modifica', route('panel.testers.edit', $tester->id));
+});

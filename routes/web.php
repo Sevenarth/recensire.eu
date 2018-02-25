@@ -17,6 +17,10 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::name('tests.')->prefix('test')->group(function () {
+  Route::get('/{testUnit}', 'TestUnitsController@view')->name('view');
+});
+
 Route::namespace('Panel')->name('panel.')->middleware('auth')->prefix('pannello')->group(function () {
     Route::get('/', 'HomeController@index')->name('home');
     Route::get('/upload', 'HomeController@upload')->name('upload');
@@ -60,9 +64,30 @@ Route::namespace('Panel')->name('panel.')->middleware('auth')->prefix('pannello'
     Route::prefix('ordini-di-lavoro')->name('testOrders.')->group(function () {
       Route::get('/', 'TestOrdersController@index')->name('home');
       Route::get('/nuovo-{product}-{store}', 'TestOrdersController@create')->name('create');
+      Route::put('/nuovo-{product}-{store}', 'TestOrdersController@put')->name('put');
+      Route::get('/visualizza-{testOrder}', 'TestOrdersController@view')->name('view');
+      Route::get('/modifica-{testOrder}', 'TestOrdersController@edit')->name('edit');
+      Route::patch('/visualizza-{testOrder}', 'TestOrdersController@update')->name('update');
+      Route::delete('/visualizza-{testOrder}', 'TestOrdersController@delete')->name('delete');
+
+      Route::prefix('tests')->name('testUnits.')->group(function () {
+        Route::get('/nuovo-{testOrder}', 'TestUnitsController@create')->name('create');
+        Route::put('/nuovo-{testOrder}', 'TestUnitsController@put')->name('put');
+        Route::get('/visualizza-{testUnit}', 'TestUnitsController@view')->name('view');
+        Route::get('/modifica-{testUnit}', 'TestUnitsController@edit')->name('edit');
+        Route::patch('/visualizza-{testUnit}', 'TestUnitsController@update')->name('update');
+        Route::delete('/visualizza-{testUnit}', 'TestUnitsController@delete')->name('delete');
+      });
     });
     Route::prefix('testers')->name('testers.')->group(function () {
       Route::get('/', 'TestersController@index')->name('home');
+      Route::post('/fetch', 'TestersController@fetch')->name('fetch');
+      Route::get('/nuovo', 'TestersController@create')->name('create');
+      Route::put('/nuovo', 'TestersController@put')->name('put');
+      Route::get('/visualizza-{tester}', 'TestersController@view')->name('view');
+      Route::get('/modifica-{tester}', 'TestersController@edit')->name('edit');
+      Route::patch('/visualizza-{tester}', 'TestersController@update')->name('update');
+      Route::delete('/visualizza-{tester}', 'TestersController@delete')->name('delete');
     });
     Route::prefix('categorie')->name('categories.')->group(function () {
       Route::get('/', 'CategoriesController@index')->name('home');
