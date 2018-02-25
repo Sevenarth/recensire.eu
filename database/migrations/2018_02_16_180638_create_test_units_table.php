@@ -28,6 +28,7 @@ class CreateTestUnitsTable extends Migration
             $table->string('paypal_account')->nullable();
             $table->float('refunded_amount', 8, 2)->nullable();
             $table->int('refunding_type');
+            $table->boolean('link_opened')->default(false);
             $table->boolean('refunded')->default(false);
             $table->int('expires_on_time');
             $table->int('expires_on_space');

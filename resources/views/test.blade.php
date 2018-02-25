@@ -32,7 +32,7 @@
               <div class="col-sm-10">
                 <fieldset class="form-group">
                   <label><b>Nome prodotto</b></label>
-                  <input type="text" class="form-control-plaintext" readonly value="{{ $testUnit->testOrder->product->title }}">
+                  <div class="p-2">{{ $testUnit->testOrder->product->title }}</div>
                 </fieldset>
               </div>
             </div>
