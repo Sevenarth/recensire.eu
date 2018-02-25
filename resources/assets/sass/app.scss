@@ -15,6 +15,8 @@
 
 @import 'tagsinput';
 
+@import '~slick-carousel/slick/slick-theme';
+
 @include media-breakpoint-only(md) {
   .container {
     max-width: 900px
@@ -30,6 +32,24 @@
   .table-condensed-sm > tfoot > tr > td {
     padding: 8px;
   }
+
+  .variable-heading {
+    font-size: 1.125rem;
+  }
+}
+
+@include media-breakpoint-up(sm) {
+  .variable-heading {
+    font-size: 1.575rem;
+  }
+}
+
+.variable-heading {
+  margin-bottom: 0.5rem;
+  font-family: inherit;
+  font-weight: 500;
+  line-height: 1.2;
+  color: inherit;
 }
 
 .navbar-laravel {
@@ -110,4 +130,26 @@ a:active, a:focus {
 .active-image {
   -webkit-box-shadow: 0 0 0 0.2rem rgba(108, 117, 125, 0.5);
   box-shadow: 0 0 0 0.2rem rgba(108, 117, 125, 0.5);
+}
+
+.slideshow {
+  overflow: hidden
+}
+
+.slick-list {
+  max-height: 250px
+}
+
+.slick-slide {
+  text-align: center;
+  display: inline-block;
+}
+
+.img-slideshow {
+  max-height: 250px;
+  max-width: 100%
+}
+
+.slick-dots {
+  position: static
 }

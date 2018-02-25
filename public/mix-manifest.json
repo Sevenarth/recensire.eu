@@ -3,6 +3,8 @@
     "/css/app.css": "/css/app.css",
     "/js/app.js.map": "/js/app.js.map",
     "/css/app.css.map": "/css/app.css.map",
+    "/js/public.js": "/js/public.js",
+    "/js/public.js.map": "/js/public.js.map",
     "/js/upload.js": "/js/upload.js",
     "/js/upload.js.map": "/js/upload.js.map"
 }
