@@ -10,7 +10,7 @@
       <small>Richiesta in scadenza</small>
       <div class="clearfix"></div>
     </div>
-    <div class="row">
+    <div class="row mb-3">
       <div class="col-sm-4">
         <div class="slideshow">
           @foreach($testUnit->testOrder->product->images as $image)
