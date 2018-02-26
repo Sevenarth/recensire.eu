@@ -20,8 +20,8 @@ class TestUnitsController extends Controller
       if((new Carbon($testUnit->expires_on, config('app.timezone'))) < Carbon::now())
         abort(404);
 
-      if(!empty($testUnit->viewed)) {
-        $testUnit->vieweda = 1;
+      if(empty($testUnit->viewed)) {
+        $testUnit->viewed = true;
         $testUnit->save();
       }
 
