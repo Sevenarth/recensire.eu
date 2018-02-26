@@ -6,12 +6,25 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ImageUploadRequest;
 use Storage;
+use App\TestOrder;
+use DB;
+use Carbon\Carbon;
 
 class HomeController extends Controller
 {
     public function index(Request $request) {
+      $testOrders = [];
+      foreach(TestOrder::all() as $testOrder) {
+        $count = $testOrder
+          ->testUnits()
+          ->where(DB::raw('DATE(expires_on)'), '<', DB::raw('DATE(\''.Carbon::now(config('app.timezone')).'\')'))
+          ->count();
+        $testOrder->present = $count;
+        if($testOrder->quantity > $count)
+          $testOrders[] = $testOrder;
+      }
 
-      return view("panel/home");
+      return view("panel/home", compact('testOrders'));
     }
 
     public function upload(Request $request) {

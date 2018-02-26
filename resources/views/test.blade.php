@@ -53,10 +53,6 @@
               </fieldset>
             </div>
           </div>
-          <fieldset class="from-group">
-            <label><b>Descrizione prodotto</b></label>
-            <div class="p-3 markdown">{{ $testUnit->testOrder->product->description }}</div>
-          </fieldset>
           <a href="{{ route('tests.go', $testUnit->hash_code) }}" class="btn btn-primary my-2" target="_blank"><i class="fa fa-fw fa-external-link-alt"></i> Vai alla ricerca di Amazon</a>
 
           </div>
@@ -77,7 +73,7 @@
               <div class="alert alert-warning">
                 Assicurati di inserire i dati corretti! Non sarai in grado di applicare le modifiche dopo!
               </div>
-              @formTextfield('amazon_order_id', 'Numero ordine Amazon')
+              @formTextfield('amazon_order_id', 'Numero ordine Amazon', placeholder="XXX-XXXXXXX-XXXXXXX")
               @formTextfield('paypal_account', 'Account PayPal', placeholder="me@tester.com")
               <fieldset class="form-group">
                 <label for="tester_notes">Note aggiuntive <small class="text-muted">(opzionale)</small></label>
