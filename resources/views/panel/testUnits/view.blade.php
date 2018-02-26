@@ -44,7 +44,12 @@ Unità di test #{{ $testUnit->hash_code }}
       <div class="col-sm-6">
         <fieldset class="form-group">
           <label><b>Scadenza</b></label>
-          <div class="relative-time form-control p-2">{{ (new \Carbon\Carbon($testUnit->expires_on, config('app.timezone')))->toIso8601String() }}</div>
+          @php $expiration = new \Carbon\Carbon($testUnit->expires_on, config('app.timezone')); @endphp
+          @if($expiration->gt(\Carbon\Carbon::now(config('app.timezone'))))
+          <div class="relative-time form-control p-2">{{ $expiration->toIso8601String() }}</div>
+          @else
+          <div class="form-control p-2 text-danger"><b>Scaduto</b></div>
+          @endif
         </fieldset>
       </div>
     </div>

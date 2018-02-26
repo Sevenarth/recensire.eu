@@ -26,20 +26,6 @@
         <div id="content" class="bg-white border">
           <div class="p-4">
             <div class="row">
-              <div class="col-sm-2">
-                <fieldset class="form-group">
-                  <label><b>Marca</b></label>
-                  <input type="text" class="form-control-plaintext" readonly value="{{ $testUnit->testOrder->product->brand }}">
-                </fieldset>
-              </div>
-              <div class="col-sm-10">
-                <fieldset class="form-group">
-                  <label><b>Nome prodotto</b></label>
-                  <div class="p-2">{{ $testUnit->testOrder->product->title }}</div>
-                </fieldset>
-              </div>
-            </div>
-            <div class="row">
               <div class="col-sm-6">
                 <fieldset class="form-group">
                   <label><b>Tipo di rimborso</b></label>
@@ -53,7 +39,28 @@
                 </fieldset>
               </div>
             </div>
-            <a href="{{ route('tests.go', $testUnit->hash_code) }}" class="btn btn-primary my-2" target="_blank"><i class="fa fa-fw fa-external-link-alt"></i> Vai alla ricerca di Amazon</a>
+          <div class="row">
+            <div class="col-sm-2">
+              <fieldset class="form-group">
+                <label><b>Marca</b></label>
+                <input type="text" class="form-control-plaintext" readonly value="{{ $testUnit->testOrder->product->brand }}">
+              </fieldset>
+            </div>
+            <div class="col-sm-10">
+              <fieldset class="form-group">
+                <label><b>Nome prodotto</b></label>
+                <div class="p-2">{{ $testUnit->testOrder->product->title }}</div>
+              </fieldset>
+            </div>
+          </div>
+          <fieldset class="from-group">
+            <label><b>Descrizione prodotto</b></label>
+            <div class="p-3 markdown">
+              {{ $testUnit->testOrder->product->description }}
+            </div>
+          </fieldset>
+          <a href="{{ route('tests.go', $testUnit->hash_code) }}" class="btn btn-primary my-2" target="_blank"><i class="fa fa-fw fa-external-link-alt"></i> Vai alla ricerca di Amazon</a>
+
           </div>
         </div>
       </div>
