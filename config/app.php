@@ -161,9 +161,11 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\PanelMenuServiceProvider::class,
         App\Providers\FormBuilderServiceProvider::class,
-        App\Providers\OrderSearchServicePRovider::class,
+        App\Providers\OrderSearchServiceProvider::class,
 
-        Vinkla\Hashids\HashidsServiceProvider::class
+        Vinkla\Hashids\HashidsServiceProvider::class,
+
+        Recca0120\Terminal\TerminalServiceProvider::class,
     ],
 
     /*

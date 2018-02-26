@@ -5,7 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
-class OrderSearchServicePRovider extends ServiceProvider
+class OrderSearchServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap services.

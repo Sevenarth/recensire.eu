@@ -95,7 +95,7 @@ Unità di test #{{ $testUnit->hash_code }}
     </div>
 
     <fieldset class="form-group">
-      <label><b>Collegamento alla recensione</b></label>
+      <label><b>Link base di ricerca</b></label>
       <div class="input-group">
         <input type="text" class="form-control" value="{{ $testUnit->reference_url }}" readonly>
         <div class="input-group-append">
@@ -105,7 +105,7 @@ Unità di test #{{ $testUnit->hash_code }}
     </fieldset>
 
     <fieldset class="form-group">
-      <label><b>Collegamento di riferimento</b></label>
+      <label><b>Collegamento alla recensione</b></label>
       @if(!empty($testUnit->review_url)) <div class="input-group"> @endif
       <input type="text" class="form-control{{ !empty($testUnit->review_url) ? '' : '-plaintext' }}" value="{{ !empty($testUnit->review_url) ? $testUnit->review_url : '-' }}" readonly>
       @if(!empty($testUnit->review_url)) <div class="input-group-append">
@@ -123,6 +123,19 @@ Unità di test #{{ $testUnit->hash_code }}
       </div>
     </div>
     </fieldset>
+
+    <div class="row">
+      <div class="col-sm-9">
+        <fieldset class="form-group">
+          <label><b>Link Amazon per il tester</b></label>
+          <input type="text" class="form-control-plaintext" value="{{ route('tests.go', $testUnit->hash_code) }}" readonly>
+        </fieldset>
+      </div>
+      <div class="col-sm-3">
+        <label><b>Aperto?</b></label>
+        <input class="form-control-plaintext" type="text" value="{{ !empty($testUnit->viewed) ? 'Sì' : 'No' }}" readonly>
+      </div>
+    </div>
 
     <fieldset class="form-group mb-4">
       <label><b>Istruzioni</b></label>

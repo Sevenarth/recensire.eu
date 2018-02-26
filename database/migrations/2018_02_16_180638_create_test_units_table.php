@@ -30,6 +30,7 @@ class CreateTestUnitsTable extends Migration
             $table->int('refunding_type');
             $table->boolean('link_opened')->default(false);
             $table->boolean('refunded')->default(false);
+            $table->boolean('viewed')->default(false);
             $table->int('expires_on_time');
             $table->int('expires_on_space');
             $table->timestamp('expires_on');

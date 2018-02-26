@@ -41,10 +41,10 @@
       </div>
       <div class="col-sm-6">
         <fieldset class="form-group">
-          <label>Scadenza in <span class="text-muted">(dalla creazione)</span></label>
+          <label>Scadenza in <small class="text-muted">(dall'ultima modifica di questo campo)</small></label>
           <div class="input-group">
             <input type="number" min="1" step="1" class="form-control{{ $errors->has('expires_on_time') ? ' is-invalid' : '' }}" name="expires_on_time" value="{{ old('expires_on_time', !empty($testUnit->id) ? $testUnit->expires_on_time : '') }}" required>
-            <select class="form-control{{ $errors->has('expires_on_space') ? ' is-invalid' : '' }}" name="expires_on_space" required>
+            <select class="custom-select{{ $errors->has('expires_on_space') ? ' is-invalid' : '' }}" name="expires_on_space" required>
               @foreach(config('testUnit.timeSpaces') as $id => $timeSpace)
                 <option value="{{ $id }}" {{ $id == old('expires_on_space', !empty($testUnit->id) ? $testUnit->expires_on_space : null) ? 'selected' : '' }}>{{ $timeSpace }}</option>
               @endforeach

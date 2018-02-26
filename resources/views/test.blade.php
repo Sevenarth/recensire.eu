@@ -55,7 +55,7 @@
         </div>
       </div>
     </div>
-    <h1 class="pb-3 border-bottom">Istruzioni</h1>
+    <h1 class="pb-3 mb-3 border-bottom">Istruzioni</h1>
     <div class="markdown">{{ $testUnit->instructions }}</div>
   </div>
 @endsection
