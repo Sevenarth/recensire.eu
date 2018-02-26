@@ -5,7 +5,7 @@
 @section('content')
   <div class="container">
     <div class="alert alert-success p-4 h5">
-      <b>Congratulazioni!</b> Sei stato invitato a testare un prodotto da recensire, da uno dei nostri negozi affiliati! Segui le istruzioni e completa il modulo per accettare l'invito.
+      <b>Congratulazioni <b>{{ $testUnit->tester->name }}</b>!</b> Sei stato invitato a testare un prodotto da recensire, da uno dei nostri negozi affiliati! Segui le istruzioni e completa il modulo per accettare l'invito.
     </div>
     <div class="p-3 mb-4 variable-heading border-bottom bg-warning">
       <i class="float-left m-1 mr-3 fa-2x fas fa-fw fa-history"></i>
