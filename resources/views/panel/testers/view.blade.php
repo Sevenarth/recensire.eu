@@ -46,7 +46,7 @@ Tester #{{ $tester->id }}
           <div class="col-sm-6">
             <fieldset class="form-group">
               <label for="email"><b>Indirizzo email</b></label>
-              <input type="text" id="product" readonly class="form-control-plaintext" value="{{ $tester->email }}">
+              <input type="text" id="product" readonly class="form-control-plaintext" value="{{ !empty($tester->email) ? $tester->email : '-' }}">
             </fieldset>
           </div>
         </div>

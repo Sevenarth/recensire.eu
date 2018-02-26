@@ -19,7 +19,7 @@
     @openForm('panel.testers.put', 'put')
     @endif
       @formTextfield('name', 'Nome tester', placeholder="Mario Rossi", editMode="tester")
-      @formTextfield('email', 'Indirizzo email', placeholder="me@testers.it", type="email", editMode="tester")
+      @formTextfield('email', 'Indirizzo email', placeholder="me@testers.it", type="email", required="false", editMode="tester")
       <fieldset class="form-group">
         <label for="amazon_profiles">Profili Amazon</label>
         <div class="input-group">

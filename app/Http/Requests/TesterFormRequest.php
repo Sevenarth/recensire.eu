@@ -25,7 +25,7 @@ class TesterFormRequest extends FormRequest
     {
         return [
           'name' => 'required|string',
-          'email' => 'required|email',
+          'email' => 'nullable|email',
           'amazon_profiles.*' => 'required|url',
           'facebook_profiles.*' => 'nullable|present|string',
           'wechat' => 'nullable|string',
@@ -37,7 +37,7 @@ class TesterFormRequest extends FormRequest
     {
       return [
         'name.required' => 'Questo campo è obbligatorio',
-        'email.required' => 'Questo campo è obbligatorio',
+        'email.email' => "L'indirizzo email inserito non è valido",
         'amazon_profiles.*.required' => 'Questo campo è obbligatorio',
         'amazon_profiles.*.url' => 'Questo campo deve essere un URL valido',
         'facebook_profiles.*.string' => 'Questo campo deve essere una stringa valida',

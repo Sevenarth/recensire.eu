@@ -68,7 +68,7 @@ Testers
               <img style="min-width: 50px; max-height: 50px" id="profile_image" src="@if(empty($tester->profile_image)) /images/profile_image.svg @else{{ $tester->profile_image }}@endif" class="img-fluid img-thumbnail rounded border">
             </td>
             <td class="align-middle">{{ $tester->name }}</td>
-            <td class="align-middle">{{ $tester->email}}</td>
+            <td class="align-middle">{{ !empty($tester->email) ? $tester->email : '-' }}</td>
             <td class="align-middle">
               <a href="{{ route('panel.testers.view', ['tester' => $tester->id]) }}" class="btn btn-sm btn-primary">
                 <i class="fa fa-fw fa-external-link-alt"></i> Visualizza

@@ -18,7 +18,7 @@ class CreateTestersTable extends Migration
             $table->text('amazon_profiles');
             $table->text('facebook_profiles');
             $table->string("name");
-            $table->string("email");
+            $table->string("email")->nullable();
             $table->string("wechat")->nullable();
             $table->string("profile_image")->nullable();
             $table->softDeletes();
