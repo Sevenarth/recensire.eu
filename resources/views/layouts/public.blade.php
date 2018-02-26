@@ -30,7 +30,7 @@
     </div>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/public.js') }}"></script>
+    <script src="{{ asset('js/public.js') }}?a"></script>
     <div id="js-scripts">
       @yield('scripts')
     </div>
