@@ -36,8 +36,13 @@ class StoresController extends Controller
       $stores = $stores->orderBy($orderBy, $sort);
 
     $stores = $stores
-        ->select("store.*", "seller.id AS seller_id", "seller.name AS seller_name")
-        ->paginate(15);
+        ->select(
+          "store.*",
+          "seller.id AS seller_id",
+          "seller.name AS seller_name",
+          "seller.profile_image AS profile_image",
+          "seller.nickname AS seller_nickname"
+        )->paginate(15);
 
     return view("panel/stores/home")->with('stores', $stores);
   }

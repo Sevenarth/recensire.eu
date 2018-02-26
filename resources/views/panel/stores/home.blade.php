@@ -71,10 +71,8 @@ Negozi
                 @endif
               </td>
               <td class="align-middle">
-                <a title="Visualizza" href="{{ route('panel.sellers.view', ['seller' => $store->seller_id]) }}" class="btn btn-sm btn-primary">
-                  <i class="fa fa-user"></i>
-                </a>
-                  {{ $store->seller_name }}
+                <a title="Visualizza" href="{{ route('panel.sellers.view', ['seller' => $store->seller_id]) }}"><img style="min-width: 50px; max-height: 50px" id="profile_image" src="@if(empty($store->profile_image)) /images/profile_image.svg @else{{ $store->profile_image }}@endif" class="img-fluid img-thumbnail rounded border"></a>
+                   {{ !empty($store->seller_nickname) ? $store->seller_nickname : $store->seller_name }}
               </td>
               <td class="align-middle">
                 <a href="{{ route('panel.stores.view', ['store' => $store->id]) }}" class="btn btn-sm btn-primary">
