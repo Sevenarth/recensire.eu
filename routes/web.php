@@ -19,6 +19,7 @@ Auth::routes();
 
 Route::name('tests.')->prefix('test')->group(function () {
   Route::get('/{testUnit}', 'TestUnitsController@view')->name('view');
+  Route::patch('/{testUnit}', 'TestUnitsController@accept')->name('accept');
 });
 Route::get('/go/{testUnit}', 'TestUnitsController@go')->name('tests.go');
 
