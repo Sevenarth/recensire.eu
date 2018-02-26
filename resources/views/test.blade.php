@@ -53,7 +53,7 @@
               </fieldset>
             </div>
           </div>
-          <a href="{{ route('tests.go', $testUnit->hash_code) }}" class="btn btn-primary my-2" target="_blank"><i class="fa fa-fw fa-external-link-alt"></i> Vai alla ricerca di Amazon</a>
+          <a id="amazon-link" href="{{ route('tests.go', $testUnit->hash_code) }}" class="d-none btn btn-primary my-2" target="_blank"><i class="fa fa-fw fa-external-link-alt"></i> Vai alla ricerca di Amazon</a>
 
           </div>
         </div>
@@ -63,7 +63,7 @@
       <div class="col-md-7 mb-3">
         <div id="content" class="p-4 bg-white border">
           <h1 class="pb-3 mb-3 border-bottom">Istruzioni</h1>
-          <div class="markdown">{{ $testUnit->instructions }}</div>
+          <div id="instructions" class="markdown">{{ $testUnit->instructions }}</div>
         </div>
       </div>
       <div class="col-md-5">
