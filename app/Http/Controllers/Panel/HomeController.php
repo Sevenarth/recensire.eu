@@ -17,7 +17,7 @@ class HomeController extends Controller
       foreach(TestOrder::all() as $testOrder) {
         $count = $testOrder
           ->testUnits()
-          ->where(DB::raw('DATE(expires_on)'), '<', DB::raw('DATE(\''.Carbon::now(config('app.timezone')).'\')'))
+          ->where('expires_on', '>', Carbon::now(config('app.timezone')))
           ->count();
         $testOrder->present = $count;
         if($testOrder->quantity > $count)
