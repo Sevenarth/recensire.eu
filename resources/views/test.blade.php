@@ -74,7 +74,17 @@
               </div>
               @formTextfield('amazon_order_id', 'Numero ordine Amazon')
               @formTextfield('paypal_account', 'Account PayPal', placeholder="me@tester.com")
-              @formTextfield('review_url', 'Recensione Amazon', required="false")
+              <fieldset class="form-group">
+                <label for="tester_notes">Note aggiuntive <small class="text-muted">(opzionale)</small></label>
+                <textarea id="tester_notes" class="form-control{{ $errors->has('tester_notes') ? ' is-invalid' : '' }}" rows="4" name="tester_notes"></textarea>
+                @if($errors->has('tester_notes'))
+                <div class="invalid-feedback">
+                  @foreach($errors->get('tester_notes') as $err)
+                    {{$err}}<br>
+                  @endforeach
+                </div>
+              @endif
+              </fieldset>
               <button type="submit" class="mt-2 btn btn-primary">Completa modulo</button>
             @closeForm
           </div>

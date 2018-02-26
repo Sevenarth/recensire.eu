@@ -34,6 +34,7 @@ class CreateTestUnitsTable extends Migration
             $table->int('expires_on_time');
             $table->int('expires_on_space');
             $table->timestamp('expires_on');
+            $table->text('tester_notes')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

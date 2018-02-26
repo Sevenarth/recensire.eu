@@ -138,6 +138,11 @@ Unità di test #{{ $testUnit->hash_code }}
     </div>
 
     <fieldset class="form-group mb-4">
+      <label><b>Note del tester</b></label>
+      <div class="form-control markdown p-3" style="max-height: 300px; overflow-y: auto">{{ $testUnit->tester_notes }}</div>
+    </fieldset>
+
+    <fieldset class="form-group mb-4">
       <label><b>Istruzioni</b></label>
       <div class="form-control markdown p-3" style="max-height: 300px; overflow-y: auto">{{ $testUnit->instructions }}</div>
     </fieldset>

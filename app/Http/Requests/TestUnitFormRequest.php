@@ -35,7 +35,8 @@ class TestUnitFormRequest extends FormRequest
             'paypal_account' => 'nullable|email',
             'status' => ['required', Rule::in(array_keys(config('testUnit.statuses')))],
             'instructions' => 'required',
-            'refunding_type' => ['required', Rule::in(array_keys(config('testUnit.refundingTypes')))]
+            'refunding_type' => ['required', Rule::in(array_keys(config('testUnit.refundingTypes')))],
+            'tester_notes' => 'nullable|string'
         ];
     }
 

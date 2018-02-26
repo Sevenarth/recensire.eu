@@ -26,7 +26,7 @@ class TestUnitsController extends Controller
         'amazon_order_id', 'review_url', 'reference_url',
         'instructions', 'status', 'paypal_account',
         'refunded_amount', 'expires_on_time', 'expires_on_space',
-        'refunding_type'
+        'refunding_type', 'tester_notes'
       ]));
 
       $testUnit->refunded = $request->input('refunded') == 'on' ? 1 : 0;
@@ -60,11 +60,11 @@ class TestUnitsController extends Controller
       $testUnit->fill($request->only([
         'amazon_order_id', 'review_url', 'reference_url',
         'instructions', 'status', 'paypal_account',
-        'refunded_amount', 'refunding_type'
+        'refunded_amount', 'refunding_type', 'tester_notes'
       ]));
 
       $testUnit->refunded = $request->input('refunded') == 'on' ? 1 : 0;
-      
+
       if($testUnit->expires_on_time != $request->input('expires_on_time')
           || $testUnit->expires_on_space != $request->input('expires_on_space'))
       {

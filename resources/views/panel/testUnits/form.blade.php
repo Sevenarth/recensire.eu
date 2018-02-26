@@ -131,6 +131,18 @@
     </div>
 
     <fieldset class="form-group">
+      <label for="tester_notes">Note dal tester <small class="text-muted">(opzionale)</small></label>
+      <textarea name="tester_notes" class="form-control{{ $errors->has('tester_notes') ? ' is-invalid' : ''}}" id="tester_notes" rows="4">{{ old('tester_notes', !empty($testUnit->tester_notes) ? $testUnit->tester_notes : '') }}</textarea>
+      @if($errors->has('tester_notes'))
+      <div class="invalid-feedback">
+        @foreach($errors->get('tester_notes') as $err)
+          {{$err}}<br>
+        @endforeach
+      </div>
+      @endif
+    </fieldset>
+
+    <fieldset class="form-group">
       <label for="instructions">Istruzioni</label>
       <a id="uploader" href="{{ route('panel.upload') }}" class="d-none"></a>
       <textarea id="instructions" name="instructions">{{ old('instructions', $testUnit->instructions) }}</textarea>
