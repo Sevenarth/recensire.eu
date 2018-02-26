@@ -64,9 +64,9 @@ class TestUnitsController extends Controller
       ]));
 
       $testUnit->refunded = $request->input('refunded') == 'on' ? 1 : 0;
-
-      if($testUnit->expires_on_time !== $request->input('expires_on_time')
-          || $testUnit->expires_on_space !== $request->input('expires_on_space'))
+      
+      if($testUnit->expires_on_time != $request->input('expires_on_time')
+          || $testUnit->expires_on_space != $request->input('expires_on_space'))
       {
         $testUnit->expires_on_time = $request->input('expires_on_time');
         $testUnit->expires_on_space = $request->input('expires_on_space');
