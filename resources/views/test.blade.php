@@ -1,6 +1,6 @@
 @extends('layouts.public')
 
-@section('title') @endsection
+@section('title') Invito di test @endsection
 
 @section('content')
   <div class="container">
