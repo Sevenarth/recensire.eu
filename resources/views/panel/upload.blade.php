@@ -7,7 +7,7 @@
       Carica immagine
     </div>
     <div class="px-2 py-3">
-      <form action ="{{ route('panel.postUpload') }}" method="post" enctype="multipart/form-data">
+      <form id="form" action="{{ route('panel.postUpload') }}" method="post" enctype="multipart/form-data">
         @method('post')
         @csrf
         @if(Request::query('field', false))

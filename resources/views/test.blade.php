@@ -56,14 +56,17 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-md-6">
-
-      </div>
-      <div class="col-md-6">
-        <div id="content" class="bg-white border">
+      <div class="col-md-7 mb-3">
+        <div id="content" class="p-4 bg-white border">
           <h1 class="pb-3 mb-3 border-bottom">Istruzioni</h1>
           <div class="markdown">{{ $testUnit->instructions }}</div>
         </div>
+      </div>
+      <div class="col-md-5">
+          <div id="content" class="p-4 bg-white border">
+            <h1 class="pb-3 mb-3 border-bottom">Istruzioni</h1>
+            <div class="markdown">{{ $testUnit->instructions }}</div>
+          </div>
       </div>
     </div>
   </div>

@@ -6,7 +6,5 @@
     "/js/public.js": "/js/public.js",
     "/js/public.js.map": "/js/public.js.map",
     "/js/upload.js": "/js/upload.js",
-    "/js/upload.js.map": "/js/upload.js.map",
-    "/vendor/terminal/js/app.js": "/vendor/terminal/js/app.js",
-    "/vendor/terminal/js/app.js.map": "/vendor/terminal/js/app.js.map"
+    "/js/upload.js.map": "/js/upload.js.map"
 }

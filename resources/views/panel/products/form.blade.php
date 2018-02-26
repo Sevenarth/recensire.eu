@@ -30,6 +30,7 @@
     @formTextfield('URL', 'Link al prodotto', placeholder="https://www.amazon.it/dp/A000AAAAAA0/", editMode="product")
 
     <fieldset class="form-group">
+      <a id="uploader" href="{{ route('panel.upload') }}" class="d-none"></a>
       <label for="description">Descrizione <small class="text-muted">(opzionale)</small></label>
       <textarea id="description" name="description">{{ old('description', $product->description) }}</textarea>
     </fieldset>
@@ -116,11 +117,7 @@
 
 @section('scripts')
 <script>
-var simplemde = new SimpleMDE({
-  element: $("#description")[0],
-  spellChecker: false,
-  status: false
-});
+$('#description').mde();
 
 var tags = new Bloodhound({
   datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),

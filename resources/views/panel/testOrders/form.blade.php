@@ -53,6 +53,7 @@
       </fieldset>
       @formTextfield('quantity', 'Numero di unità di test', placeholder="5", editMode="testOrder")
       <fieldset class="form-group">
+        <a id="uploader" href="{{ route('panel.upload') }}" class="d-none"></a>
         <label for="description">Descrizione <small class="text-muted">(opzionale)</small></label>
         <textarea id="description" name="description">{{ old('description', $testOrder->description) }}</textarea>
       </fieldset>
@@ -62,12 +63,9 @@
   </div>
 @endsection
 
+
 @section('scripts')
 <script>
-var simplemde = new SimpleMDE({
-  element: $("#description")[0],
-  spellChecker: false,
-  status: false
-});
+$('#description').mde();
 </script>
 @endsection

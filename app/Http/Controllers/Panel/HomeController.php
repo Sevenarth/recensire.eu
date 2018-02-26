@@ -21,8 +21,9 @@ class HomeController extends Controller
 
     public function postUpload(ImageUploadRequest $request) {
       $url = Storage::disk('public')->url($request->image->store('images', 'public'));
-
-      if($iid = $request->input('field')) {
+      if($fn = $request->input('fn')) {
+        $fn = $request->input('fn') . "('{$url}')";
+      } else if($iid = $request->input('field')) {
         $id = $iid . "-field";
         $fn = "updateImageField('".$iid."')";
       } else {
@@ -30,9 +31,9 @@ class HomeController extends Controller
         $fn = "updateImage()";
       }
 
-      return "<script>
-      window.opener.document.getElementById('{$id}').value = '{$url}'
-      window.opener.{$fn}
+      return "<script>".
+      (!empty($id) ? "window.opener.document.getElementById('{$id}').value = '{$url}'" : "")
+      ."window.opener.{$fn}
       window.close()
       </script>";
     }

@@ -156,3 +156,10 @@ a:active, a:focus {
 .slick-dots li button:before {
   font-size: 15px
 }
+
+.markdown {
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+}

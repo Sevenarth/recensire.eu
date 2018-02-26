@@ -8,11 +8,9 @@
 require('./bootstrap');
 window.Bloodhound = require("typeahead.js");
 require('bootstrap-tagsinput');
-import SimpleMDE from 'simplemde';
-import 'simplemde/dist/simplemde.min.css';
 window.MD = require('markdown-it')();
-window.SimpleMDE = SimpleMDE;
 var moment = require('moment');
+require('./specialmde');
 
 $(function () {
   moment.locale($("html").attr("lang"));

@@ -132,6 +132,7 @@
 
     <fieldset class="form-group">
       <label for="instructions">Istruzioni</label>
+      <a id="uploader" href="{{ route('panel.upload') }}" class="d-none"></a>
       <textarea id="instructions" name="instructions">{{ old('instructions', $testUnit->instructions) }}</textarea>
     </fieldset>
 
@@ -163,10 +164,6 @@
 
 @section('scripts')
 <script>
-var simplemde = new SimpleMDE({
-  element: $("#instructions")[0],
-  spellChecker: false,
-  status: false
-});
+$('#instructions').mde();
 </script>
 @endsection

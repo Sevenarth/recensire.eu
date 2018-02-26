@@ -13987,5 +13987,10 @@ a:focus {
   font-size: 15px;
 }
 
+.markdown img {
+  max-width: 100%;
+  height: auto;
+}
+
 
 /*# sourceMappingURL=app.css.map*/
