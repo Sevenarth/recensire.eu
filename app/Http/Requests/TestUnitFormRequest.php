@@ -31,7 +31,7 @@ class TestUnitFormRequest extends FormRequest
             'reference_url' => 'required|url',
             'review_url' => 'nullable|url',
             'amazon_order_id' => 'nullable|string',
-            'refunded_amount' => 'required|numeric',
+            'refunded_amount' => 'nullable|numeric',
             'paypal_account' => 'nullable|email',
             'status' => ['required', Rule::in(array_keys(config('testUnit.statuses')))],
             'instructions' => 'required',

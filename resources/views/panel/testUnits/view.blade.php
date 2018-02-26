@@ -64,7 +64,7 @@ Unità di test #{{ $testUnit->hash_code }}
       <div class="col-sm-6">
         <fieldset class="form-group">
           <label><b>Importo da rimborsare</b></label>
-          <input type="text" class="form-control-plaintext" value="&euro; {{ number_format($testUnit->refunded_amount, 2) }}" readonly>
+          <input type="text" class="form-control-plaintext" value="&euro; {{ !empty($testUnit->refunded_amount) ? number_format($testUnit->refunded_amount, 2) : '-' }}" readonly>
         </fieldset>
       </div>
     </div>

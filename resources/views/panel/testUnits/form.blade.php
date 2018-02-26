@@ -68,12 +68,12 @@
       </div>
       <div class="col-sm-6">
         <fieldset class="form-group">
-          <label for="refunded_amount">Importo da rimborsare</label>
+          <label for="refunded_amount">Importo da rimborsare <small class="text-muted">(opzionale)</small></label>
           <div class="input-group">
             <div class="input-group-prepend">
               <span class="input-group-text">&euro;</span>
             </div>
-            <input class="form-control{{ $errors->has("fee") ? ' is-invalid' : '' }}" type="number" min="0.01" step="0.01" id="refunded_amount" name="refunded_amount" placeholder="25.00" value="{{ old('refunded_amount', !empty($testUnit->refunded_amount) ? $testUnit->refunded_amount : '') }}" required>
+            <input class="form-control{{ $errors->has("fee") ? ' is-invalid' : '' }}" type="number" min="0.01" step="0.01" id="refunded_amount" name="refunded_amount" placeholder="25.00" value="{{ old('refunded_amount', !empty($testUnit->refunded_amount) ? $testUnit->refunded_amount : '') }}">
             @if($errors->has("refunded_amount"))
             <div class="invalid-feedback">
               @foreach($errors->get("refunded_amount") as $err)
