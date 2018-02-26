@@ -21,7 +21,7 @@ class TestUnitsController extends Controller
         abort(404);
 
       if(!empty($testUnit->viewed)) {
-        $testUnit->viewed = 1;
+        $testUnit->vieweda = 1;
         $testUnit->save();
       }
 
