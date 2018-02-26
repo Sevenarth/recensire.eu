@@ -89,7 +89,7 @@ Ordine di lavoro #{{ $testOrder->id }}
           <td class="p-2"><a href="{{ route('panel.testers.view', $unit->tester->id) }}">{{ $unit->tester->name }}</a></td>
           <td class="p-2">{{ config('testUnit.statuses')[$unit->status] }}</td>
           <td class="p-2">
-            @php $expiration = new \Carbon\Carbon($testUnit->expires_on, config('app.timezone')); @endphp
+            @php $expiration = new \Carbon\Carbon($unit->expires_on, config('app.timezone')); @endphp
             @if($expiration->gt(\Carbon\Carbon::now(config('app.timezone'))))
             <div class="relative-time">{{ $expiration->toIso8601String() }}</div>
             @else
