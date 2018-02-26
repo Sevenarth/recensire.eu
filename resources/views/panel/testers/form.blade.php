@@ -21,9 +21,9 @@
       @formTextfield('name', 'Nome tester', placeholder="Mario Rossi", editMode="tester")
       @formTextfield('email', 'Indirizzo email', placeholder="me@testers.it", type="email", required="false", editMode="tester")
       <fieldset class="form-group">
-        <label for="amazon_profiles">Profili Amazon</label>
+        <label for="amazon_profiles">Profili Amazon <small class="text-muted">(opzionale)</small></label>
         <div class="input-group">
-          <input class="form-control{{ $errors->has('amazon_profiles.0') ? ' is-invalid' : '' }}" value="{{ old('amazon_profiles.0', (!empty($tester->amazon_profiles[0])) ? $tester->amazon_profiles[0] : '') }}" type="text" name="amazon_profiles[]" placeholder="http://" required>
+          <input class="form-control{{ $errors->has('amazon_profiles.0') ? ' is-invalid' : '' }}" value="{{ old('amazon_profiles.0', (!empty($tester->amazon_profiles[0])) ? $tester->amazon_profiles[0] : '') }}" type="text" name="amazon_profiles[]" placeholder="http://">
           <div class="input-group-append">
             <button type="button" id="add-amazon-profile" class="btn btn-success"><i class="fas fa-plus fa-fw"></i></button>
           </div>
