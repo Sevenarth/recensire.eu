@@ -15,6 +15,10 @@
   <div class="px-4 py-3">
     @if(!empty($testUnit->id))
     @openForm('panel.testOrders.testUnits.update', 'patch', arg="testUnit->id")
+  @elseif(!empty($testUnit->mass))
+    <form action="{{ route('panel.testOrders.testUnits.massPut', $testUnit->testOrder->id) }}" method="post">
+      @method('put')
+      @csrf
     @else
     <form action="{{ route('panel.testOrders.testUnits.put', $testUnit->testOrder->id) }}" method="post">
       @method('put')
@@ -24,13 +28,13 @@
     <div class="row">
       <div class="col-sm-6">
         <fieldset class="form-group">
-          <label for="tester_id">Tester</label>
+          <label for="tester_id">Tester <small class="text-muted">(opzionale)</small></label>
           <div class="input-group">
             <div class="input-group-prepend">
               <button class="btn btn-outline-secondary" data-toggle="modal" data-target="#select-tester" type="button">Cerca</button>
             </div>
-            <input type="hidden" value="{{ !empty($testUnit->id) ? $testUnit->tester->id : '' }}" id="tester-id" name="tester_id">
-            <input class="form-control{{ $errors->has('tester_id') ? ' is-invalid' : '' }}" id="tester-name" type="text" value="{{ !empty($testUnit->id) ? ($testUnit->tester->name . " - " . $testUnit->tester->email) : '' }}" placeholder="Nessun tester selezionato" required readonly>
+            <input type="hidden" value="{{ !empty($testUnit->tester) ? $testUnit->tester->id : '' }}" id="tester-id" name="tester_id">
+            <input class="form-control{{ $errors->has('tester_id') ? ' is-invalid' : '' }}" id="tester-name" type="text" value="{{ !empty($testUnit->tester) ? ($testUnit->tester->name . " - " . $testUnit->tester->email) : '' }}" placeholder="Nessun tester selezionato" readonly>
             @if($errors->has('seller_id'))
             <div class="invalid-feedback">
               @php foreach($errors->get('seller_id') as $error) echo $error . "<br>"; @endphp

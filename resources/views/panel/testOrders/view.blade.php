@@ -74,6 +74,8 @@ Ordine di lavoro #{{ $testOrder->id }}
 
     <h5 class="mb-3">Unit&agrave; di test</h5>
 
+    <a class="mb-3 btn btn-primary" href="{{ route('panel.testOrders.testUnits.massCreate', $testOrder->id) }}">Riempi</a>
+
     <table class="table table-sm table-striped">
       <thead>
         <th>Indice</th>
@@ -86,7 +88,7 @@ Ordine di lavoro #{{ $testOrder->id }}
         @foreach($testOrder->testUnits as $unit)
         <tr>
           <th class="p-2" scope="row">{{ $unit->hash_code }}</th>
-          <td class="p-2"><a href="{{ route('panel.testers.view', $unit->tester->id) }}">{{ $unit->tester->name }}</a></td>
+          <td class="p-2">@if(!empty($unit->tester)) <a href="{{ route('panel.testers.view', $unit->tester->id) }}">{{ $unit->tester->name }}</a> @else - @endif</td>
           <td class="p-2">{{ config('testUnit.statuses')[$unit->status] }}</td>
           <td class="p-2">
             @php $expiration = new \Carbon\Carbon($unit->expires_on, config('app.timezone')); @endphp

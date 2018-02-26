@@ -35,10 +35,11 @@ Unità di test #{{ $testUnit->hash_code }}
       <div class="col-sm-6">
         <fieldset class="form-group">
           <label><b>Tester</b>
+            @if(!empty($testUnit->tester))
           <a title="Vai alla pagina del tester" href="{{ route('panel.testers.view', ['tester' => $testUnit->tester->id]) }}" class="btn btn-sm btn-primary">
             <i class="fas fa-external-link-alt"></i>
-          </a></label>
-          <input type="text" readonly class="form-control-plaintext" value="{{ $testUnit->tester->name }}">
+          </a></label>@endif
+          <input type="text" readonly class="form-control-plaintext" value="{{ !empty($testUnit->tester) ? $testUnit->tester->name : '-' }}">
         </fieldset>
       </div>
       <div class="col-sm-6">

@@ -75,6 +75,8 @@ Route::namespace('Panel')->name('panel.')->middleware('auth')->prefix('pannello'
       Route::prefix('tests')->name('testUnits.')->group(function () {
         Route::get('/nuovo-{testOrder}', 'TestUnitsController@create')->name('create');
         Route::put('/nuovo-{testOrder}', 'TestUnitsController@put')->name('put');
+          Route::get('/nuovi-{testOrder}', 'TestUnitsController@massCreate')->name('massCreate');
+          Route::put('/nuovi-{testOrder}', 'TestUnitsController@massPut')->name('massPut');
         Route::get('/visualizza-{testUnit}', 'TestUnitsController@view')->name('view');
         Route::get('/modifica-{testUnit}', 'TestUnitsController@edit')->name('edit');
         Route::patch('/visualizza-{testUnit}', 'TestUnitsController@update')->name('update');

@@ -19,6 +19,53 @@ class TestUnitsController extends Controller
       return view('panel/testUnits/form', compact('testUnit'));
     }
 
+    public function massCreate(Request $request, TestOrder $testOrder) {
+      $testUnit = new TestUnit;
+      $testUnit->testOrder()->associate($testOrder);
+      $testUnit->mass = true;
+
+      return view('panel/testUnits/form', compact('testUnit'));
+    }
+
+    public function massPut(TestUnitFormRequest $request, TestOrder $testOrder) {
+      $count = $testOrder
+        ->testUnits()
+        ->where('expires_on', '>', Carbon::now(config('app.timezone')))
+        ->count();
+      for($i = 0; $i < $testOrder->quantity-$count; $i++) {
+        $testUnit = new TestUnit;
+        $testUnit->hash_code = "placeholder";
+        $testUnit->fill($request->only([
+          'amazon_order_id', 'review_url', 'reference_url',
+          'instructions', 'status', 'paypal_account',
+          'refunded_amount', 'expires_on_time', 'expires_on_space',
+          'refunding_type', 'tester_notes'
+        ]));
+
+        $testUnit->refunded = $request->input('refunded') == 'on' ? 1 : 0;
+        $spaceSpecs = ['T%dS', 'T%dM', 'T%dH', '%dD', '%dW', '%dM', '%dY'];
+        $expires_on = Carbon::now(config('app.timezone'));
+        $expires_on->add(new \DateInterval(sprintf('P'.$spaceSpecs[$request->input('expires_on_space')], $request->input('expires_on_time'))));
+        $testUnit->expires_on = $expires_on;
+
+        $testUnit->testOrder()->associate($testOrder);
+        $testUnit->save();
+
+        $testUnit->statuses()->create([
+          'status' => $request->input('status')
+        ]);
+      }
+
+      if($testOrder->quantity-$count > 0)
+        return redirect()
+          ->route('panel.testOrders.view', $testOrder->id)
+          ->with('status', 'Unità di test aggiunte con successo!');
+      else
+        return redirect()
+          ->route('panel.testOrders.view', $testOrder->id)
+          ->with('status', "L'ordine di lavoro è già al completo.");
+    }
+
     public function put(TestUnitFormRequest $request, TestOrder $testOrder) {
       $testUnit = new TestUnit;
       $testUnit->hash_code = "placeholder";
