@@ -74,7 +74,8 @@ class TestUnitsController extends Controller
         $expires_on = Carbon::now(config('app.timezone'));
         $expires_on->add(new \DateInterval(sprintf('P'.$spaceSpecs[$request->input('expires_on_space')], $request->input('expires_on_time'))));
         $testUnit->expires_on = $expires_on;
-      }
+      } else
+        $testUnit->expires_on = $testUnit->expires_on;
 
       $testUnit->save();
 

@@ -27,13 +27,13 @@ class CreateTestUnitsTable extends Migration
             $table->mediumInteger('status')->default(0);
             $table->string('paypal_account')->nullable();
             $table->float('refunded_amount', 8, 2)->nullable();
-            $table->int('refunding_type');
+            $table->integer('refunding_type');
             $table->boolean('link_opened')->default(false);
             $table->boolean('refunded')->default(false);
             $table->boolean('viewed')->default(false);
-            $table->int('expires_on_time');
-            $table->int('expires_on_space');
-            $table->timestamp('expires_on');
+            $table->integer('expires_on_time');
+            $table->integer('expires_on_space');
+            $table->timestamp('expires_on')->nullable();
             $table->text('tester_notes')->nullable();
             $table->softDeletes();
             $table->timestamps();
