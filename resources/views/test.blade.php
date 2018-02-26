@@ -55,9 +55,7 @@
           </div>
           <fieldset class="from-group">
             <label><b>Descrizione prodotto</b></label>
-            <div class="p-3 markdown">
-              {{ $testUnit->testOrder->product->description }}
-            </div>
+            <div class="p-3 markdown">{{ $testUnit->testOrder->product->description }}</div>
           </fieldset>
           <a href="{{ route('tests.go', $testUnit->hash_code) }}" class="btn btn-primary my-2" target="_blank"><i class="fa fa-fw fa-external-link-alt"></i> Vai alla ricerca di Amazon</a>
 
