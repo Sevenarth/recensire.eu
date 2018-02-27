@@ -77,6 +77,7 @@ class TestUnitsController extends Controller
       ]));
 
       $testUnit->refunded = $request->input('refunded') == 'on' ? 1 : 0;
+
       $spaceSpecs = ['T%dS', 'T%dM', 'T%dH', '%dD', '%dW', '%dM', '%dY'];
       $expires_on = Carbon::now(config('app.timezone'));
       $expires_on->add(new \DateInterval(sprintf('P'.$spaceSpecs[$request->input('expires_on_space')], $request->input('expires_on_time'))));
@@ -89,6 +90,11 @@ class TestUnitsController extends Controller
       $testUnit->statuses()->create([
         'status' => $request->input('status')
       ]);
+      
+      if($testUnit->refunded)
+        $testUnit->statuses()->create([
+          'status' => 3
+        ]);
 
       return redirect()
         ->route('panel.testOrders.view', $testOrder->id)
@@ -110,7 +116,12 @@ class TestUnitsController extends Controller
         'refunded_amount', 'refunding_type', 'tester_notes'
       ]));
 
-      $testUnit->refunded = $request->input('refunded') == 'on' ? 1 : 0;
+      if(empty($testUnit->refunded) && $request->input('refunded') == 'on')
+        $testUnit->statuses()->create([
+          'status' => 3
+        ]);
+
+      $testUnit->refunded = $request->input('refunded') == 'on') ? 1 : 0;
 
       if($testUnit->expires_on_time != trim($request->input('expires_on_time'))
           || $testUnit->expires_on_space != trim($request->input('expires_on_space')))
