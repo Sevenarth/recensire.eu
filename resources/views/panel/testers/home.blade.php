@@ -29,18 +29,35 @@ Testers
     @endif
 
 
-    <form class="fakelink-get" data-action="{{ route("panel.testers.home") }}" method="get">
-      <div class="row">
-        <div class="input-group mb-3 col-sm-6">
-            <input type="text" name="s" value="{{ Request::query("s") }}" class="form-control" placeholder="Nome, email, ID...">
-            <div class="input-group-append">
-              <button class="btn btn-outline-secondary" type="submit">
-                <i class="fa fa-fw fa-search"></i>
-              </button>
-            </div>
+    <div class="row">
+      <form class="col-sm-6 fakelink-get" data-action="{{ route("panel.testers.home") }}" method="get">
+        <div class="input-group mb-3">
+          <input type="text" name="s" value="{{ Request::query("s") }}" class="form-control" placeholder="Nome, email, ID...">
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="submit">
+              <i class="fa fa-fw fa-search"></i>
+            </button>
+          </div>
         </div>
-      </div>
-    </form>
+      </form>
+      <form class="col-sm-6" action="{{ route('panel.testers.import')}}" method="post" enctype="multipart/form-data">
+        @method('put')
+        @csrf
+        <div class="input-group mb-3">
+          <input type="file" accept=".csv" class="form-control{{ $errors->has('sheet') ? ' is-invalid' : '' }} p-1" name="sheet" id="sheet">
+          <div class="input-group-append">
+            <button type="submit" class="btn btn-primary">Importa</button>
+          </div>
+          @if($errors->has('sheet'))
+            <div class="invalid-feedback">
+            @foreach($errors->get('sheet') as $err)
+              {{ $err }}<br>
+            @endforeach
+            </div>
+          @endif
+        </div>
+      </form>
+    </div>
 
     <div class="table-responsive">
       <table class="table table-condensed-sm">

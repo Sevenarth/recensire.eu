@@ -98,4 +98,48 @@ class TestersController extends Controller
 
     return $sellers;
   }
+
+  public function import(Request $request) {
+    if($request->hasFile('sheet') && $request->sheet->getClientOriginalExtension() == "csv") {
+      $path = $request->sheet->path();
+
+      $file = fopen($path, "r");
+      $i = 0;
+      while (($data = fgetcsv($file)) !== false) {
+        if($i > 0) {
+          $name = trim($data[1]);
+          if(!empty($name)) {
+            $fbid = trim($data[0]);
+            if(Tester::where('facebook_profiles', 'like', '%"'.$fbid.'"%')->count() == 0) {
+              $tester = new Tester;
+              $tester->name = $name;
+              $tester->facebook_profiles = [$fbid];
+              $tester->profile_image = "https://graph.facebook.com/{$fbid}/picture?type=large";
+
+              $email = trim($data[2]);
+              if(!empty($email))
+                $tester->email = $email;
+
+              $amazon = trim($data[4]);
+              if(!empty($amazon) && substr($amazon, 0, 4) == "http")
+                $tester->amazon_profiles = [$amazon];
+              else
+                $tester->amazon_profiles = [];
+
+              $tester->save();
+            }
+          }
+        } else
+          $i++;
+      }
+      fclose($file);
+
+      return redirect()
+        ->route('panel.testers.view')
+        ->with('status', 'I testers sono stati importati con successo! Duplicati e vuoti sono stati saltati.');
+    } else
+      return redirect()
+        ->back()
+        ->withErrors(['sheet' => ['Seleziona un file valido prima di continuare.']]);
+  }
 }

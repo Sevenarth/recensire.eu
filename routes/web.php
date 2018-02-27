@@ -94,6 +94,7 @@ Route::namespace('Panel')->name('panel.')->middleware('auth')->prefix('pannello'
       Route::get('/modifica-{tester}', 'TestersController@edit')->name('edit');
       Route::patch('/visualizza-{tester}', 'TestersController@update')->name('update');
       Route::delete('/visualizza-{tester}', 'TestersController@delete')->name('delete');
+      Route::put('/importa', 'TestersController@import')->name('import');
     });
     Route::prefix('categorie')->name('categories.')->group(function () {
       Route::get('/', 'CategoriesController@index')->name('home');
