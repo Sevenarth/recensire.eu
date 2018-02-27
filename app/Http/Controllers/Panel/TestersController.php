@@ -55,7 +55,8 @@ class TestersController extends Controller
   }
 
   public function view(Request $request, Tester $tester) {
-    return view('panel/testers/view', compact('tester'));
+    $testUnits = $tester->testUnits()->paginate(15);
+    return view('panel/testers/view', compact('tester', 'testUnits'));
   }
 
   public function edit(Request $request, Tester $tester) {

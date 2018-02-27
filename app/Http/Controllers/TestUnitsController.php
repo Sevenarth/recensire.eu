@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\TestUnit;
 use DB;
 use \Carbon\Carbon;
+use App\Http\Requests\TestAcceptRequest;
 
 class TestUnitsController extends Controller
 {
@@ -26,5 +27,27 @@ class TestUnitsController extends Controller
       }
 
       return redirect($testUnit->reference_url);
+    }
+
+    public function accept(TestAcceptRequest $request, $testUnit) {
+      $testUnit = TestUnit::where('hash_code', $testUnit)->where('status', 0)->firstOrFail();
+      if((new Carbon($testUnit->expires_on, config('app.timezone'))) < Carbon::now())
+        abort(404);
+
+      $testUnit->fill($request->only('paypal_account', 'amazon_order_id', 'tester_notes'));
+      $testUnit->status = 1;
+      $testUnit->statuses()->create(['status' => 1]);
+      $testUnit->save();
+
+      return redirect()
+        ->route('tests.thankyou', $testUnit->hash_code)
+        ->with('accepted', true);
+    }
+
+    public function thankYou(Request $request, $testUnit) {
+      if(empty(session('accepted')))
+        abort(404);
+
+      return view('thankyou');
     }
 }

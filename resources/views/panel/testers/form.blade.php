@@ -99,7 +99,6 @@
         </div>
         <div class="col-9">
           @formTextfield('profile_image', 'Immagine del profilo', placeholder="http://", class="form-control image-preview", required="false", editMode="tester")
-          <button class="btn btn-primary facebook-img-fetch" type="button" data-target="profile_image" data-field="facebook">Immagine da Facebook</button>
           <button class="btn btn-primary upload-image" id="upload-image" data-page="{{ route("panel.upload") }}" data-target="profile_image" type="button">Carica immagine</button>
         </div>
       </div>

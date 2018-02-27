@@ -75,9 +75,42 @@ Tester #{{ $tester->id }}
           <a title="Apri link in una nuova pagina" class="btn btn-primary" href="{{ "https://www.facebook.com/profile.php?id=".$fb }}" target="_blank"><i class="fa fa-fw fa-external-link-alt"></i></a>
         </div></div> @endif
 
-        </div>
       @endforeach
     </fieldset>
+
+      <h5 class="my-4">Unit&agrave; di test</h5>
+
+      <table class="table table-sm table-striped">
+        <thead>
+          <th>Indice</th>
+          <th>Ordine di lavoro</th>
+          <th>Ultimo stato</th>
+          <th>Scadenza in</th>
+          <th></th>
+        </thead>
+        <tbody>
+          @foreach($testUnits as $unit)
+          <tr>
+            <th class="p-2" scope="row">{{ $unit->hash_code }}</th>
+            <td><a href="{{ route('panel.testOrders.view', $unit->testOrder->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-fw fa-external-link-alt"></i> Vai</a></td>
+            <td class="p-2">{{ config('testUnit.statuses')[$unit->status] }}</td>
+            <td class="p-2">
+              @php $expiration = new \Carbon\Carbon($unit->expires_on, config('app.timezone')); @endphp
+              @if($expiration->gt(\Carbon\Carbon::now(config('app.timezone'))))
+              <div class="relative-time">{{ $expiration->toIso8601String() }}</div>
+              @else
+              <div class="text-danger"><b>Scaduto</b></div>
+              @endif
+            </td>
+            <td>
+              <a href="{{ route('panel.testOrders.testUnits.view', $unit->id) }}" class="btn btn-primary btn-sm"><i class="fa fa-fw fa-external-link-alt"></i> Visualizza</a>
+            </td>
+          </tr>
+          @endforeach
+        </tbody>
+      </table>
+      {{ $testUnits->links() }}
+    </div>
   </div>
 </div>
 @endsection

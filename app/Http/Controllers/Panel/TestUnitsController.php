@@ -106,7 +106,7 @@ class TestUnitsController extends Controller
     public function update(TestUnitFormRequest $request, TestUnit $testUnit) {
       $testUnit->fill($request->only([
         'amazon_order_id', 'review_url', 'reference_url',
-        'instructions', 'status', 'paypal_account',
+        'instructions', 'paypal_account',
         'refunded_amount', 'refunding_type', 'tester_notes'
       ]));
 
@@ -124,12 +124,16 @@ class TestUnitsController extends Controller
       } else
         $testUnit->expires_on = $testUnit->expires_on;
 
-      $testUnit->save();
+      if(empty($testUnit->tester) || $testUnit->tester->id != $request->input('tester_id'))
+        $testUnit->tester()->associate(Tester::find($request->input('tester_id')));
 
-      if($testUnit->status != $request->input('status'))
+      if(intval($testUnit->status) !== intval($request->input('status')))
         $testUnit->statuses()->create([
           'status' => $request->input('status')
         ]);
+
+      $testUnit->status = $request->input('status');
+      $testUnit->save();
 
       return redirect()
         ->route('panel.testOrders.testUnits.view', $testUnit->id)
