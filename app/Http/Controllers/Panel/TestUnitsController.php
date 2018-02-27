@@ -90,7 +90,7 @@ class TestUnitsController extends Controller
       $testUnit->statuses()->create([
         'status' => $request->input('status')
       ]);
-      
+
       if($testUnit->refunded)
         $testUnit->statuses()->create([
           'status' => 3
@@ -121,7 +121,7 @@ class TestUnitsController extends Controller
           'status' => 3
         ]);
 
-      $testUnit->refunded = $request->input('refunded') == 'on') ? 1 : 0;
+      $testUnit->refunded = $request->input('refunded') == 'on' ? 1 : 0;
 
       if($testUnit->expires_on_time != trim($request->input('expires_on_time'))
           || $testUnit->expires_on_space != trim($request->input('expires_on_space')))
