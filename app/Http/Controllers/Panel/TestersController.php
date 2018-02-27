@@ -135,7 +135,7 @@ class TestersController extends Controller
       fclose($file);
 
       return redirect()
-        ->route('panel.testers.view')
+        ->route('panel.testers.home')
         ->with('status', 'I testers sono stati importati con successo! Duplicati e vuoti sono stati saltati.');
     } else
       return redirect()
