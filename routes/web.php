@@ -15,8 +15,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
-
 Route::name('tests.')->prefix('test')->group(function () {
   Route::get('/{testUnit}', 'TestUnitsController@view')->name('view');
   Route::patch('/{testUnit}', 'TestUnitsController@accept')->name('accept');
@@ -24,6 +22,10 @@ Route::name('tests.')->prefix('test')->group(function () {
 });
 
 Route::get('/go/{testUnit}', 'TestUnitsController@go')->name('tests.go');
+
+Route::prefix('pannello')->group(function () {
+    Auth::routes();
+});
 
 Route::namespace('Panel')->name('panel.')->middleware('auth')->prefix('pannello')->group(function () {
     Route::get('/', 'HomeController@index')->name('home');

@@ -16,11 +16,11 @@ return [
     'anni'
   ],
   'refundingTypes' => [
-    'Paypal + Fee dopo recensione',
-    'Paypal + Fee dopo spedizione',
-    'Paypal + Fee dopo ordine',
-    'Paypal - Fee dopo recensione',
-    'Paypal - Fee dopo spedizione',
-    'Paypal - Fee dopo ordine'
+    'PayPal + Fee dopo recensione',
+    'PayPal + Fee dopo spedizione',
+    'PayPal + Fee dopo ordine',
+    'PayPal - Fee dopo recensione',
+    'PayPal - Fee dopo spedizione',
+    'PayPal - Fee dopo ordine'
   ]
 ];
