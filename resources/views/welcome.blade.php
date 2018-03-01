@@ -18,7 +18,7 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
-<body>
+<body class="bg-white">
   <!-- Begin MailChimp Signup Form -->
   <div id="mc_embed_signup">
     <img src="/images/logo.svg" alt="logo" class="mx-4 mt-4 mb-2 img-fluid">
