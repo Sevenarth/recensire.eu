@@ -34,6 +34,11 @@ Breadcrumbs::register('testers', function ($breadcrumbs) {
     $breadcrumbs->push('Testers', route('panel.testers.home'));
 });
 
+Breadcrumbs::register('report', function ($breadcrumbs) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push('Reportistica');
+});
+
 Breadcrumbs::register('sellers.create', function ($breadcrumbs) {
     $breadcrumbs->parent('sellers');
     $breadcrumbs->push('Nuovo venditore', route('panel.sellers.create'));
@@ -137,10 +142,4 @@ Breadcrumbs::register('testers.view', function ($breadcrumbs, $tester) {
 Breadcrumbs::register('testers.edit', function ($breadcrumbs, $tester) {
     $breadcrumbs->parent('testers.view', $tester);
     $breadcrumbs->push('Modifica', route('panel.testers.edit', $tester->id));
-});
-
-
-Breadcrumbs::register('report', function ($breadcrumbs) {
-    $breadcrumbs->parent('home');
-    $breadcrumbs->push('Reportistica');
 });

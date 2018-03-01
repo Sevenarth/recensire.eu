@@ -2,7 +2,7 @@
 
 @section('title') Reportistica @endsection
 
-@section('breadcrumbs')
+@section('breadcrumb')
 {{ Breadcrumbs::render('report') }}
 @endsection
 
