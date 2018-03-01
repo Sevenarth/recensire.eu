@@ -9,23 +9,25 @@ window.Slick = require('slick-carousel');
 $(function () {
   moment.locale($("html").attr("lang"));
 
-  $(".markdown").each(function() {
-    $(this).html(MD.render($(this).text()));
-  });
+  if($("#cont").attr("data-open") == "true") {
+    $(".markdown").each(function() {
+      $(this).html(MD.render($(this).text()));
+    });
 
-  if($("#instructions"))
-    $("#instructions").html($("#instructions").html().replace('#link-amazon', $("#amazon-link").clone().removeClass('d-none')[0].outerHTML))
+    if($("#instructions"))
+      $("#instructions").html($("#instructions").html().replace('#link-amazon', $("#amazon-link").clone().removeClass('d-none')[0].outerHTML))
 
-  $(".relative-time").each(function() {
-    var date = $(this).text();
-    $(this).attr("title", moment(date).format('llll'));
-    $(this).text(moment(date).fromNow())
-  });
+    $(".relative-time").each(function() {
+      var date = $(this).text();
+      $(this).attr("title", moment(date).format('llll'));
+      $(this).text(moment(date).fromNow())
+    });
 
-  $('.slideshow').slick({
-	   dots: true,
-     arrows: false
-  });
+    $('.slideshow').slick({
+  	   dots: true,
+       arrows: false
+    });
+  }
 
   singular = ' millisecondo| secondo| minuto| ora| giorno| settimana| mese| anno| decennio| secolo| millenio'
 	plural = ' millisecondi| secondi| minuti| ore| giorni| settimane| mesi| anni| decenni| secoli| millenni'

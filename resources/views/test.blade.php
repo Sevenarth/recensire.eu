@@ -3,8 +3,8 @@
 @section('title') Invito di test @endsection
 
 @section('content')
-  <div class="container">
-    @if(\Carbon\Carbon::now() > new \Carbon\Carbon($testUnit->starts_on, config('app.timezone')))
+  @if(\Carbon\Carbon::now() > new \Carbon\Carbon($testUnit->starts_on, config('app.timezone')))
+  <div id="cont" class="container" data-open="true">
     <div class="alert alert-success p-4 h5">
       <b>Congratulazioni <b>{{ !empty($testUnit->tester) ? $testUnit->tester->name : '-' }}</b>!</b> Sei stato invitato a testare un prodotto da recensire, da uno dei nostri negozi affiliati! Segui le istruzioni e completa il modulo per accettare l'invito.
     </div>
@@ -93,6 +93,7 @@
       </div>
     </div>
   @else
+  <div id="cont" class="container">
     <div class="p-3 mb-4 variable-heading border-bottom bg-success">
       <i class="float-left m-1 mr-3 fa-2x fas fa-fw fa-history"></i>
       <span class="countdown" data-time="{{ (new \Carbon\Carbon($testUnit->starts_on, config('app.timezone')))->toIso8601String() }}"></span> rimanenti<br>

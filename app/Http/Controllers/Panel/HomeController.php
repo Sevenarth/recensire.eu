@@ -95,7 +95,7 @@ class HomeController extends Controller
           $row = [];
           $tester = $unit->tester;
           if($request->input('amazon_order_id') == "on")
-            $row[] = "Order No: " . $unit->amazon_order_id;
+            $row[] = "Order No: " . (!empty($unit->amazon_order_id) ? $unit->amazon_order_id : 'N/A');
           if($request->input('paypal_account') == "on")
             $row[] = "PayPal account: " . (!empty($unit->paypal_account) ? $unit->paypal_account : 'N/D');
           if($request->input('review_url') == "on")
