@@ -57,16 +57,18 @@ Ordini di lavoro
           <tr>
             <th class="align-middle" scope="row">{{ $testOrder->testOrder_id }}</th>
             <td class="align-middle">
+              @if($testOrder->product_id)
               {{ $testOrder->product_name }}
               <a title="Vai al prodotto" href="{{ route('panel.products.view', $testOrder->product_id) }}" class="btn btn-sm btn-primary">
                 <i class="fa fa-external-link-alt"></i>
-              </a>
+              </a>@else <i>Assente</i> @endif
             </td>
             <td class="align-middle">
+              @if($testOrder->store_id)
                 {{ $testOrder->store_name }}
                 <a title="Vai al negozio" href="{{ route('panel.stores.view', ['store' => $testOrder->store_id]) }}" class="btn btn-sm btn-primary">
                   <i class="fa fa-external-link-alt"></i>
-                </a>
+                </a>@else <i>Assente</i> @endif
             </td>
             <td class="align-middle">
               {{ $testOrder->testOrder_created_at }}

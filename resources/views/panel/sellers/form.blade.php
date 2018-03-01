@@ -18,8 +18,8 @@
     @else
     @openForm('panel.sellers.put', 'put')
     @endif
-      @formTextfield('nickname', 'Pseudonimo', placeholder="Supermario", required="false", editMode="seller")
-      @formTextfield('name', 'Nome venditore', placeholder="Mario Rossi", editMode="seller")
+      @formTextfield('nickname', 'Pseudonimo', placeholder="Supermario", editMode="seller")
+      @formTextfield('name', 'Nome venditore', placeholder="Mario Rossi", editMode="seller", required="false")
       @formTextfield('email', 'Indirizzo email', placeholder="manager@azienda.it", type="email", editMode="seller")
       @formTextfield('facebook', 'Facebook ID', prepend="facebook.com/profile.php?id=", placeholder="0000000", required="false", editMode="seller")
       @formTextfield('wechat', 'WeChat ID', prepend="@", placeholder="0000000", required="false", editMode="seller")

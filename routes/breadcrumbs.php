@@ -138,3 +138,9 @@ Breadcrumbs::register('testers.edit', function ($breadcrumbs, $tester) {
     $breadcrumbs->parent('testers.view', $tester);
     $breadcrumbs->push('Modifica', route('panel.testers.edit', $tester->id));
 });
+
+
+Breadcrumbs::register('report', function ($breadcrumbs) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push('Reportistica');
+});

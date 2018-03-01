@@ -175,6 +175,9 @@
       <label for="instructions">Istruzioni</label>
       <a id="uploader" href="{{ route('panel.upload') }}" class="d-none"></a>
       <textarea id="instructions" name="instructions">{{ old('instructions', $testUnit->instructions) }}</textarea>
+      <div class="text-muted">
+        <small>Per inserire il bottone-collegamento alla ricerca di Amazon inserisci <code class="border p-1 rounded">#link-amazon</code></small>
+      </div>
     </fieldset>
 
       <button type="submit" class="mt-3 mb-2 btn btn-primary">@php echo !empty($testUnit->id) ? 'Modifica unità di test' : 'Crea nuova unità di test' @endphp</button>

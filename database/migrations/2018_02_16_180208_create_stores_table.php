@@ -20,10 +20,9 @@ class CreateStoresTable extends Migration
             $table->string("company_registration_no")->nullable();
             $table->string("company_name");
             $table->string("VAT")->nullable();
-            $table->string("country");
+            $table->string("country")->nullable();
             $table->integer('seller_id')->unsigned()->nullable();
             $table->foreign('seller_id')->references('id')->on('seller')->onDelete('set null')->nullable();
-            $table->softDeletes();
             $table->timestamps();
         });
     }

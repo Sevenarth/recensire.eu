@@ -70,4 +70,49 @@ class HomeController extends Controller
       window.close()
       </script>";
     }
+
+    public function report(Request $request) {
+      return view('panel/report');
+    }
+
+    public function postReport(Request $request) {
+      $report = "";
+      if(!empty($request->input('start_date'))&&!empty($request->input('end_date'))) {
+        if(!empty($request->input('store_id')))
+          $testUnits = TestOrder::where('store_id', $request->input('store_id'))->first()->testUnits()
+            ->where('created_at', '>', (new Carbon($request->input('start_date')))->startOfDay());
+        else
+          $testUnits = TestUnit::where('created_at', '>', (new Carbon($request->input('start_date')))->startOfDay());
+
+        $testUnits->where('created_at', '<', (new Carbon($request->input('end_date')))->endOfDay());
+
+        if(intval($request->input('status')) >= 0)
+          $testUnits = $testUnits->where('status', $request->input('status'));
+
+        $testUnits = $testUnits->get();
+
+        foreach($testUnits as $unit) {
+          $row = [];
+          $tester = $unit->tester;
+          if($request->input('test_order_id') == "on")
+            $row[] = "Order No: " . $unit->testOrder->id;
+          if($request->input('paypal_account') == "on")
+            $row[] = "PayPal account: " . (!empty($unit->paypal_account) ? $unit->paypal_account : 'N/D');
+          if($request->input('review_url') == "on")
+            $row[] = 'Review URL: ' . (!empty($unit->review_url) ? $unit->review_url : 'N/D');
+          if($request->input('amazon_profile') == "on")
+            $row[] = 'Amazon Profile: ' . (isset($tester->amazon_profiles[0]) ? $tester->amazon_profiles[0] : 'N/A');
+          if($request->input('tester_name') == "on")
+            $row[] = 'Tester name: ' . (!empty($tester->name) ? $tester->name : 'N/A');
+          if($request->input('facebook_id') == "on")
+            $row[] = 'Facebook ID: ' . (!empty($tester->facebook_profiles[0]) ? $tester->facebook_profiles[0] : 'N/A');
+
+          if(count($row) > 0)
+            $report .= implode(", ", $row) . PHP_EOL;
+        }
+      }
+      return redirect()
+        ->back()
+        ->withInput(array_merge($request->all(), ["report" => $report]));
+    }
 }

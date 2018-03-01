@@ -15,13 +15,12 @@ class CreateSellerTable extends Migration
     {
         Schema::create('seller', function (Blueprint $table) {
             $table->increments('id');
-            $table->string("nickname")->nullable();
-            $table->string("name");
+            $table->string("nickname");
+            $table->string("name")->nullable();
             $table->string("email");
             $table->string("wechat")->nullable();
             $table->string("facebook")->nullable();
             $table->string("profile_image")->nullable();
-            $table->softDeletes();
             $table->timestamps();
         });
     }

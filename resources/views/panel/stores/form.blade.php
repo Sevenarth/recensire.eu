@@ -33,7 +33,7 @@
           @formTextfield('VAT', 'Partita IVA', placeholder="IT00000000000", required="false", editMode="store")
         </div>
         <div class="col-sm-6">
-          @formTextfield('country', 'Paese di registrazione', placeholder="Italia", editMode="store")
+          @formTextfield('country', 'Paese di registrazione', placeholder="Italia", editMode="store", required="false")
         </div>
       </div>
       <fieldset class="form-group">

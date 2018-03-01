@@ -22,17 +22,17 @@
     @endif
       <fieldset class="form-group">
         <label for="store"><b>Negozio</b>
-        <a title="Vai al negozio" href="{{ route('panel.stores.view', ['store' => $testOrder->store->id]) }}" class="btn btn-sm btn-primary">
+        @if(!empty($testOrder->store))<a title="Vai al negozio" href="{{ route('panel.stores.view', ['store' => $testOrder->store->id]) }}" class="btn btn-sm btn-primary">
           <i class="fas fa-external-link-alt"></i>
-        </a></label>
-        <input type="text" id="store" readonly class="form-control-plaintext" value="{{ $testOrder->store->name }}">
+        </a>@endif</label>
+        <input type="text" id="store" readonly class="form-control-plaintext" value="{{ !empty($testOrder->store) ? $testOrder->store->name : 'Negozio assente' }}">
       </fieldset>
       <fieldset class="form-group">
         <label for="product"><b>Prodotto</b>
-        <a title="Vai al prodotto" href="{{ route('panel.products.view', $testOrder->product->id) }}" class="btn btn-sm btn-primary">
+        @if(!empty($testOrder->product))<a title="Vai al prodotto" href="{{ route('panel.products.view', $testOrder->product->id) }}" class="btn btn-sm btn-primary">
           <i class="fas fa-external-link-alt"></i>
-        </a></label>
-        <input type="text" id="product" readonly class="form-control-plaintext" value="{{ $testOrder->product->title }}">
+        </a>@endif</label>
+        <input type="text" id="product" readonly class="form-control-plaintext" value="{{ !empty($testOrder->product) ? $testOrder->product->title : 'Prodotto assente' }}">
       </fieldset>
 
       <fieldset class="form-group">

@@ -25,8 +25,8 @@ class SellerFormRequest extends FormRequest
     public function rules()
     {
         return [
-            'nickname' => 'nullable|string',
-            'name' => 'string|required',
+            'nickname' => 'required|string',
+            'name' => 'string|nullable',
             'email' => 'email|required',
             'facebook' => 'nullable|numeric',
             'wechat' => 'nullable|string',

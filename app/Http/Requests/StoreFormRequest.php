@@ -28,7 +28,7 @@ class StoreFormRequest extends FormRequest
              'company_name' => 'string|required',
              'company_registration_no' => 'nullable|string',
              'VAT' => 'nullable|string',
-             'country' => 'string|required',
+             'country' => 'string|nullable',
              'seller_id' => 'exists:seller,id',
              'url' => 'nullable|url'
          ];
