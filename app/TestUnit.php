@@ -39,11 +39,11 @@ class TestUnit extends Model
       return $this->hasMany('App\TestUnitStatus');
     }
 
-    public function expiresDate() {
-      return (new Carbon($this->expires_on, config('app.timezone')))->toDateString();
+    public function startsDate() {
+      return (new Carbon($this->starts_on, config('app.timezone')))->toDateString();
     }
 
-    public function expiresTime() {
-      return (new Carbon($this->expires_on, config('app.timezone')))->format("H:i");
+    public function startsTime() {
+      return (new Carbon($this->starts_on, config('app.timezone')))->format("H:i");
     }
 }

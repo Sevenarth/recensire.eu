@@ -45,9 +45,31 @@
           @if(!($testUnit->status > 0))</div>@endif
         </fieldset>
       </div>
+    </div>
+    <div class="row">
       <div class="col-sm-6">
         <fieldset class="form-group">
-          <label>Scadenza in <small class="text-muted">(dall'ultima modifica di questo campo)</small></label>
+          <label for="starts_on">Data inizio <small class="text-muted">(ora se lasciato in bianco)</small></label>
+          <div class="input-group">
+             @if($testUnit->status > 0)
+               <input type="date" class="form-control" name="expires_on_date" value="{{ $testUnit->startsDate() }}" readonly>
+               <input type="time" class="form-control" name="expires_on_time" value="{{ $testUnit->startsTime() }}" readonly>
+             @else
+            <input class="form-control{{ $errors->has('starts_on_date') ? ' is-invalid' : ''}}" type="date" name="starts_on_date" value="{{ old('starts_on_date', !empty($testUnit->starts_on) ? $testUnit->startsDate() : '') }}">
+            <input class="form-control{{ $errors->has('starts_on_time') ? ' is-invalid' : ''}}" type="time" name="starts_on_time" value="{{ old('starts_on_time', !empty($testUnit->starts_on) ? $testUnit->startsTime() : '') }}">
+            @endif
+            @if($errors->has('starts_on_date')||$errors->has('starts_on_time'))
+            <div class="invalid-feedback">
+              @foreach($errors->get('starts_on_date') as $err) {{$err}}<br> @endforeach
+              @foreach($errors->get('starts_on_time') as $err) {{$err}}<br> @endforeach
+            </div>
+          @endif
+          </div>
+        </fieldset>
+      </div>
+      <div class="col-sm-6">
+        <fieldset class="form-group">
+          <label>Scadenza in</label>
           @if($testUnit->status > 0) <input type="hidden" name="expires_on_space" value="{{ $testUnit->expires_on_space }}"> @endif
           <div class="input-group">
              @if($testUnit->status > 0)
@@ -175,6 +197,9 @@
       <label for="instructions">Istruzioni</label>
       <a id="uploader" href="{{ route('panel.upload') }}" class="d-none"></a>
       <textarea id="instructions" name="instructions">{{ old('instructions', $testUnit->instructions) }}</textarea>
+      @if($errors->has('instructions'))
+        <div class="text-danger"><small>@foreach($errors->get('instructions') as $err){{ $err }}<br>@endforeach</small></div>
+      @endif
       <div class="text-muted">
         <small>Per inserire il bottone-collegamento alla ricerca di Amazon inserisci <code class="border p-1 rounded">#link-amazon</code></small>
       </div>

@@ -25,6 +25,8 @@ class TestUnitFormRequest extends FormRequest
     public function rules()
     {
         return [
+            'starts_on_date' => 'nullable|required_with:starts_on_time|date',
+            'starts_on_time' => 'nullable|required_with:starts_on_date|date_format:H:i',
             'tester_id' => 'nullable|exists:tester,id',
             'expires_on_time' => 'required_if:status,0|numeric',
             'expires_on_space' => ['required_if:status,0', Rule::in(array_keys(config('testUnit.timeSpaces')))],

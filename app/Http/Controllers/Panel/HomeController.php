@@ -94,8 +94,8 @@ class HomeController extends Controller
         foreach($testUnits as $unit) {
           $row = [];
           $tester = $unit->tester;
-          if($request->input('test_order_id') == "on")
-            $row[] = "Order No: " . $unit->testOrder->id;
+          if($request->input('amazon_order_id') == "on")
+            $row[] = "Order No: " . $unit->amazon_order_id;
           if($request->input('paypal_account') == "on")
             $row[] = "PayPal account: " . (!empty($unit->paypal_account) ? $unit->paypal_account : 'N/D');
           if($request->input('review_url') == "on")
@@ -106,9 +106,11 @@ class HomeController extends Controller
             $row[] = 'Tester name: ' . (!empty($tester->name) ? $tester->name : 'N/A');
           if($request->input('facebook_id') == "on")
             $row[] = 'Facebook ID: ' . (!empty($tester->facebook_profiles[0]) ? $tester->facebook_profiles[0] : 'N/A');
+          if($request->input('refunded') == "on")
+            $row[] = 'Refunded: ' . (!empty($unit->refunded) ? 'Yes' : 'No');
 
           if(count($row) > 0)
-            $report .= implode(", ", $row) . PHP_EOL;
+            $report .= implode("\t", $row) . PHP_EOL;
         }
       }
       return redirect()

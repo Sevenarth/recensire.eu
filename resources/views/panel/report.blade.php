@@ -54,11 +54,11 @@
       </div>
       <hr>
       <h4 class="mb-4">Campi da mostrare</h4>
-      <div class="row my-3">
+      <div class="row">
         <div class="col-sm-4">
           <div class="custom-control custom-checkbox">
-            <input type="checkbox" class="custom-control-input" name="test_order_id" id="test_order_id"{{ old('test_order_id') == "on" ? ' checked' : '' }}>
-            <label class="custom-control-label" for="test_order_id">Numero ordine</label>
+            <input type="checkbox" class="custom-control-input" name="amazon_order_id" id="amazon_order_id"{{ old('amazon_order_id') == "on" ? ' checked' : '' }}>
+            <label class="custom-control-label" for="amazon_order_id">Numero ordine Amazon</label>
           </div>
         </div>
         <div class="col-sm-4">
@@ -91,6 +91,14 @@
           <div class="custom-control custom-checkbox">
             <input type="checkbox" class="custom-control-input" name="facebook_id" id="facebook_id"{{ old('facebook_id') == "on" ? ' checked' : '' }}>
             <label class="custom-control-label" for="facebook_id">Facebook ID</label>
+          </div>
+        </div>
+      </div>
+      <div class="row my-3">
+        <div class="col-sm-4">
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" name="refunded" id="refunded"{{ old('refunded') == "on" ? ' checked' : '' }}>
+            <label class="custom-control-label" for="refunded">Rimborsato</label>
           </div>
         </div>
       </div>

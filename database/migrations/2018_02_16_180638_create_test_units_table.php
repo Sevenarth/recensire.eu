@@ -31,6 +31,7 @@ class CreateTestUnitsTable extends Migration
             $table->boolean('link_opened')->default(false);
             $table->boolean('refunded')->default(false);
             $table->boolean('viewed')->default(false);
+            $table->timestamp('starts_on')->nullable();
             $table->integer('expires_on_time');
             $table->integer('expires_on_space');
             $table->timestamp('expires_on')->nullable();

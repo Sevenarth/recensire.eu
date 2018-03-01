@@ -46,9 +46,15 @@ class TestUnitsController extends Controller
 
         $testUnit->refunded = $request->input('refunded') == 'on' ? 1 : 0;
         $spaceSpecs = ['T%dS', 'T%dM', 'T%dH', '%dD', '%dW', '%dM', '%dY'];
-        $expires_on = Carbon::now(config('app.timezone'));
-        $expires_on->add(new \DateInterval(sprintf('P'.$spaceSpecs[$request->input('expires_on_space')], $request->input('expires_on_time'))));
-        $testUnit->expires_on = $expires_on;
+
+        if($request->input('starts_on_date'))
+          $starts_on = new Carbon($request->input('starts_on_date'). " " . $request->input('starts_on_time'), config('app.timezone'));
+        else
+          $starts_on = Carbon::now(config('app.timezone'));
+
+        $testUnit->starts_on = $starts_on->toDateTimeString();
+
+        $testUnit->expires_on = $starts_on->add(new \DateInterval(sprintf('P'.$spaceSpecs[$request->input('expires_on_space')], $request->input('expires_on_time'))));
 
         $testUnit->testOrder()->associate($testOrder);
         $testUnit->save();
@@ -81,9 +87,15 @@ class TestUnitsController extends Controller
       $testUnit->refunded = $request->input('refunded') == 'on' ? 1 : 0;
 
       $spaceSpecs = ['T%dS', 'T%dM', 'T%dH', '%dD', '%dW', '%dM', '%dY'];
-      $expires_on = Carbon::now(config('app.timezone'));
-      $expires_on->add(new \DateInterval(sprintf('P'.$spaceSpecs[$request->input('expires_on_space')], $request->input('expires_on_time'))));
-      $testUnit->expires_on = $expires_on;
+
+      if($request->input('starts_on_date'))
+        $starts_on = new Carbon($request->input('starts_on_date'). " " . $request->input('starts_on_time'), config('app.timezone'));
+      else
+        $starts_on = Carbon::now(config('app.timezone'));
+
+      $testUnit->starts_on = $starts_on->toDateTimeString();
+
+      $testUnit->expires_on = $starts_on->add(new \DateInterval(sprintf('P'.$spaceSpecs[$request->input('expires_on_space')], $request->input('expires_on_time'))));
 
       $testUnit->tester()->associate(Tester::find($request->input('tester_id')));
       $testUnit->testOrder()->associate($testOrder);
@@ -132,17 +144,27 @@ class TestUnitsController extends Controller
 
       $testUnit->refunded = $request->input('refunded') == 'on' ? 1 : 0;
 
-      if($testUnit->status < 1 && ($testUnit->expires_on_time != trim($request->input('expires_on_time'))
+      $starts_on = new Carbon($request->input('starts_on_date')." ".$request->input('starts_on_time'), config('app.timezone'));
+      if($testUnit->status < 1 &&
+          ($testUnit->starts_on != $starts_on
+          || $testUnit->expires_on_time != trim($request->input('expires_on_time'))
           || $testUnit->expires_on_space != trim($request->input('expires_on_space'))))
       {
         $testUnit->expires_on_time = $request->input('expires_on_time');
         $testUnit->expires_on_space = $request->input('expires_on_space');
         $spaceSpecs = ['T%dS', 'T%dM', 'T%dH', '%dD', '%dW', '%dM', '%dY'];
-        $expires_on = Carbon::now(config('app.timezone'));
-        $expires_on->add(new \DateInterval(sprintf('P'.$spaceSpecs[$request->input('expires_on_space')], $request->input('expires_on_time'))));
-        $testUnit->expires_on = $expires_on;
-      } else
+
+        if($request->input('starts_on_date'))
+          $starts_on = new Carbon($request->input('starts_on_date'). " " . $request->input('starts_on_time'), config('app.timezone'));
+        else
+          $starts_on = Carbon::now(config('app.timezone'));
+
+        $testUnit->starts_on = $starts_on->toDateTimeString();
+        $testUnit->expires_on = $starts_on->add(new \DateInterval(sprintf('P'.$spaceSpecs[$request->input('expires_on_space')], $request->input('expires_on_time'))));
+      } else {
+        $testUnit->starts_on = $testUnit->starts_on;
         $testUnit->expires_on = $testUnit->expires_on;
+      }
 
       if($testUnit->status < 1 && (empty($testUnit->tester) || $testUnit->tester->id != $request->input('tester_id')))
         $testUnit->tester()->associate(Tester::find($request->input('tester_id')));

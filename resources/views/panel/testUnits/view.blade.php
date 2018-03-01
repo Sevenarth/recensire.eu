@@ -185,15 +185,25 @@ Unità di test #{{ $testUnit->hash_code }}
       </div>
     </div>
 
-    <fieldset class="form-group">
-      <label><b>Scadenza</b></label>
-      @php $expiration = new \Carbon\Carbon($testUnit->expires_on, config('app.timezone')); @endphp
-      @if($expiration->gt(\Carbon\Carbon::now(config('app.timezone'))))
-      <div class="relative-time form-control p-2">{{ $expiration->toIso8601String() }}</div>
-      @else
-      <div class="form-control p-2 text-danger"><b>Scaduto</b></div>
-      @endif
-    </fieldset>
+    <div class="row">
+      <div class="col-sm-6">
+        <fieldset class="form-group">
+          <label><b>Data inizio</b></label>
+          <input type="text" class="form-control-plaintext" readonly value="{{ $testUnit->starts_on }}">
+        </fieldset>
+      </div>
+      <div class="col-sm-6">
+        <fieldset class="form-group">
+          <label><b>Scadenza</b></label>
+          @php $expiration = new \Carbon\Carbon($testUnit->expires_on, config('app.timezone')); @endphp
+          @if($expiration->gt(\Carbon\Carbon::now(config('app.timezone'))))
+          <div class="relative-time form-control p-2">{{ $expiration->toIso8601String() }}</div>
+          @else
+          <div class="form-control p-2 text-danger"><b>Scaduto</b></div>
+          @endif
+        </fieldset>
+      </div>
+    </div>
 
       <fieldset class="form-group">
         <label><b>Metodo di rimborso</b></label>
