@@ -105,7 +105,7 @@ $(function () {
 
       if(response.data.length > 0) {
         response.data.forEach(function(elt) {
-          $(result).append('<a class="list-group-item selectable-list-item" data-evt="'+evt+'" data-id="'+elt.id+'">'+(elt.nickname && elt.nickname.length > 0 ? elt.nickname + " - " : '')+elt.name+(elt.email ? ' <small><i>'+elt.email+'</i></small>': '') + '</a>')
+          $(result).append('<a class="list-group-item selectable-list-item" data-evt="'+evt+'" data-id="'+elt.id+'">'+(elt.nickname && elt.nickname.length > 0 ? elt.nickname + " - " : '')+(elt.name && elt.name.length > 0 ? elt.name : '')+(elt.email ? ' <small><i>'+elt.email+'</i></small>': '') + '</a>')
         });
       } else
         $(result).append('<li class="list-group-item"><i>Nessun elemento presente con questi criteri di ricerca</i></li>')
