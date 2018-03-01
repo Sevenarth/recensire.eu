@@ -123,7 +123,11 @@ Ordine di lavoro #{{ $testOrder->id }}
           </td>
         </tr>
         @endforeach
-        @for($i = 0; $i < $testOrder->quantity-$testOrder->testUnits()->where('status', '>', 0)->orWhere(function($q) { $q->where('status', 0)->where('expires_on', '>', \Carbon\Carbon::now(config('app.timezone'))); })->count(); $i++)
+        @for($i = 0; $i < $testOrder->quantity-$testOrder->testUnits()->where(function($q) {
+          $q->where('status', '>', 0)->orWhere(function($q) {
+            $q->where('status', 0)->where('expires_on', '>', \Carbon\Carbon::now(config('app.timezone')));
+          });
+        })->count(); $i++)
         <tr>
           <td class="p-2" colspan="4"><i>Unità di test mancante.</i></td>
           <td>
