@@ -24,11 +24,11 @@ class ProductFormRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|string',
-            'brand' => 'required|string',
-            'ASIN' => 'required|string',
+            'title' => 'required|string|max:191',
+            'brand' => 'required|string|max:191',
+            'ASIN' => 'required|string|max:191',
             'description' => 'nullable|present',
-            'URL' => 'required|url',
+            'URL' => 'required|url|max:191',
             'images.*' => 'nullable|url',
             'categories.*' => 'nullable|exists:category,id',
             'tags' => 'nullable|string'
@@ -60,7 +60,7 @@ class ProductFormRequest extends FormRequest
         $validator->sometimes('ASIN', 'unique:product,ASIN', function ($input) use($product) {
           if(!empty($product) && $product->ASIN == $input->get('ASIN'))
             return false;
-            
+
           return true;
         });
     }

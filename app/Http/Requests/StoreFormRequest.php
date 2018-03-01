@@ -24,13 +24,13 @@ class StoreFormRequest extends FormRequest
      public function rules()
      {
          return [
-             'name' => 'string|required',
-             'company_name' => 'string|required',
-             'company_registration_no' => 'nullable|string',
-             'VAT' => 'nullable|string',
-             'country' => 'string|nullable',
+             'name' => 'string|required|max:191',
+             'company_name' => 'string|required|max:191',
+             'company_registration_no' => 'nullable|string|max:191',
+             'VAT' => 'nullable|string|max:191',
+             'country' => 'string|nullable|max:191',
              'seller_id' => 'exists:seller,id',
-             'url' => 'nullable|url'
+             'url' => 'nullable|url|max:191'
          ];
      }
 

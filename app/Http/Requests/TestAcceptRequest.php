@@ -24,9 +24,9 @@ class TestAcceptRequest extends FormRequest
     public function rules()
     {
         return [
-            'paypal_account' => 'required|email',
-            'amazon_order_id' => 'required|string',
-            'tester_notes' => 'nullable|string'
+            'paypal_account' => 'required|email|max:191',
+            'amazon_order_id' => 'required|string|max:191',
+            'tester_notes' => 'nullable|string|max:191'
         ];
     }
 

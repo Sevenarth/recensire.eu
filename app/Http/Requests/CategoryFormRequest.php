@@ -24,7 +24,7 @@ class CategoryFormRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|string',
+            'title' => 'required|string|max:191',
             'description' => 'nullable|present',
             'parent_id' => 'nullable|present'
         ];

@@ -25,12 +25,12 @@ class SellerFormRequest extends FormRequest
     public function rules()
     {
         return [
-            'nickname' => 'required|string',
-            'name' => 'string|nullable',
-            'email' => 'email|required',
+            'nickname' => 'required|string|max:191',
+            'name' => 'string|nullable|max:191',
+            'email' => 'email|required|max:191',
             'facebook' => 'nullable|numeric',
-            'wechat' => 'nullable|string',
-            'profile_image' => 'nullable|url'
+            'wechat' => 'nullable|string|max:191',
+            'profile_image' => 'nullable|url|max:191'
         ];
     }
 

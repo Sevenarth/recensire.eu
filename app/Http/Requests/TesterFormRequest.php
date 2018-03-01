@@ -24,12 +24,12 @@ class TesterFormRequest extends FormRequest
     public function rules()
     {
         return [
-          'name' => 'required|string',
-          'email' => 'nullable|email',
+          'name' => 'required|string|max:191',
+          'email' => 'nullable|email|max:191',
           'amazon_profiles.*' => 'nullable|present|url',
           'facebook_profiles.*' => 'nullable|present|string',
-          'wechat' => 'nullable|string',
-          'profile_image' => 'nullable|url'
+          'wechat' => 'nullable|string|max:191',
+          'profile_image' => 'nullable|url|max:191'
         ];
     }
 
