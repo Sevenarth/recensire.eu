@@ -49,7 +49,7 @@ Negozio #{{ $store->id }}
           <a title="Visualizza" href="{{ route('panel.sellers.view', ['seller' => $store->seller->id]) }}" class="btn btn-sm btn-primary">
             <i class="fa fa-user"></i>
           </a></b></label>
-          <input type="text" readonly class="form-control-plaintext" name="name" value="{{ $store->seller->name }}">
+          <input type="text" readonly class="form-control-plaintext" name="name" value="{{ $store->seller->nickname }}">
         </fieldset>
       </div>
     </div>
