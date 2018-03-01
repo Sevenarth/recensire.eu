@@ -22,8 +22,8 @@ class TestOrdersController extends Controller
     $search = trim($request->query('s', null));
 
     $testOrders = DB::table('test_order')
-        ->join('store', 'test_order.store_id', '=', 'store.id')
-        ->join('product', 'test_order.product_id', '=', 'product.id');
+        ->leftJoin('store', 'test_order.store_id', '=', 'store.id')
+        ->leftJoin('product', 'test_order.product_id', '=', 'product.id');
 
     if(!empty($search))
       if($search[0] == ":") {
