@@ -99,7 +99,7 @@ Ordine di lavoro #{{ $testOrder->id }}
         <th></th>
       </thead>
       <tbody>
-        @foreach($testOrder->testUnits()->where(function($q) { $q->where('status', '<>', 3)->where('status', '>', 0); })->orWhere(function($q) { $q->where('status', 0)->where('expires_on', '>', \Carbon\Carbon::now(config('app.timezone'))); })->get() as $unit)
+        @foreach($testOrder->testUnits()->where(function($q) { $q->where(function($q) { $q->where('staatus', '<>', 3)->where('status', '>', 0); })->orWhere(function($q) { $q->where('status', 0)->where('expires_on', '>', \Carbon\Carbon::now(config('app.timezone'))); }); })->get() as $unit)
         <tr>
           <th class="p-2" scope="row">{{ $unit->hash_code }}</th>
           <td class="p-2">@if(!empty($unit->tester)) <a href="{{ route('panel.testers.view', $unit->tester->id) }}">{{ $unit->tester->name }}</a> @else - @endif</td>
