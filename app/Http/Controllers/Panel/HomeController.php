@@ -27,19 +27,19 @@ class HomeController extends Controller
       }
 
       $acceptedToday = TestUnitStatus::where('status', 1)
-        ->where('created_at','>',Carbon::now()->startOfDay())
+        ->where('created_at','>',Carbon::now(config('app.timezone'))->startOfDay())
         ->groupBy('test_unit_id')
         ->select('test_unit_id', DB::raw('MAX(created_at) as created_at'))
         ->get();
 
       $reviewedToday = TestUnitStatus::where('status', 2)
-        ->where('created_at','>',Carbon::now()->startOfDay())
+        ->where('created_at','>',Carbon::now(config('app.timezone'))->startOfDay())
         ->groupBy('test_unit_id')
         ->select('test_unit_id', DB::raw('MAX(created_at) as created_at'))
         ->get();
 
       $refundedToday = TestUnitStatus::where('status', 3)
-        ->where('created_at','>',Carbon::now()->startOfDay())
+        ->where('created_at','>',Carbon::now(config('app.timezone'))->startOfDay())
         ->groupBy('test_unit_id')
         ->select('test_unit_id', DB::raw('MAX(created_at) as created_at'))
         ->get();
@@ -65,7 +65,7 @@ class HomeController extends Controller
       }
 
       return "<script>".
-      (!empty($id) ? "window.opener.document.getElementById('{$id}').value = '{$url}'" : "")
+      (!empty($id) ? "window.opener.document.getElementById('{$id}').value = '{$url}';".PHP_EOL : "")
       ."window.opener.{$fn}
       window.close()
       </script>";

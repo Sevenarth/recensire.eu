@@ -28,10 +28,12 @@ class TestUnitsController extends Controller
     }
 
     public function massPut(TestUnitFormRequest $request, TestOrder $testOrder) {
-      $count = $testOrder
-        ->testUnits()
-        ->where('expires_on', '>', Carbon::now(config('app.timezone')))
-        ->count();
+      $count = $testOrder->testUnits()
+        ->where('status', '>', 0)
+        ->orWhere(function($q) {
+          $q->where('status', 0)
+            ->where('expires_on', '>', Carbon::now(config('app.timezone')));
+        })->count();
       for($i = 0; $i < $testOrder->quantity-$count; $i++) {
         $testUnit = new TestUnit;
         $testUnit->hash_code = "placeholder";
@@ -110,11 +112,18 @@ class TestUnitsController extends Controller
     }
 
     public function update(TestUnitFormRequest $request, TestUnit $testUnit) {
-      $testUnit->fill($request->only([
-        'amazon_order_id', 'review_url', 'reference_url',
+      $fields = [
+        'review_url', 'tester_notes',
         'instructions', 'paypal_account',
-        'refunded_amount', 'refunding_type', 'tester_notes'
-      ]));
+        'refunded_amount', 'refunding_type'
+      ];
+
+      if($testUnit->status < 1){
+        $fields[] = "amazon_order_id";
+        $fields[] = "reference_url";
+      }
+
+      $testUnit->fill($request->only($fields));
 
       if(empty($testUnit->refunded) && $request->input('refunded') == 'on')
         $testUnit->statuses()->create([
@@ -123,8 +132,8 @@ class TestUnitsController extends Controller
 
       $testUnit->refunded = $request->input('refunded') == 'on' ? 1 : 0;
 
-      if($testUnit->expires_on_time != trim($request->input('expires_on_time'))
-          || $testUnit->expires_on_space != trim($request->input('expires_on_space')))
+      if($testUnit->status < 1 && ($testUnit->expires_on_time != trim($request->input('expires_on_time'))
+          || $testUnit->expires_on_space != trim($request->input('expires_on_space'))))
       {
         $testUnit->expires_on_time = $request->input('expires_on_time');
         $testUnit->expires_on_space = $request->input('expires_on_space');
@@ -135,7 +144,7 @@ class TestUnitsController extends Controller
       } else
         $testUnit->expires_on = $testUnit->expires_on;
 
-      if(empty($testUnit->tester) || $testUnit->tester->id != $request->input('tester_id'))
+      if($testUnit->status < 1 && (empty($testUnit->tester) || $testUnit->tester->id != $request->input('tester_id')))
         $testUnit->tester()->associate(Tester::find($request->input('tester_id')));
 
       if(intval($testUnit->status) !== intval($request->input('status')))

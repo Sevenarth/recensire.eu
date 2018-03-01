@@ -36,12 +36,12 @@
       </fieldset>
 
       <fieldset class="form-group">
-        <label for="fee">Commissione</label>
+        <label for="fee">Commissione <small class="text-muted">(opzionale)</small></label>
         <div class="input-group">
           <div class="input-group-prepend">
             <span class="input-group-text">&euro;</span>
           </div>
-          <input class="form-control{{ $errors->has("fee") ? ' is-invalid' : '' }}" type="number" min="0.01" step="0.01" id="fee" name="fee" placeholder="3.00" value="{{ old('fee', !empty($testOrder->fee) ? $testOrder->fee : '') }}" required>
+          <input class="form-control{{ $errors->has("fee") ? ' is-invalid' : '' }}" type="number" min="0.01" step="0.01" id="fee" name="fee" placeholder="3.00" value="{{ old('fee', !empty($testOrder->fee) ? $testOrder->fee : '') }}">
           @if($errors->has("fee"))
           <div class="invalid-feedback">
             @foreach($errors->get("fee") as $err)

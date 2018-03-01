@@ -3,12 +3,9 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class TestOrder extends Model
 {
-    use SoftDeletes;
-    
     protected $table = "test_order";
     protected $fillable = ['fee', 'quantity', 'description'];
 
@@ -22,5 +19,13 @@ class TestOrder extends Model
 
     public function store() {
       return $this->belongsTo('App\Store');
+    }
+
+    public function hasCompletes() {
+      foreach($this->testUnits as $unit)
+        if($unit->status == 3)
+          return true;
+
+      return false;
     }
 }

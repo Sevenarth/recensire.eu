@@ -15,7 +15,7 @@ class CreateTestOrdersTable extends Migration
     {
         Schema::create('test_order', function (Blueprint $table) {
             $table->increments('id');
-            $table->float("fee", 8, 2)->default(0);
+            $table->float("fee", 8, 2)->default(0)->nullable();
             $table->text("description")->nullable();
             $table->integer("quantity");
             $table->integer('product_id')->unsigned();

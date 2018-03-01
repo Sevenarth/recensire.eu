@@ -9,7 +9,7 @@ use Cartalyst\Tags\TaggableInterface;
 
 class Product extends Model implements TaggableInterface
 {
-    use SoftDeletes, TaggableTrait;
+    use TaggableTrait;
 
     protected $table = "product";
     protected $fillable = ['title', 'brand', 'ASIN', 'URL', 'description', 'images'];

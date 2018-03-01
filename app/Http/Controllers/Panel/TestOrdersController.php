@@ -103,4 +103,15 @@ class TestOrdersController extends Controller
       ->route('panel.testOrders.view', $testOrder->id)
       ->with('status', 'Ordine di lavoro aggiornato con successo!');
   }
+
+  public function delete(Request $request, TestOrder $testOrder) {
+    if($testOrder->hasCompletes())
+      abort(403);
+
+    $testOrder->delete();
+
+    return redirect()
+      ->route('panel.testOrders.home')
+      ->with('status', 'Ordine di lavoro cancellato con successo!');
+  }
 }

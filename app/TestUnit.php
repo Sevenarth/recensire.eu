@@ -5,14 +5,11 @@ namespace App;
 use App\Events\TestUnitCreated;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Events\Dispatcher;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Hashids;
 use Carbon\Carbon;
 
 class TestUnit extends Model
 {
-    use SoftDeletes;
-
     protected $table = "test_unit";
     protected $fillable = [
       'amazon_order_id', 'review_url', 'reference_url',

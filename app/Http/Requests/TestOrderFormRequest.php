@@ -25,7 +25,7 @@ class TestOrderFormRequest extends FormRequest
     {
       return [
           'quantity' => 'required|numeric',
-          'fee' => 'required|numeric',
+          'fee' => 'nullable|numeric',
           'description' => 'nullable|present',
       ];
     }

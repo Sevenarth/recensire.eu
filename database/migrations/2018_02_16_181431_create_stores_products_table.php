@@ -17,8 +17,8 @@ class CreateStoresProductsTable extends Migration
             $table->increments('id');
             $table->integer('product_id')->unsigned();
             $table->integer('store_id')->unsigned();
-            $table->foreign('product_id')->references('id')->on('product');
-            $table->foreign('store_id')->references('id')->on('store');
+            $table->foreign('product_id')->references('id')->on('product')->onDelete('cascade');
+            $table->foreign('store_id')->references('id')->on('store')->onDelete('cascade');
             $table->timestamps();
         });
     }

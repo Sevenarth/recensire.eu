@@ -26,9 +26,9 @@ class TestUnitFormRequest extends FormRequest
     {
         return [
             'tester_id' => 'nullable|exists:tester,id',
-            'expires_on_time' => 'required|numeric',
-            'expires_on_space' => ['required', Rule::in(array_keys(config('testUnit.timeSpaces')))],
-            'reference_url' => 'required|url',
+            'expires_on_time' => 'required_if:status,0|numeric',
+            'expires_on_space' => ['required_if:status,0', Rule::in(array_keys(config('testUnit.timeSpaces')))],
+            'reference_url' => 'required_if:status,0|url',
             'review_url' => 'nullable|url',
             'amazon_order_id' => 'nullable|string',
             'refunded_amount' => 'nullable|numeric',

@@ -21,7 +21,7 @@ class CreateTestUnitsTable extends Migration
             $table->string('reference_url');
             $table->text('instructions');
             $table->integer('test_order_id')->unsigned();
-            $table->foreign('test_order_id')->references('id')->on('test_order');
+            $table->foreign('test_order_id')->references('id')->on('test_order')->onDelete('cascade');
             $table->integer('tester_id')->unsigned()->nullable();
             $table->foreign('tester_id')->references('id')->on('tester')->nullable();
             $table->mediumInteger('status')->default(0);

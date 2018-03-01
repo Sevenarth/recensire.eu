@@ -4,7 +4,7 @@ return [
     "In attesa",
     "Acquistato",
     "Recensito",
-    "Rimborsato"
+    "Completato"
   ],
   'timeSpaces' => [
     'secondi',

@@ -16,7 +16,7 @@ class CreateTestUnitStatusesTable extends Migration
         Schema::create('test_unit_status', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('test_unit_id')->unsigned();
-            $table->foreign('test_unit_id')->references('id')->on('test_unit');
+            $table->foreign('test_unit_id')->references('id')->on('test_unit')->onDelete('cascade');
             $table->mediumInteger('status');
             $table->softDeletes();
             $table->timestamps();
