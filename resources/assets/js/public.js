@@ -13,7 +13,8 @@ $(function () {
     $(this).html(MD.render($(this).text()));
   });
 
-  $("#instructions").html($("#instructions").html().replace('#link-amazon', $("#amazon-link").clone().removeClass('d-none')[0].outerHTML))
+  if($("#instructions"))
+    $("#instructions").html($("#instructions").html().replace('#link-amazon', $("#amazon-link").clone().removeClass('d-none')[0].outerHTML))
 
   $(".relative-time").each(function() {
     var date = $(this).text();
