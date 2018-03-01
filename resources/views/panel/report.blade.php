@@ -44,9 +44,9 @@
           <fieldset class="form-group">
             <label for="status">Stato</label>
             <select class="custom-select" name="status">
-              <option value="-1"{{ intval(old('status'), -1) === -1 ? ' selected' : '' }}>Tutti</option>
+              <option value="-1"{{ intval(old('status', -1)) === -1 ? ' selected' : '' }}>Tutti</option>
               @foreach(config('testUnit.statuses') as $id => $status)
-              <option value="{{ $id }}"{{ intval(old('status'), -1) === $id ? ' selected' : '' }}>{{ $status }}</option>
+              <option value="{{ $id }}"{{ intval(old('status', -1)) === $id ? ' selected' : '' }}>{{ $status }}</option>
               @endforeach
             </select>
           </fieldset>
