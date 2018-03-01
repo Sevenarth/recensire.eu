@@ -69,7 +69,7 @@ Tester #{{ $tester->id }}
     <fieldset class="form-group">
       <label for="facebook_profiles"><b><i class="fab fa-fw fa-facebook-square"></i> Profili Facebook</b></label>
       @foreach($tester->facebook_profiles as $fb)
-        @if(!empty($fb)) <div class="input-group"> @endif
+        @if(!empty($fb)) <div class="input-group mb-2"> @endif
         <input type="text" class="form-control{{ !empty($fb)?'':'-plaintext'}}" readonly value="{{ !empty($fb) ? "https://www.facebook.com/profile.php?id=".$fb : '-' }}">
         @if(!empty($fb)) <div class="input-group-append">
           <a title="Apri link in una nuova pagina" class="btn btn-primary" href="{{ "https://www.facebook.com/profile.php?id=".$fb }}" target="_blank"><i class="fa fa-fw fa-external-link-alt"></i></a>
