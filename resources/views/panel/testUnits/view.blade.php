@@ -140,12 +140,14 @@ Unità di test #{{ $testUnit->hash_code }}
               <input type="text" readonly class="form-control-plaintext" value="{{ !empty($testUnit->testOrder->product->id) ? $testUnit->testOrder->product->brand . ' '. $testUnit->testOrder->product->title : 'Prodotto assente' }}">
             </fieldset>
           </div>
+          @if(!empty($testUnit->testOrder->product->id))
           <div class="col-sm-6">
             <fieldset class="form-group">
               <label><b>ASIN</b></label>
               <input type="text" readonly class="form-control-plaintext" value="{{  $testUnit->testOrder->product->ASIN }}">
             </fieldset>
           </div>
+        @endif
         </div>
         <div class="row">
           <div class="col-sm-6">
