@@ -71,7 +71,7 @@ Venditori
               <img style="min-width: 50px; max-height: 50px" id="profile_image" src="@if(empty($seller->profile_image)) /images/profile_image.svg @else{{ $seller->profile_image }}@endif" class="img-fluid img-thumbnail rounded border">
             </td>
             <td class="align-middle">@php echo !empty($seller->nickname) ? $seller->nickname : '-' @endphp</td>
-            <td class="align-middle">{{ $seller->name }}</td>
+            <td class="align-middle">{{ !empty($seller->name) ? $seller->name : '-' }}</td>
             <td class="align-middle">{{ $seller->email}}</td>
             <td class="align-middle">
               <a href="{{ route('panel.sellers.view', ['seller' => $seller->id]) }}" class="btn btn-sm btn-primary">
