@@ -160,7 +160,7 @@ Unità di test #{{ $testUnit->hash_code }}
           <div class="col-sm-6">
             <fieldset class="form-group">
               <label><b>Venditore</b> @if(!empty($testUnit->testOrder->store->seller->id))<a class="btn btn-sm btn-primary" href="{{ route('panel.sellers.view', $testUnit->testOrder->store->seller->id)}}"><i class="fa fa-fw fa-external-link-alt"></i></a>@endif</label>
-              <input type="text" readonly class="form-control-plaintext" value="{{  !empty($testUnit->testOrder->store->seller->id) ? $testUnit->testOrder->store->seller->name : '-' }}">
+              <input type="text" readonly class="form-control-plaintext" value="{{  !empty($testUnit->testOrder->store->seller->id) ? $testUnit->testOrder->store->seller->nickname : '-' }}">
             </fieldset>
           </div>
         @endif
