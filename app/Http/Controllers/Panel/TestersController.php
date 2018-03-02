@@ -45,6 +45,25 @@ class TestersController extends Controller
   }
 
   public function put(TesterFormRequest $request) {
+    $confirm_fields = [];
+    if(Tester::where('name', trim($request->input('name')))->count() > 0)
+      $confirm_fields[] = 'nome';
+    if(Tester::where('email', trim($request->input('email')))->count() > 0)
+      $confirm_fields[] = 'indirizzo email';
+    if(Tester::where('wechat', trim($request->input('wechat')))->count() > 0)
+      $confirm_fields[] = 'WeChat';
+    foreach($request->input('amazon_profiles') as $key => $amz)
+      if(Tester::where('amazon_profiles', 'like', '%'.trim($amz).'%')->count() > 0)
+        $confirm_fields[] = 'profilo Amazon no. ' . ($key+1);
+    foreach($request->input('facebook_profiles') as $key => $fb)
+      if(Tester::where('facebook_profiles', 'like', '%'.trim($fb).'%')->count() > 0)
+        $confirm_fields[] = 'Facebook ID no. ' . ($key+1);
+
+    if(count($confirm_fields) > 0 && $request->input('confirmation') != "true")
+      return redirect()
+        ->back()
+        ->withInput(array_merge($request->all(), ['confirmation' => 'true', 'fields' => implode(", ", $confirm_fields)]));
+
     $tester = Tester::create($request->only([
       'name', 'email', 'wechat', 'profile_image', 'amazon_profiles', 'facebook_profiles'
     ]));
@@ -64,6 +83,25 @@ class TestersController extends Controller
   }
 
   public function update(TesterFormRequest $request, Tester $tester) {
+    $confirm_fields = [];
+    if(Tester::where('id', '<>', $tester->id)->where('name', trim($request->input('name')))->count() > 0)
+      $confirm_fields[] = 'nome';
+    if(Tester::where('id', '<>', $tester->id)->where('email', trim($request->input('email')))->count() > 0)
+      $confirm_fields[] = 'indirizzo email';
+    if(Tester::where('id', '<>', $tester->id)->where('wechat', trim($request->input('wechat')))->count() > 0)
+      $confirm_fields[] = 'WeChat';
+    foreach($request->input('amazon_profiles') as $key => $amz)
+      if(Tester::where('id', '<>', $tester->id)->where('amazon_profiles', 'like', '%'.trim($amz).'%')->count() > 0)
+        $confirm_fields[] = 'profilo Amazon no. ' . ($key+1);
+    foreach($request->input('facebook_profiles') as $key => $fb)
+      if(Tester::where('id', '<>', $tester->id)->where('facebook_profiles', 'like', '%'.trim($fb).'%')->count() > 0)
+        $confirm_fields[] = 'Facebook ID no. ' . ($key+1);
+
+    if(count($confirm_fields) > 0 && $request->input('confirmation') != "true")
+      return redirect()
+        ->back()
+        ->withInput(array_merge($request->all(), ['confirmation' => 'true', 'fields' => implode(", ", $confirm_fields)]));
+
     $tester->fill($request->only([
       'name', 'email', 'wechat', 'profile_image', 'amazon_profiles', 'facebook_profiles'
     ]));

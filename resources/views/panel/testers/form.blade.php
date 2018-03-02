@@ -13,6 +13,11 @@
     @php echo !empty($tester->id) ? 'Modifica tester #'.$tester->id : 'Nuovo tester' @endphp
   </div>
   <div class="px-4 py-3">
+    @if(old('confirmation', false))
+      <div class="alert alert-warning">
+        Ci sono già testers nel sistema con i seguenti campi duplicati: {{ old('fields') }}. Riinviare il modulo per confermare la creazione.
+      </div>
+    @endif
     @if(!empty($tester->id))
     @openForm('panel.testers.update', 'patch', arg="tester->id")
     @else
@@ -20,6 +25,9 @@
     @endif
       @formTextfield('name', 'Nome tester', placeholder="Mario Rossi", editMode="tester")
       @formTextfield('email', 'Indirizzo email', placeholder="me@testers.it", type="email", required="false", editMode="tester")
+      @if(old('confirmation', false))
+      <input type="hidden" name="confirmation" value="true">
+      @endif
       <fieldset class="form-group">
         <label for="amazon_profiles">Profili Amazon <small class="text-muted">(opzionale)</small></label>
         <div class="input-group">
