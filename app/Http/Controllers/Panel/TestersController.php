@@ -53,16 +53,19 @@ class TestersController extends Controller
     if(Tester::where('wechat', trim($request->input('wechat')))->count() > 0)
       $confirm_fields[] = 'WeChat';
     foreach($request->input('amazon_profiles') as $key => $amz)
-      if(Tester::where('amazon_profiles', 'like', '%'.trim($amz).'%')->count() > 0)
+      if(!empty($amz) && Tester::where('amazon_profiles', 'like', '%'.trim($amz).'%')->count() > 0)
         $confirm_fields[] = 'profilo Amazon no. ' . ($key+1);
     foreach($request->input('facebook_profiles') as $key => $fb)
-      if(Tester::where('facebook_profiles', 'like', '%'.trim($fb).'%')->count() > 0)
+      if(!empty($fb) && Tester::where('facebook_profiles', 'like', '%'.trim($fb).'%')->count() > 0)
         $confirm_fields[] = 'Facebook ID no. ' . ($key+1);
 
-    if(count($confirm_fields) > 0 && $request->input('confirmation') != "true")
+    if(count($confirm_fields) > 0 && $request->input('confirmation') != sha1(json_encode($request->only(['name','email','wechat','amazon_profiles','facebook_profiles']))))
       return redirect()
         ->back()
-        ->withInput(array_merge($request->all(), ['confirmation' => 'true', 'fields' => implode(", ", $confirm_fields)]));
+        ->withInput(array_merge($request->all(), [
+          'confirmation' => sha1(json_encode($request->only(['name','email','wechat','amazon_profiles','facebook_profiles']))),
+          'fields' => implode(", ", $confirm_fields)
+        ]));
 
     $tester = Tester::create($request->only([
       'name', 'email', 'wechat', 'profile_image', 'amazon_profiles', 'facebook_profiles'
@@ -91,16 +94,19 @@ class TestersController extends Controller
     if(Tester::where('id', '<>', $tester->id)->where('wechat', trim($request->input('wechat')))->count() > 0)
       $confirm_fields[] = 'WeChat';
     foreach($request->input('amazon_profiles') as $key => $amz)
-      if(Tester::where('id', '<>', $tester->id)->where('amazon_profiles', 'like', '%'.trim($amz).'%')->count() > 0)
+      if(!empty($amz) && Tester::where('id', '<>', $tester->id)->where('amazon_profiles', 'like', '%'.trim($amz).'%')->count() > 0)
         $confirm_fields[] = 'profilo Amazon no. ' . ($key+1);
     foreach($request->input('facebook_profiles') as $key => $fb)
-      if(Tester::where('id', '<>', $tester->id)->where('facebook_profiles', 'like', '%'.trim($fb).'%')->count() > 0)
+      if(!empty($fb) && Tester::where('id', '<>', $tester->id)->where('facebook_profiles', 'like', '%'.trim($fb).'%')->count() > 0)
         $confirm_fields[] = 'Facebook ID no. ' . ($key+1);
 
-    if(count($confirm_fields) > 0 && $request->input('confirmation') != "true")
+    if(count($confirm_fields) > 0 && $request->input('confirmation') != sha1(json_encode($request->only(['name','email','wechat','amazon_profiles','facebook_profiles']))))
       return redirect()
         ->back()
-        ->withInput(array_merge($request->all(), ['confirmation' => 'true', 'fields' => implode(", ", $confirm_fields)]));
+        ->withInput(array_merge($request->all(), [
+          'confirmation' => sha1(json_encode($request->only(['name','email','wechat','amazon_profiles','facebook_profiles']))),
+          'fields' => implode(", ", $confirm_fields)
+        ]));
 
     $tester->fill($request->only([
       'name', 'email', 'wechat', 'profile_image', 'amazon_profiles', 'facebook_profiles'

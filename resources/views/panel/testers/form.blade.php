@@ -26,7 +26,7 @@
       @formTextfield('name', 'Nome tester', placeholder="Mario Rossi", editMode="tester")
       @formTextfield('email', 'Indirizzo email', placeholder="me@testers.it", type="email", required="false", editMode="tester")
       @if(old('confirmation', false))
-      <input type="hidden" name="confirmation" value="true">
+      <input type="hidden" name="confirmation" value="{{ old('confirmation') }}">
       @endif
       <fieldset class="form-group">
         <label for="amazon_profiles">Profili Amazon <small class="text-muted">(opzionale)</small></label>
