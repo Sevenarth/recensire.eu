@@ -18,6 +18,7 @@ class CreateSellerTable extends Migration
             $table->string("nickname");
             $table->string("name")->nullable();
             $table->string("email");
+            $table->text("notes")->nullable();
             $table->string("wechat")->nullable();
             $table->string("facebook")->nullable();
             $table->string("profile_image")->nullable();

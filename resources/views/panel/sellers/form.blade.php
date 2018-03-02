@@ -23,7 +23,7 @@
       @formTextfield('email', 'Indirizzo email', placeholder="manager@azienda.it", type="email", editMode="seller")
       @formTextfield('facebook', 'Facebook ID', prepend="facebook.com/profile.php?id=", placeholder="0000000", required="false", editMode="seller")
       @formTextfield('wechat', 'WeChat ID', prepend="@", placeholder="0000000", required="false", editMode="seller")
-      <div class="row">
+      <div class="row mb-3">
         <div class="col-3 text-center">
           <img style="max-height: 190px" data-original="/images/profile_image.svg" id="profile_image-thumbnail" src="@if(empty(old('profile_image'))) @if(!empty($seller->profile_image)) {{$seller->profile_image}} @else /images/profile_image.svg @endif @else{{ old('profile_image', '/images/profile_image.svg') }}@endif" class="img-fluid img-thumbnail rounded border">
         </div>
@@ -33,7 +33,19 @@
           <button class="btn btn-primary upload-image" id="upload-image" data-page="{{ route("panel.upload") }}" data-target="profile_image" type="button">Carica immagine</button>
         </div>
       </div>
+      <fieldset class="form-group">
+        <label for="notes">Note <small class="text-muted">(opzionale)</small></label>
+        <textarea id="notes" name="notes">{{ !empty($seller) ? $seller->notes : '' }}</textarea>
+      </fieldset>
       <button type="submit" class="mt-3 mb-2 btn btn-primary">@php echo !empty($seller) ? 'Modifica venditore' : 'Aggiungi nuovo venditore' @endphp</button>
     @closeForm
   </div>
+@endsection
+
+@section('scripts')
+<script>
+<!--
+$("#notes").mde();
+-->
+</script>
 @endsection

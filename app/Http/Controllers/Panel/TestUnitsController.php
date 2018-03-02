@@ -28,12 +28,14 @@ class TestUnitsController extends Controller
     }
 
     public function massPut(TestUnitFormRequest $request, TestOrder $testOrder) {
-      $count = $testOrder->testUnits()
-        ->where('status', '>', 0)
+      $count = $testOrder->testUnits()->where(function ($q) {
+        $q->where('status', '>', 0)
         ->orWhere(function($q) {
           $q->where('status', 0)
             ->where('expires_on', '>', Carbon::now(config('app.timezone')));
-        })->count();
+        });
+      })->count();
+
       for($i = 0; $i < $testOrder->quantity-$count; $i++) {
         $testUnit = new TestUnit;
         $testUnit->hash_code = "placeholder";

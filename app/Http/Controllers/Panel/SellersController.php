@@ -46,7 +46,7 @@ class SellersController extends Controller
 
   public function put(SellerFormRequest $request) {
     $seller = Seller::create($request->only([
-      'nickname', 'name', 'email', 'facebook', 'wechat', 'profile_image'
+      'nickname', 'name', 'email', 'facebook', 'wechat', 'profile_image', 'notes'
     ]));
     $seller->save();
 
@@ -61,7 +61,7 @@ class SellersController extends Controller
 
   public function update(SellerFormRequest $request, Seller $seller) {
     $seller->fill($request->only([
-      'nickname', 'name', 'email', 'facebook', 'wechat', 'profile_image'
+      'nickname', 'name', 'email', 'facebook', 'wechat', 'profile_image', 'notes'
     ]));
     $seller->save();
 

@@ -11,7 +11,7 @@ class Seller extends Model
     protected $dates = ['deleted_at'];
 
     protected $fillable = [
-      'nickname', 'name', 'email', 'facebook', 'wechat', 'profile_image'
+      'nickname', 'name', 'email', 'facebook', 'wechat', 'profile_image', 'notes'
     ];
 
     public function stores() {

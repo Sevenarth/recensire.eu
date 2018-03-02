@@ -70,6 +70,12 @@ Venditore #{{ $seller->id }}
         </fieldset>
       </div>
     </div>
+
+    <fieldset class="form-group">
+      <label><b>Note</b></label>
+      <div class="markdown form-control">{{ !empty($seller->notes) ? $seller->notes : 'N/D' }}</div>
+    </fieldset>
+
     <div class="h5">
       Negozi
     </div>
