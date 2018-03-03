@@ -109,6 +109,7 @@ Tester #{{ $tester->id }}
               @else
               <div class="text-danger"><b>Scaduto</b></div>
               @endif
+            @endif
             </td>
             <td>
               <a href="{{ route('panel.testOrders.testUnits.view', $unit->id) }}" class="btn btn-primary btn-sm"><i class="fa fa-fw fa-external-link-alt"></i> Visualizza</a>
