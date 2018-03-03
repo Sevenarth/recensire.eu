@@ -40,6 +40,7 @@ Ordini di lavoro
             <th scope="col" class="p-2">
               @orderable('test_order.id', '#')
             </th>
+            <th scope="col"></th>
             <th scope="col" class="p-2">
               @orderable('product.name', 'Nome prodotto')
             </th>
@@ -56,6 +57,9 @@ Ordini di lavoro
           @forelse ($testOrders as $testOrder)
           <tr>
             <th class="align-middle" scope="row">{{ $testOrder->testOrder_id }}</th>
+            <td class="align-middle">
+              <img style="min-width: 50px; max-height: 50px" src="@if(empty($testOrder->product->images[0])) /images/package.svg @else{{ $testOrder->product->images[0] }}@endif" class="img-fluid img-thumbnail rounded border">
+            </td>
             <td class="align-middle">
               @if($testOrder->product_id)
               {{ $testOrder->product_name }}
@@ -81,7 +85,7 @@ Ordini di lavoro
           </tr>
           @empty
             <tr>
-              <td colspan="4" class="text-center">
+              <td colspan="5" class="text-center">
                 <i>Non ci sono ordini di lavoro con questi criteri di ricerca.</i>
               </td>
             </tr>
