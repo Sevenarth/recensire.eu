@@ -58,7 +58,8 @@ Ordini di lavoro
           <tr>
             <th class="align-middle" scope="row">{{ $testOrder->testOrder_id }}</th>
             <td class="align-middle">
-              <img style="min-width: 50px; max-height: 50px" src="@if(empty($testOrder->product->images[0])) /images/package.svg @else{{ $testOrder->product->images[0] }}@endif" class="img-fluid img-thumbnail rounded border">
+              @php $product_images = json_decode($testOrder->product_images); @endphp
+              <img style="min-width: 50px; max-height: 50px" src="@if(empty($product_images[0])) /images/package.svg @else{{ $product_images[0] }}@endif" class="img-fluid img-thumbnail rounded border">
             </td>
             <td class="align-middle">
               @if($testOrder->product_id)

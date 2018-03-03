@@ -59,7 +59,8 @@ class TestOrdersController extends Controller
           "product.id as product_id",
           "product.title as product_name",
           "store.id as store_id",
-          "store.name as store_name"
+          "store.name as store_name",
+          "product.images as product_images"
         )->paginate(15);
 
     return view("panel/testOrders/home", ['testOrders' => $testOrders]);
