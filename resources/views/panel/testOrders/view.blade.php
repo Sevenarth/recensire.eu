@@ -84,18 +84,24 @@ Ordine di lavoro #{{ $testOrder->id }}
       <div class="form-control markdown p-3" style="max-height: 300px; overflow-y: auto">{{ $testOrder->description }}</div>
     </fieldset>
 
-    <h4 class="mb-3">Unit&agrave; di test</h4>
+    <h4 class="mb-3">Unit&agrave; di test <span class="badge-secondary badge-pill badge">{{ $testOrder->testUnits()->count() }}</small></h4>
 
     <a class="mb-3 btn btn-primary" href="{{ route('panel.testOrders.testUnits.massCreate', $testOrder->id) }}">Riempi</a>
 
-    <h5>In corso</h5>
+    <h5>In corso <span class="badge-secondary badge-pill badge">{{ $testOrder->testUnits()->where(function($q) {
+      $q->where(function($q) {
+        $q->where('status', '<>', 3)->where('status', '>', 0);
+      })->orWhere(function($q) {
+        $q->where('status', 0)->where('expires_on', '>', \Carbon\Carbon::now(config('app.timezone')));
+      });
+    })->count() }}</small></h5>
 
     <table class="table table-sm table-striped">
       <thead>
         <th>Indice</th>
         <th>Tester</th>
         <th>Ultimo stato</th>
-        <th>Scadenza in</th>
+        <th>Scadenza/Acquisto</th>
         <th></th>
       </thead>
       <tbody>
@@ -111,12 +117,20 @@ Ordine di lavoro #{{ $testOrder->id }}
           <td class="p-2">@if(!empty($unit->tester)) <a href="{{ route('panel.testers.view', $unit->tester->id) }}">{{ $unit->tester->name }}</a> @else - @endif</td>
           <td class="p-2">{{ config('testUnit.statuses')[$unit->status] }}</td>
           <td class="p-2">
+            @if($unit->status > 0)
+              @if($accepted_date = $unit->statuses()->where('status', 1)->select('created_at')->first())
+                {{ $accepted_date->created_at }}
+              @else
+                -
+              @endif
+            @else
             @php $expiration = new \Carbon\Carbon($unit->expires_on, config('app.timezone')); @endphp
             @if($expiration->gt(\Carbon\Carbon::now(config('app.timezone'))))
             <div class="relative-time">{{ $expiration->toIso8601String() }}</div>
             @else
             <div class="text-danger"><b>Scaduto</b></div>
             @endif
+          @endif
           </td>
           <td>
             <a href="{{ route('panel.testOrders.testUnits.view', $unit->id) }}" class="btn btn-primary btn-sm"><i class="fa fa-fw fa-external-link-alt"></i> Visualizza</a>
@@ -138,7 +152,7 @@ Ordine di lavoro #{{ $testOrder->id }}
       </tbody>
     </table>
 
-    <h5>Completate</h5>
+    <h5>Completate <span class="badge-secondary badge-pill badge">{{ $testOrder->testUnits()->where('status', 3)->count() }}</small></h5>
 
     <table class="table table-sm table-striped">
       <thead>
@@ -165,7 +179,7 @@ Ordine di lavoro #{{ $testOrder->id }}
       </tbody>
     </table>
 
-    <h5>Scadute</h5>
+    <h5>Scadute <span class="badge-secondary badge-pill badge">{{ $testOrder->testUnits()->where('status', 0)->where('expires_on', '<', \Carbon\Carbon::now(config('app.timezone')))->count() }}</small></h5>
 
     <table class="table table-sm table-striped">
       <thead>
