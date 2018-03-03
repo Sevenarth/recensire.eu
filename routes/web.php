@@ -21,6 +21,9 @@ Route::name('tests.')->prefix('test')->group(function () {
   Route::get('/{testUnit}/grazie', 'TestUnitsController@thankYou')->name('thankyou');
 });
 
+Route::get('contattaci', 'HomeController@contactus')->name('contactus');
+Route::post('contattaci', 'HomeController@send')->name('postContactus');
+
 Route::get('/go/{testUnit}', 'TestUnitsController@go')->name('tests.go');
 
 Route::prefix('pannello')->group(function () {

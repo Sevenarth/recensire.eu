@@ -108,6 +108,12 @@ return [
 
     'cipher' => 'AES-256-CBC',
 
+
+    'notifiable' => env('NOTIFIABLE_EMAIL', 'me@example.com'),
+
+    'recaptcha_public_key' => env('RECAPTCHA_PUBLIC_KEY'),
+    'recaptcha_secret_key' => env('RECAPTCHA_SECRET_KEY'),
+
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers
@@ -216,5 +222,6 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Hashids' => Vinkla\Hashids\Facades\Hashids::class
     ],
+
 
 ];

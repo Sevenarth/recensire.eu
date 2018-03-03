@@ -21,8 +21,9 @@
 </head>
 <body class="bg-white">
   <!-- Begin MailChimp Signup Form -->
-  <div id="mc_embed_signup">
+  <div id="mc_embed_signup" class="container">
     <img src="/images/logo.svg" alt="logo" class="mx-4 mt-4 mb-2 img-fluid">
+      <a href="{{ route('contactus') }}" class="btn btn-info float-right mx-4 mt-4 mb-2">Contattaci</a>
   <form action="https://comprovato.us17.list-manage.com/subscribe/post?u=af18c1f69b2e28a2be014a413&id=7c34b249d6" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
       <div id="mc_embed_signup_scroll">
   	<h2>Se sei un recensore e vorresti ricevere i nostri prodotti, lascia i tuoi contatti compilando il modulo qui sotto.</h2>

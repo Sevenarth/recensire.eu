@@ -7,6 +7,8 @@ use App\TestUnit;
 use DB;
 use \Carbon\Carbon;
 use App\Http\Requests\TestAcceptRequest;
+use App\Notifications\BoughtProduct;
+use Notification;
 
 class TestUnitsController extends Controller
 {
@@ -38,6 +40,9 @@ class TestUnitsController extends Controller
       $testUnit->status = 1;
       $testUnit->statuses()->create(['status' => 1]);
       $testUnit->save();
+
+      Notification::route('mail', config('app.notifiable'))
+        ->notify(new BoughtProduct($testUnit));
 
       return redirect()
         ->route('tests.thankyou', $testUnit->hash_code)
