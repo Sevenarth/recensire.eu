@@ -83,6 +83,7 @@ Tester #{{ $tester->id }}
       <table class="table table-sm table-striped">
         <thead>
           <th>Indice</th>
+          <th></th>
           <th>Ordine di lavoro</th>
           <th>Ultimo stato</th>
           <th>Scadenza/Acquisto</th>
@@ -111,7 +112,7 @@ Tester #{{ $tester->id }}
               @endif
             @endif
             </td>
-            <td>
+            <td class="align-middle">
               <a href="{{ route('panel.testOrders.testUnits.view', $unit->id) }}" class="btn btn-primary btn-sm"><i class="fa fa-fw fa-external-link-alt"></i> Visualizza</a>
             </td>
           </tr>
