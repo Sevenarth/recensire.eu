@@ -53,7 +53,7 @@ class TestersController extends Controller
     if(Tester::where('wechat', trim($request->input('wechat')))->count() > 0)
       $confirm_fields[] = 'WeChat';
     foreach($request->input('amazon_profiles') as $key => $amz)
-      if(!empty($amz) && Tester::where('amazon_profiles', 'like', '%'.trim($amz).'%')->count() > 0)
+      if(!empty($amz) && Tester::where('amazon_profiles', 'like', '%'.str_replace('/', '%', trim($amz)).'%')->count() > 0)
         $confirm_fields[] = 'profilo Amazon no. ' . ($key+1);
     foreach($request->input('facebook_profiles') as $key => $fb)
       if(!empty($fb) && Tester::where('facebook_profiles', 'like', '%'.trim($fb).'%')->count() > 0)

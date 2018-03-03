@@ -11,6 +11,7 @@ use App\TestUnit;
 use App\TestUnitStatus;
 use DB;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 
 class HomeController extends Controller
 {
@@ -77,19 +78,28 @@ class HomeController extends Controller
 
     public function postReport(Request $request) {
       $report = "";
+      $testUnits = new Collection();
       if(!empty($request->input('start_date'))&&!empty($request->input('end_date'))) {
         if(!empty($request->input('store_id')))
-          $testUnits = TestOrder::where('store_id', $request->input('store_id'))->first()->testUnits()
-            ->where('created_at', '>', (new Carbon($request->input('start_date')))->startOfDay());
-        else
-          $testUnits = TestUnit::where('created_at', '>', (new Carbon($request->input('start_date')))->startOfDay());
+          foreach(TestOrder::where('store_id', $request->input('store_id'))->get() as $testOrder) {
+            $units = $testOrder->testUnits()
+              ->where('created_at', '>', (new Carbon($request->input('start_date')))->startOfDay())
+              ->where('created_at', '<', (new Carbon($request->input('end_date')))->endOfDay());
 
-        $testUnits->where('created_at', '<', (new Carbon($request->input('end_date')))->endOfDay());
+            if(intval($request->input('status')) >= 0)
+              $units = $units->where('status', $request->input('status'));
 
-        if(intval($request->input('status')) >= 0)
-          $testUnits = $testUnits->where('status', $request->input('status'));
+            $testUnits = $testUnits->merge($units->get());
+          }
+        else {
+          $testUnits = TestUnit::where('created_at', '>', (new Carbon($request->input('start_date')))->startOfDay())
+            ->where('created_at', '<', (new Carbon($request->input('end_date')))->endOfDay());
 
-        $testUnits = $testUnits->get();
+          if(intval($request->input('status')) >= 0)
+            $testUnits = $testUnits->where('status', $request->input('status'));
+
+          $testUnits = $testUnits->get();
+        }
 
         foreach($testUnits as $unit) {
           $row = [];
