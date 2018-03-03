@@ -25,7 +25,7 @@
       @forelse($acceptedToday as $status)
       <tr>
         <td class="p-2"><b>{{ $status->unit->hash_code }}</b> <a href="{{ route('panel.testOrders.testUnits.view', $status->unit->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-fw fa-external-link-alt"></i></a></td>
-        <td class="p-2">{{ $status->unit->tester->name }}  <a href="{{ route('panel.testers.view', $status->unit->tester->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-fw fa-external-link-alt"></i></a></td>
+        <td class="p-2">{{ !empty($status->unit->tester) ? $status->unit->tester->name : '' }}  <a href="{{ route('panel.testers.view', !empty($status->unit->tester) ? $status->unit->tester->id : '') }}" class="btn btn-sm btn-primary"><i class="fa fa-fw fa-external-link-alt"></i></a></td>
         <td class="p-2 relative-time">{{ (new \Carbon\Carbon($status->created_at, config('app.timezone')))->toIso8601String() }}</td>
       </tr>
     @empty
@@ -44,7 +44,7 @@
       @forelse($reviewedToday as $status)
       <tr>
         <td class="p-2"><b>{{ $status->unit->hash_code }}</b> <a href="{{ route('panel.testOrders.testUnits.view', $status->unit->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-fw fa-external-link-alt"></i></a></td>
-        <td class="p-2">{{ $status->unit->tester->name }}  <a href="{{ route('panel.testers.view', $status->unit->tester->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-fw fa-external-link-alt"></i></a></td>
+        <td class="p-2">{{ !empty($status->unit->tester) ? $status->unit->tester->name : '' }}  <a href="{{ route('panel.testers.view', !empty($status->unit->tester) ? $status->unit->tester->id : '') }}" class="btn btn-sm btn-primary"><i class="fa fa-fw fa-external-link-alt"></i></a></td>
         <td class="p-2 relative-time">{{ (new \Carbon\Carbon($status->created_at, config('app.timezone')))->toIso8601String() }}</td>
       </tr>
     @empty
@@ -63,7 +63,7 @@
       @forelse($refundedToday as $status)
       <tr>
         <td class="p-2"><b>{{ $status->unit->hash_code }}</b> <a href="{{ route('panel.testOrders.testUnits.view', $status->unit->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-fw fa-external-link-alt"></i></a></td>
-        <td class="p-2">{{ $status->unit->tester->name }}  <a href="{{ route('panel.testers.view', $status->unit->tester->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-fw fa-external-link-alt"></i></a></td>
+        <td class="p-2">{{ !empty($status->unit->tester) ? $status->unit->tester->name : '' }}  <a href="{{ route('panel.testers.view', !empty($status->unit->tester) ? $status->unit->tester->id : '') }}" class="btn btn-sm btn-primary"><i class="fa fa-fw fa-external-link-alt"></i></a></td>
         <td class="p-2 relative-time">{{ (new \Carbon\Carbon($status->created_at, config('app.timezone')))->toIso8601String() }}</td>
       </tr>
     @empty
@@ -82,7 +82,7 @@
       @forelse($reviewedToday as $status)
       <tr>
         <td class="p-2"><b>{{ $status->unit->hash_code }}</b> <a href="{{ route('panel.testOrders.testUnits.view', $status->unit->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-fw fa-external-link-alt"></i></a></td>
-        <td class="p-2">{{ $status->unit->tester->name }}  <a href="{{ route('panel.testers.view', $status->unit->tester->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-fw fa-external-link-alt"></i></a></td>
+        <td class="p-2">{{ !empty($status->unit->tester) ? $status->unit->tester->name : '' }}  <a href="{{ route('panel.testers.view', !empty($status->unit->tester) ? $status->unit->tester->id : '') }}" class="btn btn-sm btn-primary"><i class="fa fa-fw fa-external-link-alt"></i></a></td>
         <td class="p-2 relative-time">{{ (new \Carbon\Carbon($status->created_at, config('app.timezone')))->toIso8601String() }}</td>
       </tr>
     @empty

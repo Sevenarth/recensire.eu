@@ -33,6 +33,7 @@
           <div class="input-group">
             <div class="input-group-prepend">
               <button class="btn btn-outline-secondary" data-toggle="modal" data-target="#select-tester" type="button">Cerca</button>
+              <button type="button" class="btn btn-outline-danger" onclick="$('#tester-id').val('');$('#tester-name').val('');"title="Disassocia"><i class="fa fa-fw fa-unlink"></i></button>
             </div>
           @endif
             <input type="hidden" value="{{ !empty($testUnit->tester) ? $testUnit->tester->id : '' }}" id="tester-id" name="tester_id">
