@@ -16,10 +16,10 @@ class ProductsController extends Controller
   public function index(Request $request) {
     $orderBy = $request->query('orderBy', null);
     if(!empty($orderBy) && !in_array($orderBy, ['id', 'brand', 'title', 'ASIN']))
-      $orderBy = null;
+      $orderBy = "created_at";
     $sort = $request->query('sort', 'asc');
     if($sort != "asc" && $sort != "desc")
-      $sort = "asc";
+      $sort = "desc";
     $search = trim($request->query('s', null));
 
     if(!empty($search)) {
