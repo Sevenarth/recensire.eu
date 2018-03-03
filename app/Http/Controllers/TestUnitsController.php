@@ -13,7 +13,7 @@ use Notification;
 class TestUnitsController extends Controller
 {
     public function view(Request $request, $testUnit) {
-      $testUnit = TestUnit::where('hash_code', $testUnit)->where('status', 0)->firstOrFail();
+      $testUnit = TestUnit::where('hash_code', $testUnit)->where('tester_id', '<>', null)->where('status', 0)->firstOrFail();
       if((new Carbon($testUnit->expires_on, config('app.timezone'))) < Carbon::now())
         abort(404);
       return view('test', compact('testUnit'));

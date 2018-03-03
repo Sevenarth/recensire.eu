@@ -192,4 +192,39 @@ class TestUnitsController extends Controller
         ->route('panel.testOrders.view', $id)
         ->with('status', 'Unità di test eliminata con successo!');
     }
+
+    public function renew(Request $request, TestUnit $testUnit) {
+      $unit_new = $testUnit->replicate();
+      $unit_new->hash_code = "placeholder";
+      $unit_new->save();
+
+      foreach($testUnit->statuses as $status) {
+        $status->unit()->associate($unit_new);
+        $status->save();
+      }
+
+      $testUnit->delete();
+
+      return redirect()
+        ->route('panel.testOrders.testUnits.view', $unit_new->id)
+        ->with('status', 'Unità di test rinnovata con successo!');
+    }
+
+    public function duplicate(Request $request, TestUnit $testUnit) {
+      $unit_new = new TestUnit;
+      $unit_new->hash_code = "placeholder";
+      $unit_new->instructions = $testUnit->instructions;
+      $unit_new->refunding_type = $testUnit->refunding_type;
+      $unit_new->reference_url = $testUnit->reference_url;
+      $unit_new->expires_on = $testUnit->expires_on;
+      $unit_new->expires_on_space = $testUnit->expires_on_space;
+      $unit_new->expires_on_time = $testUnit->expires_on_time;
+      $unit_new->starts_on = $testUnit->starts_on;
+      $unit_new->testOrder()->associate($testUnit->testOrder);
+      $unit_new->save();
+
+      return redirect()
+        ->back()
+        ->with('status', 'Duplicato creato con hash <b><a href="'.route('panel.testOrders.testUnits.view', $unit_new->id).'">#'.$unit_new->hash_code.'</a></b>');
+    }
 }

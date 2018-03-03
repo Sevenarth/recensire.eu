@@ -90,6 +90,8 @@ Route::namespace('Panel')->name('panel.')->middleware('auth')->prefix('pannello'
         Route::get('/modifica-{testUnit}', 'TestUnitsController@edit')->name('edit');
         Route::patch('/visualizza-{testUnit}', 'TestUnitsController@update')->name('update');
         Route::delete('/visualizza-{testUnit}', 'TestUnitsController@delete')->name('delete');
+        Route::get('/rinnova-{testUnit}', 'TestUnitsController@renew')->name('renew');
+        Route::get('/duplica-{testUnit}', 'TestUnitsController@duplicate')->name('duplicate');
       });
     });
     Route::prefix('testers')->name('testers.')->group(function () {

@@ -44,9 +44,11 @@ class BoughtProduct extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->subject('Un tester ha comprato un prodotto!')
+                    ->subject((!empty($this->testUnit->tester) ? $this->testUnit->tester->name : 'Un tester') . ' ha comprato un prodotto!')
                     ->greeting('Ciao!')
                     ->line('Il tester ' . (!empty($this->testUnit->tester) ? $this->testUnit->tester->name : '-') . ' ('.(!empty($this->testUnit->tester) ? $this->testUnit->tester->email : '-').') ha appena accettato un test e comprato il prodotto associato.')
+                    ->line('**Numero di ordine Amazon:** ' . $this->testUnit->amazon_order_id)
+                    ->line('**Account PayPal:** ' . $this->testUnit->paypal_account)
                     ->action('Vai all\'unità di test', route('panel.testOrders.testUnits.view', $this->testUnit->id));
     }
 
