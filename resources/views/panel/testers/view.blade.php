@@ -85,16 +85,24 @@ Tester #{{ $tester->id }}
           <th>Indice</th>
           <th>Ordine di lavoro</th>
           <th>Ultimo stato</th>
-          <th>Scadenza in</th>
+          <th>Scadenza/Acquisto</th>
           <th></th>
         </thead>
         <tbody>
           @foreach($testUnits as $unit)
           <tr>
-            <th class="p-2" scope="row">{{ $unit->hash_code }}</th>
-            <td><a href="{{ route('panel.testOrders.view', $unit->testOrder->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-fw fa-external-link-alt"></i> Vai</a></td>
-            <td class="p-2">{{ config('testUnit.statuses')[$unit->status] }}</td>
-            <td class="p-2">
+            <th class="align-middle p-2" scope="row">{{ $unit->hash_code }}</th>
+            <td class="align-middle p-2"><img style="min-width: 50px; max-height: 50px" src="@if(empty($unit->testOrder->product->images[0])) /images/package.svg @else{{ $unit->testOrder->product->images[0] }}@endif" class="img-fluid img-thumbnail rounded border"></td>
+            <td class="align-middle"><a href="{{ route('panel.testOrders.view', $unit->testOrder->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-fw fa-external-link-alt"></i> Vai</a></td>
+            <td class="align-middle p-2">{{ config('testUnit.statuses')[$unit->status] }}</td>
+            <td class="align-middle p-2">
+              @if($unit->status > 0)
+                @if($accepted_date = $unit->statuses()->where('status', 1)->select('created_at')->first())
+                  {{ $accepted_date->created_at }}
+                @else
+                  -
+                @endif
+              @else
               @php $expiration = new \Carbon\Carbon($unit->expires_on, config('app.timezone')); @endphp
               @if($expiration->gt(\Carbon\Carbon::now(config('app.timezone'))))
               <div class="relative-time">{{ $expiration->toIso8601String() }}</div>
