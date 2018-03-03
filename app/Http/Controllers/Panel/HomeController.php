@@ -39,13 +39,13 @@ class HomeController extends Controller
         ->select('test_unit_id', DB::raw('MAX(created_at) as created_at'))
         ->get();
 
-      $refundedToday = TestUnitStatus::where('status', 3)
+      $completedToday = TestUnitStatus::where('status', 3)
         ->where('created_at','>',Carbon::now(config('app.timezone'))->startOfDay())
         ->groupBy('test_unit_id')
         ->select('test_unit_id', DB::raw('MAX(created_at) as created_at'))
         ->get();
 
-      return view("panel/home", compact('incomplete', 'acceptedToday', 'reviewedToday', 'refundedToday'));
+      return view("panel/home", compact('incomplete', 'acceptedToday', 'reviewedToday', 'completedToday'));
     }
 
     public function upload(Request $request) {
