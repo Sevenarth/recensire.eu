@@ -46,7 +46,7 @@ class TestOrdersController extends Controller
             ->orWhere("store.name", "like", "%".$search."%")
             ->orWhere("product.id", $search)
             ->orWhere("product.ASIN", $search)
-            ->orWhere("product.name", "like", "%".$search."%");
+            ->orWhere("product.title", "like", "%".$search."%");
         });
 
     if(!empty($orderBy))
