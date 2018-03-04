@@ -43,24 +43,48 @@ Ordine di lavoro #{{ $testOrder->id }}
       @closeForm
     @endif
 
-    <div class="row">
-      <div class="col-sm-6">
-        <fieldset class="form-group">
-          <label for="store"><b>Negozio</b>
-          @if(!empty($testOrder->store))<a title="Vai al negozio" href="{{ route('panel.stores.view', ['store' => $testOrder->store->id]) }}" class="btn btn-sm btn-primary">
-            <i class="fas fa-external-link-alt"></i>
-          </a>@endif</label>
-          <input type="text" id="store" readonly class="form-control-plaintext" value="{{ !empty($testOrder->store) ? $testOrder->store->name : 'Negozio assente' }}">
-        </fieldset>
+
+    <div class="row mb-xl-4">
+      <div class="col-sm-3 mb-4 mb-sm-0 text-center">
+        @if(!empty($testOrder->product))
+          <img style="max-height: 190px" id="image" src="@if(empty($testOrder->product->images[0])) /images/package.svg @else{{ $testOrder->product->images[0] }}@endif" class="img-fluid img-thumbnail rounded border">
+        @else
+          <img style="max-height: 190px" id="image" src="/images/package.svg" class="img-fluid img-thumbnail rounded border">
+        @endif
       </div>
-      <div class="col-sm-6">
-        <fieldset class="form-group">
-          <label for="product"><b>Prodotto</b>
-          @if(!empty($testOrder->product))<a title="Vai al prodotto" href="{{ route('panel.products.view', $testOrder->product->id) }}" class="btn btn-sm btn-primary">
-            <i class="fas fa-external-link-alt"></i>
-          </a>@endif</label>
-          <input type="text" id="product" readonly class="form-control-plaintext" value="{{ !empty($testOrder->product) ? $testOrder->product->title : 'Prodotto assente' }}">
-        </fieldset>
+      <div class="col-sm-9">
+        <div class="row">
+          <div class="col-sm-6">
+            <fieldset class="form-group">
+              <label><b>Marchio e nome prodotto</b> @if(!empty($testOrder->product->id))<a class="btn btn-sm btn-primary" href="{{ route('panel.products.view', $testOrder->product->id)}}"><i class="fa fa-fw fa-external-link-alt"></i></a>@endif</label>
+              <input type="text" readonly class="form-control-plaintext" value="{{ !empty($testOrder->product->id) ? $testOrder->product->brand . ' '. $testOrder->product->title : 'Prodotto assente' }}">
+            </fieldset>
+          </div>
+          @if(!empty($testOrder->product->id))
+          <div class="col-sm-6">
+            <fieldset class="form-group">
+              <label><b>ASIN</b></label>
+              <input type="text" readonly class="form-control-plaintext" value="{{  $testOrder->product->ASIN }}">
+            </fieldset>
+          </div>
+        @endif
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <fieldset class="form-group">
+              <label><b>Negozio</b> @if(!empty($testOrder->store->id))<a class="btn btn-sm btn-primary" href="{{ route('panel.stores.view', $testOrder->store->id)}}"><i class="fa fa-fw fa-external-link-alt"></i></a>@endif</label>
+              <input type="text" readonly class="form-control-plaintext" value="{{ !empty($testOrder->store) ? $testOrder->store->name : 'Negozio assente' }}">
+            </fieldset>
+          </div>
+          @if(!empty($testOrder->store->id))
+          <div class="col-sm-6">
+            <fieldset class="form-group">
+              <label><b>Venditore</b> @if(!empty($testOrder->store->seller->id))<a class="btn btn-sm btn-primary" href="{{ route('panel.sellers.view', $testOrder->store->seller->id)}}"><i class="fa fa-fw fa-external-link-alt"></i></a>@endif</label>
+              <input type="text" readonly class="form-control-plaintext" value="{{  !empty($testOrder->store->seller->id) ? $testOrder->store->seller->nickname : '-' }}">
+            </fieldset>
+          </div>
+        @endif
+        </div>
       </div>
     </div>
 
