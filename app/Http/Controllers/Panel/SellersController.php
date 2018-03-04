@@ -27,12 +27,12 @@ class SellersController extends Controller
           ->orWhere("wechat", $search);
 
         if(!empty($orderBy))
-          $sellers = $sellers->orderBy($orderBy, $sort)->paginate(15);
+          $sellers = $sellers->orderBy($orderBy, $sort)->orderBy('id', $sort)->paginate(15);
         else
           $sellers = $sellers->paginate(15);
     } else {
         if(!empty($orderBy))
-          $sellers = Seller::orderBy($orderBy, $sort)->paginate(15);
+          $sellers = Seller::orderBy($orderBy, $sort)->orderBy('id', $sort)->paginate(15);
         else
           $sellers = Seller::paginate(15);
     }

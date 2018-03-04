@@ -35,9 +35,9 @@ class TestUnitsController extends Controller
         });
 
       if(!empty($orderBy))
-        $testUnits = $testUnits->orderBy($orderBy, $sort);
+        $testUnits = $testUnits->orderBy($orderBy, $sort)->orderBy('test_unit.id', $sort);
       else
-        $testUnits = $testUnits->orderBy('test_unit.created_at', 'desc');
+        $testUnits = $testUnits->orderBy('test_unit.created_at', 'desc')->orderBy('test_unit.id', 'desc');
 
       $testUnits = $testUnits
           ->select(

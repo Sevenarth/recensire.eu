@@ -33,7 +33,7 @@ class StoresController extends Controller
       ->orWhere("seller.name", "like", "%".$search."%");
 
     if(!empty($orderBy))
-      $stores = $stores->orderBy($orderBy, $sort);
+      $stores = $stores->orderBy($orderBy, $sort)->orderBy('store.id', $sort);
 
     $stores = $stores
         ->select(

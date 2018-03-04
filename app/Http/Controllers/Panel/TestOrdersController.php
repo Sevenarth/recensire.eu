@@ -50,9 +50,9 @@ class TestOrdersController extends Controller
         });
 
     if(!empty($orderBy))
-      $testOrders = $testOrders->orderBy($orderBy, $sort);
+      $testOrders = $testOrders->orderBy($orderBy, $sort)->orderBy('test_order.id', $sort);
     else
-      $testOrders = $testOrders->orderBy('test_order.created_at', 'desc');
+      $testOrders = $testOrders->orderBy('test_order.created_at', 'desc')->orderBy('test_order.id', $sort);
 
     $testOrders = $testOrders
         ->select(

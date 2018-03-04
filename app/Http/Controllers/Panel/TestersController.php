@@ -26,12 +26,12 @@ class TestersController extends Controller
           ->orWhere("wechat", '%'.$search.'%');
 
         if(!empty($orderBy))
-          $testers = $testers->orderBy($orderBy, $sort)->paginate(15);
+          $testers = $testers->orderBy($orderBy, $sort)->orderBy('id', $sort)->paginate(15);
         else
           $testers = $testers->paginate(15);
     } else {
         if(!empty($orderBy))
-          $testers = Tester::orderBy($orderBy, $sort)->paginate(15);
+          $testers = Tester::orderBy($orderBy, $sort)->orderBy('id', $sort)->paginate(15);
         else
           $testers = Tester::paginate(15);
     }

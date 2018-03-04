@@ -29,12 +29,12 @@ class ProductsController extends Controller
           ->orWhere("ASIN", $search);
 
         if(!empty($orderBy))
-          $products = $products->orderBy($orderBy, $sort)->paginate(15);
+          $products = $products->orderBy($orderBy, $sort)->orderBy('id', $sort)->paginate(15);
         else
           $products = $products->paginate(15);
     } else {
         if(!empty($orderBy))
-          $products = Product::orderBy($orderBy, $sort)->paginate(15);
+          $products = Product::orderBy($orderBy, $sort)->orderBy('id', $sort)->paginate(15);
         else
           $products = Product::paginate(15);
     }
