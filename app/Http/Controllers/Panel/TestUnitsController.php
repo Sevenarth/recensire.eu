@@ -9,9 +9,51 @@ use App\TestUnit;
 use App\Http\Requests\TestUnitFormRequest;
 use Carbon\Carbon;
 use App\Tester;
+use DB;
 
 class TestUnitsController extends Controller
 {
+    public function index(Request $request) {
+      $orderBy = $request->query('orderBy', null);
+
+      if(!in_array($orderBy, ['hash_code', 'test_order_id', 'tester_name', 'status', 'test_unit.created_at']))
+        $orderBy = null;
+      $sort = $request->query('sort');
+      if($sort != "asc" && $sort != "desc")
+        $sort = "asc";
+      $search = trim($request->query('s', null));
+
+      $testUnits = DB::table('test_unit')
+          ->leftJoin('tester', 'test_unit.tester_id', '=', 'tester.id');
+
+      if(!empty($search))
+        $testUnits = $testUnits->where(function($query) use($search) {
+          $query->where("test_order_id", $search)
+            ->orWhere("hash_code", $search)
+            ->orWhere("amazon_order_id", $search)
+            ->orWhere("paypal_account", $search);
+        });
+
+      if(!empty($orderBy))
+        $testUnits = $testUnits->orderBy($orderBy, $sort);
+      else
+        $testUnits = $testUnits->orderBy('test_unit.created_at', 'desc');
+
+      $testUnits = $testUnits
+          ->select(
+            "test_order_id",
+            "status",
+            "tester.id as tester_id",
+            "tester.name as tester_name",
+            "test_unit.id as id",
+            "test_unit.created_at as created_at",
+            "expires_on",
+            "hash_code"
+          )->paginate(15);
+
+      return view("panel/testUnits/home", compact('testUnits'));
+    }
+
     public function create(Request $request, TestOrder $testOrder) {
       $testUnit = new TestUnit;
       $testUnit->testOrder()->associate($testOrder);
@@ -180,7 +222,7 @@ class TestUnitsController extends Controller
       $testUnit->save();
 
       return redirect()
-        ->route('panel.testOrders.testUnits.view', $testUnit->id)
+        ->route('panel.testUnits.view', $testUnit->id)
         ->with('status', 'Unità di test modificata con successo!');
     }
 
@@ -206,7 +248,7 @@ class TestUnitsController extends Controller
       $testUnit->delete();
 
       return redirect()
-        ->route('panel.testOrders.testUnits.view', $unit_new->id)
+        ->route('panel.testUnits.view', $unit_new->id)
         ->with('status', 'Unità di test rinnovata con successo!');
     }
 
@@ -225,6 +267,6 @@ class TestUnitsController extends Controller
 
       return redirect()
         ->back()
-        ->with('status', 'Duplicato creato con hash <b><a href="'.route('panel.testOrders.testUnits.view', $unit_new->id).'">#'.$unit_new->hash_code.'</a></b>');
+        ->with('status', 'Duplicato creato con hash <b><a href="'.route('panel.testUnits.view', $unit_new->id).'">#'.$unit_new->hash_code.'</a></b>');
     }
 }

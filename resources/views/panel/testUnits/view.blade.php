@@ -12,14 +12,14 @@ Unità di test #{{ $testUnit->hash_code }}
   <div class="px-4 py-3 h3 border-bottom d-none d-md-block">
     @if($testUnit->status > 0)
       <div class="btn-group float-right" role="group">
-        <a href="{{route('panel.testOrders.testUnits.renew', $testUnit->id)}}" class="btn btn-outline-info"><i class="fa fa-fw fa-sync-alt"></i> Rinnova</a><a href="{{route('panel.testOrders.testUnits.duplicate', $testUnit->id)}}" class="btn btn-outline-secondary"><i class="fa fa-fw fa-clone"></i> Duplica</a><a href="{{route("panel.testOrders.testUnits.edit", $testUnit->id)}}" class="btn btn-outline-primary"><i class="fa fa-fw fa-edit"></i> Modifica</a>
+        <a href="{{route('panel.testUnits.renew', $testUnit->id)}}" class="btn btn-outline-info"><i class="fa fa-fw fa-sync-alt"></i> Rinnova</a><a href="{{route('panel.testUnits.duplicate', $testUnit->id)}}" class="btn btn-outline-secondary"><i class="fa fa-fw fa-clone"></i> Duplica</a><a href="{{route("panel.testUnits.edit", $testUnit->id)}}" class="btn btn-outline-primary"><i class="fa fa-fw fa-edit"></i> Modifica</a>
       </div>
     @else
-      @openForm('panel.testOrders.testUnits.delete', 'delete', arg="testUnit->id")
+      @openForm('panel.testUnits.delete', 'delete', arg="testUnit->id")
       <div class="btn-group float-right" role="group">
-        <a href="{{route('panel.testOrders.testUnits.renew', $testUnit->id)}}" class="btn btn-outline-info"><i class="fa fa-fw fa-sync-alt"></i> Rinnova</a>
-        <a href="{{route('panel.testOrders.testUnits.duplicate', $testUnit->id)}}" class="btn btn-outline-secondary"><i class="fa fa-fw fa-clone"></i> Duplica</a>
-        <a href="{{route("panel.testOrders.testUnits.edit", $testUnit->id)}}" class="btn btn-outline-primary"><i class="fa fa-fw fa-edit"></i> Modifica</a>
+        <a href="{{route('panel.testUnits.renew', $testUnit->id)}}" class="btn btn-outline-info"><i class="fa fa-fw fa-sync-alt"></i> Rinnova</a>
+        <a href="{{route('panel.testUnits.duplicate', $testUnit->id)}}" class="btn btn-outline-secondary"><i class="fa fa-fw fa-clone"></i> Duplica</a>
+        <a href="{{route("panel.testUnits.edit", $testUnit->id)}}" class="btn btn-outline-primary"><i class="fa fa-fw fa-edit"></i> Modifica</a>
         <button type="submit" data-placement="bottom" class="remove-confirmation btn btn-danger" data-html="true" data-toggle="popover" data-trigger="focus" title="Richiesta di conferma" data-content="Sei sicuro di voler eliminare questa unità di test?"><i class="fa fa-fw fa-times"></i> Elimina</button>
       </div>
       @closeForm
@@ -35,12 +35,12 @@ Unità di test #{{ $testUnit->hash_code }}
 
     @if($testUnit->status > 0)
       <div class="btn-group text-center d-block d-md-none mb-4" role="group">
-        <a href="{{route('panel.testOrders.testUnits.renew', $testUnit->id)}}" class="btn btn-outline-info"><i class="fa fa-fw fa-sync-alt"></i> Rinnova</a><a href="{{route('panel.testOrders.testUnits.duplicate', $testUnit->id)}}" class="btn btn-outline-secondary"><i class="fa fa-fw fa-clone"></i> Duplica</a><a href="{{route("panel.testOrders.testUnits.edit", $testUnit->id)}}" class="btn btn-outline-primary"><i class="fa fa-fw fa-edit"></i> Modifica</a>
+        <a href="{{route('panel.testUnits.renew', $testUnit->id)}}" class="btn btn-outline-info"><i class="fa fa-fw fa-sync-alt"></i> Rinnova</a><a href="{{route('panel.testUnits.duplicate', $testUnit->id)}}" class="btn btn-outline-secondary"><i class="fa fa-fw fa-clone"></i> Duplica</a><a href="{{route("panel.testUnits.edit", $testUnit->id)}}" class="btn btn-outline-primary"><i class="fa fa-fw fa-edit"></i> Modifica</a>
       </div>
     @else
-      @openForm('panel.testOrders.testUnits.delete', 'delete', arg="testUnit->id")
+      @openForm('panel.testUnits.delete', 'delete', arg="testUnit->id")
       <div class="btn-group text-center d-block d-md-none mb-4" role="group">
-        <a href="{{route('panel.testOrders.testUnits.renew', $testUnit->id)}}" class="btn btn-outline-info"><i class="fa fa-fw fa-sync-alt"></i> Rinnova</a><a href="{{route('panel.testOrders.testUnits.duplicate', $testUnit->id)}}" class="btn btn-outline-secondary"><i class="fa fa-fw fa-clone"></i> Duplica</a><a href="{{route("panel.testOrders.testUnits.edit", $testUnit->id)}}" class="btn btn-outline-primary"><i class="fa fa-fw fa-edit"></i> Modifica</a><button type="submit" class="remove-confirmation btn btn-danger" data-html="true" data-placement="bottom" data-toggle="popover" data-trigger="focus" title="Richiesta di conferma" data-content="Sei sicuro di voler eliminare questa unità di test?"><i class="fa fa-fw fa-times"></i> Elimina</button>
+        <a href="{{route('panel.testUnits.renew', $testUnit->id)}}" class="btn btn-outline-info"><i class="fa fa-fw fa-sync-alt"></i> Rinnova</a><a href="{{route('panel.testUnits.duplicate', $testUnit->id)}}" class="btn btn-outline-secondary"><i class="fa fa-fw fa-clone"></i> Duplica</a><a href="{{route("panel.testUnits.edit", $testUnit->id)}}" class="btn btn-outline-primary"><i class="fa fa-fw fa-edit"></i> Modifica</a><button type="submit" class="remove-confirmation btn btn-danger" data-html="true" data-placement="bottom" data-toggle="popover" data-trigger="focus" title="Richiesta di conferma" data-content="Sei sicuro di voler eliminare questa unità di test?"><i class="fa fa-fw fa-times"></i> Elimina</button>
       </div>
       @closeForm
     @endif

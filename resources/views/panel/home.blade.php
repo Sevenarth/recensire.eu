@@ -32,7 +32,7 @@
       @forelse($acceptedToday as $status)
       <tr>
         <td class="p-2 align-middle"><img style="min-width: 50px; max-height: 50px" src="@if(empty($status->unit->testOrder->product->images[0])) /images/package.svg @else{{ $status->unit->testOrder->product->images[0] }}@endif" class="img-fluid img-thumbnail rounded border"></td>
-        <td class="p-2 align-middle"><b>{{ $status->unit->hash_code }}</b> <a href="{{ route('panel.testOrders.testUnits.view', $status->unit->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-fw fa-external-link-alt"></i></a></td>
+        <td class="p-2 align-middle"><b>{{ $status->unit->hash_code }}</b> <a href="{{ route('panel.testUnits.view', $status->unit->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-fw fa-external-link-alt"></i></a></td>
         <td class="p-2 align-middle">{{ !empty($status->unit->tester) ? $status->unit->tester->name : '' }}  <a href="{{ route('panel.testers.view', !empty($status->unit->tester) ? $status->unit->tester->id : '') }}" class="btn btn-sm btn-primary"><i class="fa fa-fw fa-external-link-alt"></i></a></td>
         <td class="p-2 align-middle relative-time">{{ (new \Carbon\Carbon($status->created_at, config('app.timezone')))->toIso8601String() }}</td>
       </tr>
@@ -52,7 +52,7 @@
       @forelse($reviewedToday as $status)
       <tr>
         <td class="p-2 align-middle"><img style="min-width: 50px; max-height: 50px" src="@if(empty($status->unit->testOrder->product->images[0])) /images/package.svg @else{{ $status->unit->testOrder->product->images[0] }}@endif" class="img-fluid img-thumbnail rounded border"></td>
-        <td class="p-2 align-middle"><b>{{ $status->unit->hash_code }}</b> <a href="{{ route('panel.testOrders.testUnits.view', $status->unit->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-fw fa-external-link-alt"></i></a></td>
+        <td class="p-2 align-middle"><b>{{ $status->unit->hash_code }}</b> <a href="{{ route('panel.testUnits.view', $status->unit->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-fw fa-external-link-alt"></i></a></td>
         <td class="p-2 align-middle">{{ !empty($status->unit->tester) ? $status->unit->tester->name : '' }}  <a href="{{ route('panel.testers.view', !empty($status->unit->tester) ? $status->unit->tester->id : '') }}" class="btn btn-sm btn-primary"><i class="fa fa-fw fa-external-link-alt"></i></a></td>
         <td class="p-2 align-middle relative-time">{{ (new \Carbon\Carbon($status->created_at, config('app.timezone')))->toIso8601String() }}</td>
       </tr>
@@ -72,7 +72,7 @@
       @forelse($completedToday as $status)
       <tr>
         <td class="p-2 align-middle"><img style="min-width: 50px; max-height: 50px" src="@if(empty($status->unit->testOrder->product->images[0])) /images/package.svg @else{{ $status->unit->testOrder->product->images[0] }}@endif" class="img-fluid img-thumbnail rounded border"></td>
-        <td class="p-2 align-middle"><b>{{ $status->unit->hash_code }}</b> <a href="{{ route('panel.testOrders.testUnits.view', $status->unit->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-fw fa-external-link-alt"></i></a></td>
+        <td class="p-2 align-middle"><b>{{ $status->unit->hash_code }}</b> <a href="{{ route('panel.testUnits.view', $status->unit->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-fw fa-external-link-alt"></i></a></td>
         <td class="p-2 align-middle">{{ !empty($status->unit->tester) ? $status->unit->tester->name : '' }}  <a href="{{ route('panel.testers.view', !empty($status->unit->tester) ? $status->unit->tester->id : '') }}" class="btn btn-sm btn-primary"><i class="fa fa-fw fa-external-link-alt"></i></a></td>
         <td class="p-2 align-middle relative-time">{{ (new \Carbon\Carbon($status->created_at, config('app.timezone')))->toIso8601String() }}</td>
       </tr>

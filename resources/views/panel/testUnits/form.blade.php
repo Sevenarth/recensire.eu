@@ -14,13 +14,13 @@
   </div>
   <div class="px-4 py-3">
     @if(!empty($testUnit->id))
-    @openForm('panel.testOrders.testUnits.update', 'patch', arg="testUnit->id")
+    @openForm('panel.testUnits.update', 'patch', arg="testUnit->id")
   @elseif(!empty($testUnit->mass))
-    <form action="{{ route('panel.testOrders.testUnits.massPut', $testUnit->testOrder->id) }}" method="post">
+    <form action="{{ route('panel.testUnits.massPut', $testUnit->testOrder->id) }}" method="post">
       @method('put')
       @csrf
     @else
-    <form action="{{ route('panel.testOrders.testUnits.put', $testUnit->testOrder->id) }}" method="post">
+    <form action="{{ route('panel.testUnits.put', $testUnit->testOrder->id) }}" method="post">
       @method('put')
       @csrf
     @endif

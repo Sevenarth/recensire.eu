@@ -29,6 +29,11 @@ Breadcrumbs::register('testOrders', function ($breadcrumbs) {
     $breadcrumbs->push('Ordini di lavoro', route('panel.testOrders.home'));
 });
 
+Breadcrumbs::register('testUnits', function ($breadcrumbs) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push('Unità di test', route('panel.testUnits.home'));
+});
+
 Breadcrumbs::register('testers', function ($breadcrumbs) {
     $breadcrumbs->parent('home');
     $breadcrumbs->push('Testers', route('panel.testers.home'));
@@ -117,17 +122,17 @@ Breadcrumbs::register('testOrders.edit', function ($breadcrumbs, $testOrder) {
 
 Breadcrumbs::register('testUnits.view', function ($breadcrumbs, $testUnit) {
     $breadcrumbs->parent('testOrders.view', $testUnit->testOrder);
-    $breadcrumbs->push('Unità di test #'.$testUnit->hash_code, route('panel.testOrders.testUnits.view', $testUnit->id));
+    $breadcrumbs->push('Unità di test #'.$testUnit->hash_code, route('panel.testUnits.view', $testUnit->id));
 });
 
 Breadcrumbs::register('testUnits.create', function ($breadcrumbs, $testUnit) {
     $breadcrumbs->parent('testOrders.view', $testUnit->testOrder);
-    $breadcrumbs->push('Nuova unità di test', route('panel.testOrders.testUnits.create', $testUnit->testOrder->id));
+    $breadcrumbs->push('Nuova unità di test', route('panel.testUnits.create', $testUnit->testOrder->id));
 });
 
 Breadcrumbs::register('testUnits.edit', function ($breadcrumbs, $testUnit) {
     $breadcrumbs->parent('testUnits.view', $testUnit);
-    $breadcrumbs->push('Modifica', route('panel.testOrders.testUnits.edit', $testUnit->id));
+    $breadcrumbs->push('Modifica', route('panel.testUnits.edit', $testUnit->id));
 });
 
 Breadcrumbs::register('testers.create', function ($breadcrumbs) {

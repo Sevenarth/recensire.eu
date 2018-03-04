@@ -113,7 +113,7 @@ Tester #{{ $tester->id }}
             @endif
             </td>
             <td class="align-middle">
-              <a href="{{ route('panel.testOrders.testUnits.view', $unit->id) }}" class="btn btn-primary btn-sm"><i class="fa fa-fw fa-external-link-alt"></i> Visualizza</a>
+              <a href="{{ route('panel.testUnits.view', $unit->id) }}" class="btn btn-primary btn-sm"><i class="fa fa-fw fa-external-link-alt"></i> Visualizza</a>
             </td>
           </tr>
           @endforeach

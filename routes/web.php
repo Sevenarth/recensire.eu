@@ -80,19 +80,19 @@ Route::namespace('Panel')->name('panel.')->middleware('auth')->prefix('pannello'
       Route::get('/modifica-{testOrder}', 'TestOrdersController@edit')->name('edit');
       Route::patch('/visualizza-{testOrder}', 'TestOrdersController@update')->name('update');
       Route::delete('/visualizza-{testOrder}', 'TestOrdersController@delete')->name('delete');
-
-      Route::prefix('tests')->name('testUnits.')->group(function () {
-        Route::get('/nuovo-{testOrder}', 'TestUnitsController@create')->name('create');
-        Route::put('/nuovo-{testOrder}', 'TestUnitsController@put')->name('put');
-          Route::get('/nuovi-{testOrder}', 'TestUnitsController@massCreate')->name('massCreate');
-          Route::put('/nuovi-{testOrder}', 'TestUnitsController@massPut')->name('massPut');
-        Route::get('/visualizza-{testUnit}', 'TestUnitsController@view')->name('view');
-        Route::get('/modifica-{testUnit}', 'TestUnitsController@edit')->name('edit');
-        Route::patch('/visualizza-{testUnit}', 'TestUnitsController@update')->name('update');
-        Route::delete('/visualizza-{testUnit}', 'TestUnitsController@delete')->name('delete');
-        Route::get('/rinnova-{testUnit}', 'TestUnitsController@renew')->name('renew');
-        Route::get('/duplica-{testUnit}', 'TestUnitsController@duplicate')->name('duplicate');
-      });
+    });
+    Route::prefix('tests')->name('testUnits.')->group(function () {
+      Route::get('/', 'TestUnitsController@index')->name('home');
+      Route::get('/nuovo-{testOrder}', 'TestUnitsController@create')->name('create');
+      Route::put('/nuovo-{testOrder}', 'TestUnitsController@put')->name('put');
+      Route::get('/nuovi-{testOrder}', 'TestUnitsController@massCreate')->name('massCreate');
+      Route::put('/nuovi-{testOrder}', 'TestUnitsController@massPut')->name('massPut');
+      Route::get('/visualizza-{testUnit}', 'TestUnitsController@view')->name('view');
+      Route::get('/modifica-{testUnit}', 'TestUnitsController@edit')->name('edit');
+      Route::patch('/visualizza-{testUnit}', 'TestUnitsController@update')->name('update');
+      Route::delete('/visualizza-{testUnit}', 'TestUnitsController@delete')->name('delete');
+      Route::get('/rinnova-{testUnit}', 'TestUnitsController@renew')->name('renew');
+      Route::get('/duplica-{testUnit}', 'TestUnitsController@duplicate')->name('duplicate');
     });
     Route::prefix('testers')->name('testers.')->group(function () {
       Route::get('/', 'TestersController@index')->name('home');

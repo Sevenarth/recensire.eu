@@ -110,7 +110,7 @@ Ordine di lavoro #{{ $testOrder->id }}
 
     <h4 class="mb-3">Unit&agrave; di test <span class="badge-secondary badge-pill badge">{{ $testOrder->testUnits()->count() }}</small></h4>
 
-    <a class="mb-3 btn btn-primary" href="{{ route('panel.testOrders.testUnits.massCreate', $testOrder->id) }}">Riempi</a>
+    <a class="mb-3 btn btn-primary" href="{{ route('panel.testUnits.massCreate', $testOrder->id) }}">Riempi</a>
 
     <h5>In corso <span class="badge-secondary badge-pill badge">{{ $testOrder->testUnits()->where(function($q) {
       $q->where(function($q) {
@@ -157,7 +157,7 @@ Ordine di lavoro #{{ $testOrder->id }}
           @endif
           </td>
           <td>
-            <a href="{{ route('panel.testOrders.testUnits.view', $unit->id) }}" class="btn btn-primary btn-sm"><i class="fa fa-fw fa-external-link-alt"></i> Visualizza</a>
+            <a href="{{ route('panel.testUnits.view', $unit->id) }}" class="btn btn-primary btn-sm"><i class="fa fa-fw fa-external-link-alt"></i> Visualizza</a>
           </td>
         </tr>
         @endforeach
@@ -169,7 +169,7 @@ Ordine di lavoro #{{ $testOrder->id }}
         <tr>
           <td class="p-2" colspan="4"><i>Unità di test mancante.</i></td>
           <td>
-            <a href="{{ route('panel.testOrders.testUnits.create', $testOrder->id) }}" class="btn btn-success btn-sm"><i class="fas fa-plus fa-fw"></i> Crea unità di test</a>
+            <a href="{{ route('panel.testUnits.create', $testOrder->id) }}" class="btn btn-success btn-sm"><i class="fas fa-plus fa-fw"></i> Crea unità di test</a>
           </td>
         </tr>
         @endfor
@@ -196,7 +196,7 @@ Ordine di lavoro #{{ $testOrder->id }}
             Completo
           </td>
           <td>
-            <a href="{{ route('panel.testOrders.testUnits.view', $unit->id) }}" class="btn btn-primary btn-sm"><i class="fa fa-fw fa-external-link-alt"></i> Visualizza</a>
+            <a href="{{ route('panel.testUnits.view', $unit->id) }}" class="btn btn-primary btn-sm"><i class="fa fa-fw fa-external-link-alt"></i> Visualizza</a>
           </td>
         </tr>
         @endforeach
@@ -228,7 +228,7 @@ Ordine di lavoro #{{ $testOrder->id }}
             @endif
           </td>
           <td>
-            <a href="{{ route('panel.testOrders.testUnits.view', $unit->id) }}" class="btn btn-primary btn-sm"><i class="fa fa-fw fa-external-link-alt"></i> Visualizza</a>
+            <a href="{{ route('panel.testUnits.view', $unit->id) }}" class="btn btn-primary btn-sm"><i class="fa fa-fw fa-external-link-alt"></i> Visualizza</a>
           </td>
         </tr>
         @endforeach
