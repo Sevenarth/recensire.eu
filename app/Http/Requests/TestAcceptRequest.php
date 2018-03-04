@@ -25,7 +25,7 @@ class TestAcceptRequest extends FormRequest
     {
         return [
             'paypal_account' => 'required|email|max:191',
-            'amazon_order_id' => 'required|string|max:191',
+            'amazon_order_id' => ['required', 'string', 'max:191', 'regex:/^([0-9-]+)$/'],
             'tester_notes' => 'nullable|string|max:191'
         ];
     }
@@ -36,6 +36,7 @@ class TestAcceptRequest extends FormRequest
         '*.required' => 'Questo campo è obbligatorio.',
         'paypal_account.email' => "L'account PayPal deve essere un indirizzo email valido.",
         'amazon_order_id.string' => "Il numero di ordine Amazon deve essere una stringa valida.",
+        'amazon_order_id.regex' => "Il numero di ordine Amazon deve essere composto da numberi e trattini, come mostrato nel campo.",
         'tester_notes.string' => "Le note devono essere una stringa valida."
       ];
     }
