@@ -115,8 +115,8 @@ Breadcrumbs::register('testOrders.view', function ($breadcrumbs, $testOrder) {
 });
 
 Breadcrumbs::register('testOrders.edit', function ($breadcrumbs, $testOrder) {
-    $breadcrumbs->parent('testOrders');
-    $breadcrumbs->push('Modifica #'.$testOrder->id, route('panel.testOrders.edit', $testOrder->id));
+    $breadcrumbs->parent('testOrders.view', $testOrder);
+    $breadcrumbs->push('Modifica', route('panel.testOrders.edit', $testOrder->id));
 });
 
 
