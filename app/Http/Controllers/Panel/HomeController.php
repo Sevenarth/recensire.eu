@@ -9,6 +9,7 @@ use Storage;
 use App\TestOrder;
 use App\TestUnit;
 use App\TestUnitStatus;
+use App\Tester;
 use DB;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
@@ -78,38 +79,65 @@ class HomeController extends Controller
 
     public function postReport(Request $request) {
       $report = "";
-      $testUnits = new Collection();
+      $statuses = new Collection();
       if(!empty($request->input('start_date'))&&!empty($request->input('end_date'))) {
         if(!empty($request->input('store_id')))
           foreach(TestOrder::where('store_id', $request->input('store_id'))->get() as $testOrder) {
-            $units = $testOrder->testUnits()
-              ->where('created_at', '>', (new Carbon($request->input('start_date')))->startOfDay())
-              ->where('created_at', '<', (new Carbon($request->input('end_date')))->endOfDay());
+            $statuses_ = DB::table('test_unit_status')
+              ->leftJoin('test_unit', 'test_unit_status.test_unit_id', '=', 'test_unit.id')
+              ->where('test_unit.test_order_id', $testOrder->id)
+              ->where('test_unit_status.created_at', '>', (new Carbon($request->input('start_date')))->startOfDay())
+              ->where('test_unit_status.created_at', '<', (new Carbon($request->input('end_date')))->endOfDay());
+
+            // $units = $testOrder->testUnits()
+            //   ->where('created_at', '>', (new Carbon($request->input('start_date')))->startOfDay())
+            //   ->where('created_at', '<', (new Carbon($request->input('end_date')))->endOfDay());
 
             if(intval($request->input('status')) >= 0)
-              $units = $units->where('status', $request->input('status'));
+              $statuses_ = $statuses_->where('test_unit_status.status', $request->input('status'));
 
-            $testUnits = $testUnits->merge($units->get());
+            $statuses_->select([
+              'amazon_order_id',
+              'paypal_account',
+              'review_url',
+              'refunded',
+              'test_unit_status.status as status',
+              'tester_id'
+            ]);
+            $statuses = $statuses->merge($statuses_->get());
           }
         else {
-          $testUnits = TestUnit::where('created_at', '>', (new Carbon($request->input('start_date')))->startOfDay())
-            ->where('created_at', '<', (new Carbon($request->input('end_date')))->endOfDay());
+          $statuses = DB::table('test_unit_status')
+            ->leftJoin('test_unit', 'test_unit_status.test_unit_id', '=', 'test_unit.id')
+            ->where('test_unit_status.created_at', '>', (new Carbon($request->input('start_date')))->startOfDay())
+            ->where('test_unit_status.created_at', '<', (new Carbon($request->input('end_date')))->endOfDay());
+
+          // $testUnits = TestUnit::where('created_at', '>', (new Carbon($request->input('start_date')))->startOfDay())
+          //   ->where('created_at', '<', (new Carbon($request->input('end_date')))->endOfDay());
 
           if(intval($request->input('status')) >= 0)
-            $testUnits = $testUnits->where('status', $request->input('status'));
+            $statuses = $statuses->where('test_unit_status.status', $request->input('status'));
 
-          $testUnits = $testUnits->get();
+          $statuses->select([
+            'amazon_order_id',
+            'paypal_account',
+            'review_url',
+            'refunded',
+            'test_unit_status.status as status',
+            'tester_id'
+          ]);
+          $statuses = $statuses->get();
         }
 
-        foreach($testUnits as $unit) {
+        foreach($statuses as $status) {
           $row = [];
-          $tester = $unit->tester;
+          $tester = !empty($status->tester_id) ? Tester::find($status->tester_id) : new Tester;
           if($request->input('amazon_order_id') == "on")
-            $row[] = "Order No: " . (!empty($unit->amazon_order_id) ? $unit->amazon_order_id : 'N/A');
+            $row[] = "Order No: " . (!empty($status->amazon_order_id) ? $status->amazon_order_id : 'N/A');
           if($request->input('paypal_account') == "on")
-            $row[] = "PayPal account: " . (!empty($unit->paypal_account) ? $unit->paypal_account : 'N/D');
+            $row[] = "PayPal account: " . (!empty($status->paypal_account) ? $status->paypal_account : 'N/D');
           if($request->input('review_url') == "on")
-            $row[] = 'Review URL: ' . (!empty($unit->review_url) ? $unit->review_url : 'N/D');
+            $row[] = 'Review URL: ' . (!empty($status->review_url) ? $status->review_url : 'N/D');
           if($request->input('amazon_profile') == "on")
             $row[] = 'Amazon Profile: ' . (isset($tester->amazon_profiles[0]) ? $tester->amazon_profiles[0] : 'N/A');
           if($request->input('tester_name') == "on")
@@ -117,7 +145,9 @@ class HomeController extends Controller
           if($request->input('facebook_id') == "on")
             $row[] = 'Facebook ID: ' . (!empty($tester->facebook_profiles[0]) ? $tester->facebook_profiles[0] : 'N/A');
           if($request->input('refunded') == "on")
-            $row[] = 'Refunded: ' . (!empty($unit->refunded) ? 'Yes' : 'No');
+            $row[] = 'Refunded: ' . (!empty($status->refunded) ? 'Yes' : 'No');
+          if($request->input('status_check') == "on")
+            $row[] = 'Status: ' . config('testUnit.statuses')[$status->status];
 
           if(count($row) > 0)
             $report .= implode("\t", $row) . PHP_EOL;

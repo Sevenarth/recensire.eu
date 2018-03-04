@@ -101,6 +101,12 @@
             <label class="custom-control-label" for="refunded">Rimborsato</label>
           </div>
         </div>
+        <div class="col-sm-4">
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" name="status_check" id="status_check"{{ old('status_check') == "on" ? ' checked' : '' }}>
+            <label class="custom-control-label" for="status_check">Stato</label>
+          </div>
+        </div>
       </div>
       <button type="submit" class="mb-2 btn btn-primary">Genera report</button> <button type="button" onclick="window.location.reload()" class="mb-2 btn btn-outline-primary">Reset</button>
       @closeForm
