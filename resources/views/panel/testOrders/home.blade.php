@@ -42,7 +42,7 @@ Ordini di lavoro
             </th>
             <th scope="col"></th>
             <th scope="col" class="p-2">
-              @orderable('product.name', 'Nome prodotto')
+              @orderable('product.title', 'Nome prodotto')
             </th>
             <th scope="col" class="p-2">
               @orderable('store.name', 'Nome negozio')
