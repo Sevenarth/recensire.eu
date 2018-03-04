@@ -14,7 +14,7 @@ class TestOrdersController extends Controller
 {
   public function index(Request $request) {
     $orderBy = $request->query('orderBy', null);
-    if(!empty($orderBy) && !in_array($orderBy, ['test_order.id', 'store.name', 'product.name', 'test_order.created_at']))
+    if(!empty($orderBy) && !in_array($orderBy, ['test_order.id', 'store.name', 'product.title', 'test_order.created_at']))
       $orderBy = null;
     $sort = $request->query('sort', 'asc');
     if($sort != "asc" && $sort != "desc")
