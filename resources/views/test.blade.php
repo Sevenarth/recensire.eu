@@ -74,7 +74,17 @@
               <div class="alert alert-warning">
                 Assicurati di inserire i dati corretti! Non sarai in grado di applicare le modifiche dopo!
               </div>
-              @formTextfield('amazon_order_id', 'Numero ordine Amazon', placeholder="XXX-XXXXXXX-XXXXXXX")
+              <fieldset class="form-group">
+                <label for="amazon_order_id">Numero ordine Amazon</label>
+                <input type="text" placeholder="XXX-XXXXXXX-XXXXXXX" value="@if(!$errors->has('amazon_order_id')){{ old('amazon_order_id') }}@endif" required class="form-control{{ $errors->has('amazon_order_id') ? ' is-invalid' : '' }}" name="amazon_order_id" id="amazon_order_id">
+                @if($errors->has('amazon_order_id'))
+                <div class="invalid-feedback">
+                  @foreach($errors->get('amazon_order_id') as $err)
+                    {{ $err }}<br>
+                  @endforeach
+                </div>
+                @endif
+              </fieldset>
               @formTextfield('paypal_account', 'Account PayPal', placeholder="me@tester.com")
               <fieldset class="form-group">
                 <label for="tester_notes">Note aggiuntive <small class="text-muted">(opzionale)</small></label>

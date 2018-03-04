@@ -215,7 +215,7 @@ Prodotto #{{ $product->id }}
   <div class="float-right mb-2">
     Mostrando pagina {{ $stores->currentPage() }} di {{ $stores->lastPage() }}
   </div>
-  {{ $stores->links() }}
+  {{ $stores->appends(request()->query())->links() }}
   <div class="clearfix"></div>
 
   </div>

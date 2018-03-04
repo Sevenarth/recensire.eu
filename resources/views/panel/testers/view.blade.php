@@ -119,7 +119,7 @@ Tester #{{ $tester->id }}
           @endforeach
         </tbody>
       </table>
-      {{ $testUnits->links() }}
+      {{ $testUnits->appends(request()->query())->links() }}
     </div>
   </div>
 </div>

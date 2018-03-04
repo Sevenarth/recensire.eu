@@ -105,7 +105,7 @@ Testers
     <div class="float-right mb-2">
       Mostrando pagina {{ $testers->currentPage() }} di {{ $testers->lastPage() }}
     </div>
-    {{ $testers->links() }}
+    {{ $testers->appends(request()->query())->links() }}
     <div class="clearfix"></div>
   </div>
 @endsection

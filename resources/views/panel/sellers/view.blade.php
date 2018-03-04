@@ -117,6 +117,6 @@ Venditore #{{ $seller->id }}
         </tbody>
       </table>
     </div>
-    {{ $stores->links() }}
+    {{ $stores->appends(request()->query())->links() }}
   </div>
 @endsection

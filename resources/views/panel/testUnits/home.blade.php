@@ -118,7 +118,7 @@ Unità di test
     <div class="float-right mb-2">
       Mostrando pagina {{ $testUnits->currentPage() }} di {{ $testUnits->lastPage() }}
     </div>
-    {{ $testUnits->links() }}
+    {{ $testUnits->appends(request()->query())->links() }}
     <div class="clearfix"></div>
   </div>
 @endsection

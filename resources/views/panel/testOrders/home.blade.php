@@ -97,7 +97,7 @@ Ordini di lavoro
     <div class="float-right mb-2">
       Mostrando pagina {{ $testOrders->currentPage() }} di {{ $testOrders->lastPage() }}
     </div>
-    {{ $testOrders->links() }}
+    {{ $testOrders->appends(request()->query())->links() }}
     <div class="clearfix"></div>
   </div>
 @endsection

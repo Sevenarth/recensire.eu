@@ -241,7 +241,7 @@ Unità di test #{{ $testUnit->hash_code }}
       @endforeach
       </tbody>
     </table>
-    {{ $status_logs->links() }}
+    {{ $status_logs->appends(request()->query())->links() }}
   </div>
 </div>
 @endsection

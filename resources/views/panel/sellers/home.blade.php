@@ -92,7 +92,7 @@ Venditori
     <div class="float-right mb-2">
       Mostrando pagina {{ $sellers->currentPage() }} di {{ $sellers->lastPage() }}
     </div>
-    {{ $sellers->links() }}
+    {{ $sellers->appends(request()->query())->links() }}
     <div class="clearfix"></div>
   </div>
 @endsection
