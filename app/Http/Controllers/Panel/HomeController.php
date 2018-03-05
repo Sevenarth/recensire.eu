@@ -79,7 +79,7 @@ class HomeController extends Controller
 
     public function postReport(Request $request) {
       $report = "";
-      $statuses = new Collection();
+      $statuses = null;
       if(!empty($request->input('start_date'))&&!empty($request->input('end_date'))) {
         if(!empty($request->input('store_id')))
           foreach(TestOrder::where('store_id', $request->input('store_id'))->get() as $testOrder) {
@@ -88,10 +88,6 @@ class HomeController extends Controller
               ->where('test_unit.test_order_id', $testOrder->id)
               ->where('test_unit_status.created_at', '>', (new Carbon($request->input('start_date')))->startOfDay())
               ->where('test_unit_status.created_at', '<', (new Carbon($request->input('end_date')))->endOfDay());
-
-            // $units = $testOrder->testUnits()
-            //   ->where('created_at', '>', (new Carbon($request->input('start_date')))->startOfDay())
-            //   ->where('created_at', '<', (new Carbon($request->input('end_date')))->endOfDay());
 
             if(intval($request->input('status')) >= 0)
               $statuses_ = $statuses_->where('test_unit_status.status', $request->input('status'));
@@ -104,16 +100,15 @@ class HomeController extends Controller
               'test_unit_status.status as status',
               'tester_id'
             ]);
-            $statuses = $statuses->merge($statuses_->get());
+
+            if(empty($statuses)) $statuses = $statuses_->get();
+            else $statuses = $statuses->merge($statuses_->get());
           }
         else {
           $statuses = DB::table('test_unit_status')
             ->leftJoin('test_unit', 'test_unit_status.test_unit_id', '=', 'test_unit.id')
             ->where('test_unit_status.created_at', '>', (new Carbon($request->input('start_date')))->startOfDay())
             ->where('test_unit_status.created_at', '<', (new Carbon($request->input('end_date')))->endOfDay());
-
-          // $testUnits = TestUnit::where('created_at', '>', (new Carbon($request->input('start_date')))->startOfDay())
-          //   ->where('created_at', '<', (new Carbon($request->input('end_date')))->endOfDay());
 
           if(intval($request->input('status')) >= 0)
             $statuses = $statuses->where('test_unit_status.status', $request->input('status'));
