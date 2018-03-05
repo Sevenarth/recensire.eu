@@ -238,6 +238,7 @@ class TestUnitsController extends Controller
     public function renew(Request $request, TestUnit $testUnit) {
       $unit_new = $testUnit->replicate();
       $unit_new->hash_code = "placeholder";
+      $unit_new->viewed = false;
       $unit_new->save();
 
       foreach($testUnit->statuses as $status) {
@@ -266,7 +267,7 @@ class TestUnitsController extends Controller
       $unit_new->save();
 
       return redirect()
-        ->back()
+        ->route('panel.testUnits.view', $testUnit->id)
         ->with('status', 'Duplicato creato con hash <b><a href="'.route('panel.testUnits.view', $unit_new->id).'">#'.$unit_new->hash_code.'</a></b>');
     }
 }
