@@ -16,10 +16,10 @@ class ProductsController extends Controller
   public function index(Request $request) {
     $orderBy = $request->query('orderBy', null);
     if(!empty($orderBy) && !in_array($orderBy, ['id', 'brand', 'title', 'ASIN']))
-      $orderBy = "created_at";
+      $orderBy = null;
     $sort = $request->query('sort', 'asc');
     if($sort != "asc" && $sort != "desc")
-      $sort = "desc";
+      $sort = "asc";
     $search = trim($request->query('s', null));
 
     if(!empty($search)) {
@@ -31,12 +31,12 @@ class ProductsController extends Controller
         if(!empty($orderBy))
           $products = $products->orderBy($orderBy, $sort)->orderBy('id', $sort)->paginate(15);
         else
-          $products = $products->paginate(15);
+          $products = $products->orderBy('created_at', 'desc')->orderBy('id', $sort)->paginate(15);
     } else {
         if(!empty($orderBy))
           $products = Product::orderBy($orderBy, $sort)->orderBy('id', $sort)->paginate(15);
         else
-          $products = Product::paginate(15);
+          $products = Product::orderBy('created_at', 'desc')->orderBy('id', $sort)->paginate(15);
     }
 
     return view("panel/products/home")->with('products', $products);
