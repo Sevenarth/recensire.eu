@@ -64,6 +64,12 @@
       <div class="row">
         <div class="col-sm-4">
           <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" name="hash_code" id="hash_code"{{ old('hash_code') == "on" ? ' checked' : '' }}>
+            <label class="custom-control-label" for="hash_code">Codice test</label>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="custom-control custom-checkbox">
             <input type="checkbox" class="custom-control-input" name="amazon_order_id" id="amazon_order_id"{{ old('amazon_order_id') == "on" ? ' checked' : '' }}>
             <label class="custom-control-label" for="amazon_order_id">Numero ordine Amazon</label>
           </div>
@@ -74,14 +80,14 @@
             <label class="custom-control-label" for="paypal_account">Account PayPal</label>
           </div>
         </div>
+      </div>
+      <div class="row my-3">
         <div class="col-sm-4">
           <div class="custom-control custom-checkbox">
             <input type="checkbox" class="custom-control-input" name="review_url" id="review_url"{{ old('review_url') == "on" ? ' checked' : '' }}>
             <label class="custom-control-label" for="review_url">Link recensione</label>
           </div>
         </div>
-      </div>
-      <div class="row my-3">
         <div class="col-sm-4">
           <div class="custom-control custom-checkbox">
             <input type="checkbox" class="custom-control-input" name="amazon_profile" id="amazon_profile"{{ old('amazon_profile') == "on" ? ' checked' : '' }}>
@@ -94,14 +100,14 @@
             <label class="custom-control-label" for="tester_name">Nome tester</label>
           </div>
         </div>
+      </div>
+      <div class="row my-3">
         <div class="col-sm-4">
           <div class="custom-control custom-checkbox">
             <input type="checkbox" class="custom-control-input" name="facebook_id" id="facebook_id"{{ old('facebook_id') == "on" ? ' checked' : '' }}>
             <label class="custom-control-label" for="facebook_id">Facebook ID</label>
           </div>
         </div>
-      </div>
-      <div class="row my-3">
         <div class="col-sm-4">
           <div class="custom-control custom-checkbox">
             <input type="checkbox" class="custom-control-input" name="refunded" id="refunded"{{ old('refunded') == "on" ? ' checked' : '' }}>

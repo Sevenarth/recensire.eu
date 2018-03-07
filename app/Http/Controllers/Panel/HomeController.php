@@ -101,7 +101,8 @@ class HomeController extends Controller
               'refunded',
               'test_unit_status.status as status',
               'expires_on',
-              'tester_id'
+              'tester_id',
+              'hash_code'
             ]);
 
             if(empty($statuses)) $statuses = $statuses_->get();
@@ -125,7 +126,8 @@ class HomeController extends Controller
             'refunded',
             'test_unit_status.status as status',
             'expires_on',
-            'tester_id'
+            'tester_id',
+            'hash_code'
           ]);
           $statuses = $statuses->get();
         }
@@ -133,6 +135,8 @@ class HomeController extends Controller
         foreach($statuses as $status) {
           $row = [];
           $tester = !empty($status->tester_id) ? Tester::find($status->tester_id) : new Tester;
+          if($request->input('hash_code') == "on")
+            $row[] = "Hash code: " . (!empty($status->hash_code) ? $status->hash_code : 'N/A');
           if($request->input('amazon_order_id') == "on")
             $row[] = "Order No: " . (!empty($status->amazon_order_id) ? $status->amazon_order_id : 'N/A');
           if($request->input('paypal_account') == "on")
