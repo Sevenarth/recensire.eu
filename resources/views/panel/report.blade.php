@@ -126,7 +126,7 @@
       @if(!empty(old('report', null)))
         <hr>
         <h4 class="mb-4">Report</h4>
-        <code class="form-control" style="max-height: 350px; overflow-y: auto">{!! old('report') !!}</code>
+        <pre class="form-control" style="max-height: 350px; overflow-y: auto">{!! old('report') !!}</pre>
       @endif
     </div>
     <div id="select-store" class="modal fade" tabindex="-1" role="dialog">
