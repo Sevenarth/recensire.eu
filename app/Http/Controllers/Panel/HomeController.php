@@ -96,7 +96,7 @@ class HomeController extends Controller
             elseif(intval($request->input('status')) == -1)
               $statuses = $statuses->where('test_unit.status', '0');
 
-            $statuses_->select([
+            $statuses_->orderBy('test_unit_status.status', 'desc')->select([
               'amazon_order_id',
               'paypal_account',
               'review_url',
@@ -126,7 +126,7 @@ class HomeController extends Controller
           elseif(intval($request->input('status')) == -1)
             $statuses = $statuses->where('test_unit.status', '0');
 
-          $statuses->orderBy('store.id')->orderBy('test_unit.test_order_id')->select([
+          $statuses->orderBy('store.id')->orderBy('test_unit.test_order_id')->orderBy('test_unit_status.status', 'desc')->select([
             'amazon_order_id',
             'paypal_account',
             'review_url',
