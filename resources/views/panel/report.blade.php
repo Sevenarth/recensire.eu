@@ -23,13 +23,13 @@
         <div class="col-sm-6">
           <fieldset class="form-group">
             <label for="start_date">Data di inizio</label>
-            <input type="date" class="form-control" required name="start_date" value="{{ old('start_date') }}">
+            <input type="date" class="form-control" required name="start_date" value="{{ old('start_date', \Carbon\Carbon::now(config('app.timezone'))->toDateString()) }}">
           </fieldset>
         </div>
         <div class="col-sm-6">
           <fieldset class="form-group">
             <label for="start_date">Data di fine</label>
-            <input type="date" class="form-control" required name="end_date" value="{{ old('end_date') }}">
+            <input type="date" class="form-control" required name="end_date" value="{{ old('end_date', \Carbon\Carbon::now(config('app.timezone'))->toDateString()) }}">
           </fieldset>
         </div>
       </div>
