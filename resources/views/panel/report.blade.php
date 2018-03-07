@@ -126,7 +126,7 @@
       @if(!empty(old('report', null)))
         <hr>
         <h4 class="mb-4">Report</h4>
-        <textarea class="form-control" rows="10">{{ old('report') }}</textarea>
+        <code class="form-control" style="max-height: 350px; overflow-y: auto">{!! old('report') !!}</code>
       @endif
     </div>
     <div id="select-store" class="modal fade" tabindex="-1" role="dialog">

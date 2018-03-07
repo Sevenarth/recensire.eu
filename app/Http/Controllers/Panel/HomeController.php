@@ -85,6 +85,8 @@ class HomeController extends Controller
           foreach(TestOrder::where('store_id', $request->input('store_id'))->orderBy('id')->get() as $testOrder) {
             $statuses_ = DB::table('test_unit_status')
               ->leftJoin('test_unit', 'test_unit_status.test_unit_id', '=', 'test_unit.id')
+              ->leftJoin('test_order', 'test_order.id', '=', 'test_unit.test_order_id')
+              ->leftJoin('store', 'test_order.store_id', '=', 'store.id')
               ->where('test_unit.test_order_id', $testOrder->id)
               ->where('test_unit'.($request->input('status') == -1 ? '.expires_on' : '_status.created_at'), '>', (new Carbon($request->input('start_date')))->startOfDay())
               ->where('test_unit'.($request->input('status') == -1 ? '.expires_on' : '_status.created_at'), '<', (new Carbon($request->input('end_date')))->endOfDay());
@@ -102,7 +104,10 @@ class HomeController extends Controller
               'test_unit_status.status as status',
               'expires_on',
               'tester_id',
-              'hash_code'
+              'hash_code',
+              'test_unit.id as unit_id',
+              'store.name as store_name',
+              'store.id as store_id'
             ]);
 
             if(empty($statuses)) $statuses = $statuses_->get();
@@ -111,6 +116,8 @@ class HomeController extends Controller
         else {
           $statuses = DB::table('test_unit_status')
             ->leftJoin('test_unit', 'test_unit_status.test_unit_id', '=', 'test_unit.id')
+            ->leftJoin('test_order', 'test_order.id', '=', 'test_unit.test_order_id')
+            ->leftJoin('store', 'test_order.store_id', '=', 'store.id')
             ->where('test_unit'.($request->input('status') == -1 ? '.expires_on' : '_status.created_at'), '>', (new Carbon($request->input('start_date')))->startOfDay())
             ->where('test_unit'.($request->input('status') == -1 ? '.expires_on' : '_status.created_at'), '<', (new Carbon($request->input('end_date')))->endOfDay());
 
@@ -119,7 +126,7 @@ class HomeController extends Controller
           elseif(intval($request->input('status')) == -1)
             $statuses = $statuses->where('test_unit.status', '0');
 
-          $statuses->orderBy('test_unit.test_order_id')->select([
+          $statuses->orderBy('store.id')->orderBy('test_unit.test_order_id')->select([
             'amazon_order_id',
             'paypal_account',
             'review_url',
@@ -127,16 +134,25 @@ class HomeController extends Controller
             'test_unit_status.status as status',
             'expires_on',
             'tester_id',
-            'hash_code'
+            'hash_code',
+            'test_unit.id as unit_id',
+            'store.name as store_name',
+            'store.id as store_id'
           ]);
           $statuses = $statuses->get();
         }
 
+        $store = null;
+
         foreach($statuses as $status) {
+          if($status->store_name != $store) {
+            $report .= "---- Store name: <a href=\"".route('panel.stores.view', $status->store_id)."\">" . $status->store_name . "</a><br>";
+            $store = $status->store_name;
+          }
           $row = [];
           $tester = !empty($status->tester_id) ? Tester::find($status->tester_id) : new Tester;
           if($request->input('hash_code') == "on")
-            $row[] = "Hash code: " . (!empty($status->hash_code) ? $status->hash_code : 'N/A');
+            $row[] = "Hash code: <a href=\"".route('panel.testUnits.view', $status->unit_id)."\">" . (!empty($status->hash_code) ? $status->hash_code : 'N/A' ). "</a>";
           if($request->input('amazon_order_id') == "on")
             $row[] = "Order No: " . (!empty($status->amazon_order_id) ? $status->amazon_order_id : 'N/A');
           if($request->input('paypal_account') == "on")
@@ -160,7 +176,7 @@ class HomeController extends Controller
           }
 
           if(count($row) > 0)
-            $report .= implode("\t", $row) . PHP_EOL;
+            $report .= implode("\t", $row) . "<br>";
         }
         $total = count($statuses);
       }
