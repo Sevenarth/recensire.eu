@@ -151,7 +151,7 @@ class TestUnitsController extends Controller
 
       if($testUnit->refunded)
         $testUnit->statuses()->create([
-          'status' => 3
+          'status' => 4
         ]);
 
       return redirect()
@@ -183,7 +183,7 @@ class TestUnitsController extends Controller
 
       if(empty($testUnit->refunded) && $request->input('refunded') == 'on')
         $testUnit->statuses()->create([
-          'status' => 3
+          'status' => 4
         ]);
 
       $testUnit->refunded = $request->input('refunded') == 'on' ? 1 : 0;
