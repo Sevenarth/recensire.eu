@@ -11,6 +11,12 @@
       Reportistica
     </div>
     <div class="px-4 py-3">
+      @if (session('status'))
+      <div class="alert alert-success">
+          {!! session('status') !!}
+      </div>
+      @endif
+
       @openForm('panel.postReport', 'post')
       <h4 class="mb-3">Criteri di ricerca</h4>
       <div class="row">
@@ -44,7 +50,8 @@
           <fieldset class="form-group">
             <label for="status">Stato</label>
             <select class="custom-select" name="status">
-              <option value="-1"{{ intval(old('status', -1)) === -1 ? ' selected' : '' }}>Tutti</option>
+              <option value="-2"{{ intval(old('status', -2)) === -2 ? ' selected' : '' }}>Tutti</option>
+              <option value="-1"{{ intval(old('status', -2)) === -1 ? ' selected' : '' }}>In scadenza/Scaduti</option>
               @foreach(config('testUnit.statuses') as $id => $status)
               <option value="{{ $id }}"{{ intval(old('status', -1)) === $id ? ' selected' : '' }}>{{ $status }}</option>
               @endforeach

@@ -82,15 +82,17 @@ class HomeController extends Controller
       $statuses = null;
       if(!empty($request->input('start_date'))&&!empty($request->input('end_date'))) {
         if(!empty($request->input('store_id')))
-          foreach(TestOrder::where('store_id', $request->input('store_id'))->get() as $testOrder) {
+          foreach(TestOrder::where('store_id', $request->input('store_id'))->orderBy('id')->get() as $testOrder) {
             $statuses_ = DB::table('test_unit_status')
               ->leftJoin('test_unit', 'test_unit_status.test_unit_id', '=', 'test_unit.id')
               ->where('test_unit.test_order_id', $testOrder->id)
-              ->where('test_unit_status.created_at', '>', (new Carbon($request->input('start_date')))->startOfDay())
-              ->where('test_unit_status.created_at', '<', (new Carbon($request->input('end_date')))->endOfDay());
+              ->where('test_unit'.($request->input('status') == -1 ? '.expires_on' : '_status.created_at'), '>', (new Carbon($request->input('start_date')))->startOfDay())
+              ->where('test_unit'.($request->input('status') == -1 ? '.expires_on' : '_status.created_at'), '<', (new Carbon($request->input('end_date')))->endOfDay());
 
             if(intval($request->input('status')) >= 0)
               $statuses_ = $statuses_->where('test_unit_status.status', $request->input('status'));
+            elseif(intval($request->input('status')) == -1)
+              $statuses = $statuses->where('test_unit.status', '0');
 
             $statuses_->select([
               'amazon_order_id',
@@ -98,6 +100,7 @@ class HomeController extends Controller
               'review_url',
               'refunded',
               'test_unit_status.status as status',
+              'expires_on',
               'tester_id'
             ]);
 
@@ -107,18 +110,21 @@ class HomeController extends Controller
         else {
           $statuses = DB::table('test_unit_status')
             ->leftJoin('test_unit', 'test_unit_status.test_unit_id', '=', 'test_unit.id')
-            ->where('test_unit_status.created_at', '>', (new Carbon($request->input('start_date')))->startOfDay())
-            ->where('test_unit_status.created_at', '<', (new Carbon($request->input('end_date')))->endOfDay());
+            ->where('test_unit'.($request->input('status') == -1 ? '.expires_on' : '_status.created_at'), '>', (new Carbon($request->input('start_date')))->startOfDay())
+            ->where('test_unit'.($request->input('status') == -1 ? '.expires_on' : '_status.created_at'), '<', (new Carbon($request->input('end_date')))->endOfDay());
 
           if(intval($request->input('status')) >= 0)
             $statuses = $statuses->where('test_unit_status.status', $request->input('status'));
+          elseif(intval($request->input('status')) == -1)
+            $statuses = $statuses->where('test_unit.status', '0');
 
-          $statuses->select([
+          $statuses->orderBy('test_unit.test_order_id')->select([
             'amazon_order_id',
             'paypal_account',
             'review_url',
             'refunded',
             'test_unit_status.status as status',
+            'expires_on',
             'tester_id'
           ]);
           $statuses = $statuses->get();
@@ -141,15 +147,27 @@ class HomeController extends Controller
             $row[] = 'Facebook ID: ' . (!empty($tester->facebook_profiles[0]) ? $tester->facebook_profiles[0] : 'N/A');
           if($request->input('refunded') == "on")
             $row[] = 'Refunded: ' . (!empty($status->refunded) ? 'Yes' : 'No');
-          if($request->input('status_check') == "on")
-            $row[] = 'Status: ' . config('testUnit.statuses')[$status->status];
+          if($request->input('status_check') == "on") {
+            $expiration = new \Carbon\Carbon($status->expires_on, config('app.timezone'));
+            if($expiration->gt(\Carbon\Carbon::now(config('app.timezone'))))
+              $row[] = 'Status: ' . config('testUnit.statuses')[$status->status];
+            else
+              $row[] = 'Status: Scaduto';
+          }
 
           if(count($row) > 0)
             $report .= implode("\t", $row) . PHP_EOL;
         }
+        $total = count($statuses);
       }
-      return redirect()
-        ->back()
-        ->withInput(array_merge($request->all(), ["report" => $report]));
+      if(isset($total) && is_numeric($total))
+        return redirect()
+          ->route('panel.report')
+          ->withInput(array_merge($request->all(), ["report" => $report]))
+          ->with('status', 'La query ha generato ' . $total . ' risultat'. ($total == 1 ? 'o' : 'i'));
+      else
+        return redirect()
+          ->route('panel.report')
+          ->withInput(array_merge($request->all(), ["report" => $report]));
     }
 }
