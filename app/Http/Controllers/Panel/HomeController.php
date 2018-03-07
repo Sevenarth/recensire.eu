@@ -169,7 +169,7 @@ class HomeController extends Controller
             $row[] = 'Refunded: ' . (!empty($status->refunded) ? 'Yes' : 'No');
           if($request->input('status_check') == "on") {
             $expiration = new \Carbon\Carbon($status->expires_on, config('app.timezone'));
-            if($expiration->gt(\Carbon\Carbon::now(config('app.timezone'))))
+            if($expiration->gt(\Carbon\Carbon::now(config('app.timezone'))) || $status->status > 0)
               $row[] = 'Status: ' . config('testUnit.statuses')[$status->status];
             else
               $row[] = 'Status: Scaduto';
