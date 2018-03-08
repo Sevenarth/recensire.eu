@@ -265,6 +265,9 @@ class TestUnitsController extends Controller
       $unit_new->starts_on = $testUnit->starts_on;
       $unit_new->testOrder()->associate($testUnit->testOrder);
       $unit_new->save();
+      $unit_new->statuses()->create([
+        'status' => 0
+      ]);
 
       return redirect()
         ->route('panel.testUnits.view', $testUnit->id)

@@ -15,7 +15,8 @@ class CreateTestUnitsTable extends Migration
     {
         Schema::create('test_unit', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('hash_code')->unique()->index();
+            $hash_code = $table->string('hash_code')->unique()->index();
+            $hash_code->collation = "latin1_general_cs";
             $table->string('amazon_order_id')->nullable();
             $table->string('review_url')->nullable();
             $table->string('reference_url');

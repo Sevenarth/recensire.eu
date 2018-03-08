@@ -73,7 +73,7 @@ Unità di test #{{ $testUnit->hash_code }}
       @if(!empty($testUnit->review_url)) <div class="input-group"> @endif
       <input type="text" class="form-control{{ !empty($testUnit->review_url) ? '' : '-plaintext' }}" value="{{ !empty($testUnit->review_url) ? $testUnit->review_url : '-' }}" readonly>
       @if(!empty($testUnit->review_url)) <div class="input-group-append">
-        <a href="{{ $testUnit->reference_url }}" target="_blank" class="btn btn-outline-primary"><i class="fa fa-fw fa-external-link-alt"></i></a>
+        <a href="{{ $testUnit->review_url }}" target="_blank" class="btn btn-outline-primary"><i class="fa fa-fw fa-external-link-alt"></i></a>
       </div>
     </div>@endif
     </fieldset>

@@ -40,6 +40,7 @@
             <div class="input-group">
               <div class="input-group-prepend">
                 <button class="btn btn-outline-secondary" data-toggle="modal" data-target="#select-store" type="button">Cerca</button>
+                <button type="button" class="btn btn-outline-danger" onclick="$('#store-id').val('');$('#store-name').val('');"title="Disassocia"><i class="fa fa-fw fa-unlink"></i></button>
               </div>
               <input type="hidden" value="{{ old('store_id') }}" id="store-id" name="store_id">
               <input class="form-control" id="store-name" name="store_name" type="text" value="{{ old('store_name') }}" placeholder="Nessun negozio selezionato" required readonly>

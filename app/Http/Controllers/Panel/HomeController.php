@@ -19,10 +19,11 @@ class HomeController extends Controller
     public function index(Request $request) {
       $incomplete = [];
       foreach(TestOrder::all() as $testOrder) {
-        $count = $testOrder
-          ->testUnits()
-          ->where('expires_on', '>', Carbon::now(config('app.timezone')))
-          ->count();
+        $count = $testOrder->testUnits()->where(function($q) {
+          $q->where('status', '>', 0)->orWhere(function($q) {
+            $q->where('status', 0)->where('expires_on', '>', \Carbon\Carbon::now(config('app.timezone')));
+          });
+        })->count();
         $testOrder->present = $count;
         if($testOrder->quantity > $count)
           $incomplete[] = $testOrder;
@@ -79,68 +80,36 @@ class HomeController extends Controller
 
     public function postReport(Request $request) {
       $report = "";
-      $statuses = null;
+
       if(!empty($request->input('start_date'))&&!empty($request->input('end_date'))) {
+        $statuses = DB::table('test_unit_status')
+          ->leftJoin('test_unit', 'test_unit_status.test_unit_id', '=', 'test_unit.id')
+          ->leftJoin('test_order', 'test_order.id', '=', 'test_unit.test_order_id')
+          ->leftJoin('store', 'test_order.store_id', '=', 'store.id')
+          ->where('test_unit'.($request->input('status') == -1 ? '.expires_on' : '_status.created_at'), '>', (new Carbon($request->input('start_date')))->startOfDay())
+          ->where('test_unit'.($request->input('status') == -1 ? '.expires_on' : '_status.created_at'), '<', (new Carbon($request->input('end_date')))->endOfDay());
+
         if(!empty($request->input('store_id')))
-          foreach(TestOrder::where('store_id', $request->input('store_id'))->orderBy('id')->get() as $testOrder) {
-            $statuses_ = DB::table('test_unit_status')
-              ->leftJoin('test_unit', 'test_unit_status.test_unit_id', '=', 'test_unit.id')
-              ->leftJoin('test_order', 'test_order.id', '=', 'test_unit.test_order_id')
-              ->leftJoin('store', 'test_order.store_id', '=', 'store.id')
-              ->where('test_unit.test_order_id', $testOrder->id)
-              ->where('test_unit'.($request->input('status') == -1 ? '.expires_on' : '_status.created_at'), '>', (new Carbon($request->input('start_date')))->startOfDay())
-              ->where('test_unit'.($request->input('status') == -1 ? '.expires_on' : '_status.created_at'), '<', (new Carbon($request->input('end_date')))->endOfDay());
+          $statuses = $statuses->where('store.id', $request->input('store_id'));
 
-            if(intval($request->input('status')) >= 0)
-              $statuses_ = $statuses_->where('test_unit_status.status', $request->input('status'));
-            elseif(intval($request->input('status')) == -1)
-              $statuses = $statuses->where('test_unit.status', '0');
+        if(intval($request->input('status')) >= 0)
+          $statuses = $statuses->where('test_unit_status.status', $request->input('status'));
+        elseif(intval($request->input('status')) == -1)
+          $statuses = $statuses->where('test_unit.status', '0');
 
-            $statuses_->orderBy('test_unit_status.status', 'desc')->select([
-              'amazon_order_id',
-              'paypal_account',
-              'review_url',
-              'refunded',
-              'test_unit_status.status as status',
-              'expires_on',
-              'tester_id',
-              'hash_code',
-              'test_unit.id as unit_id',
-              'store.name as store_name',
-              'store.id as store_id'
-            ]);
-
-            if(empty($statuses)) $statuses = $statuses_->get();
-            else $statuses = $statuses->merge($statuses_->get());
-          }
-        else {
-          $statuses = DB::table('test_unit_status')
-            ->leftJoin('test_unit', 'test_unit_status.test_unit_id', '=', 'test_unit.id')
-            ->leftJoin('test_order', 'test_order.id', '=', 'test_unit.test_order_id')
-            ->leftJoin('store', 'test_order.store_id', '=', 'store.id')
-            ->where('test_unit'.($request->input('status') == -1 ? '.expires_on' : '_status.created_at'), '>', (new Carbon($request->input('start_date')))->startOfDay())
-            ->where('test_unit'.($request->input('status') == -1 ? '.expires_on' : '_status.created_at'), '<', (new Carbon($request->input('end_date')))->endOfDay());
-
-          if(intval($request->input('status')) >= 0)
-            $statuses = $statuses->where('test_unit_status.status', $request->input('status'));
-          elseif(intval($request->input('status')) == -1)
-            $statuses = $statuses->where('test_unit.status', '0');
-
-          $statuses->orderBy('store.id')->orderBy('test_unit.test_order_id')->orderBy('test_unit_status.status', 'desc')->select([
-            'amazon_order_id',
-            'paypal_account',
-            'review_url',
-            'refunded',
-            'test_unit_status.status as status',
-            'expires_on',
-            'tester_id',
-            'hash_code',
-            'test_unit.id as unit_id',
-            'store.name as store_name',
-            'store.id as store_id'
-          ]);
-          $statuses = $statuses->get();
-        }
+        $statuses = $statuses->orderBy('store.name')->orderBy('test_unit.test_order_id')->orderBy('test_unit_status.status', 'desc')->select([
+          'amazon_order_id',
+          'paypal_account',
+          'review_url',
+          'refunded',
+          'test_unit_status.status as status',
+          'expires_on',
+          'tester_id',
+          'hash_code',
+          'test_unit.id as unit_id',
+          'store.name as store_name',
+          'store.id as store_id'
+        ])->get();
 
         $store = null;
 
