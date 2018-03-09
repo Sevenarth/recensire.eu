@@ -153,7 +153,7 @@
       <div class="col-sm-5">
         <label for="status">Stato corrente</label>
         <select class="custom-select{{ $errors->has("status") ? ' is-invalid' : '' }}" name="status">
-          @foreach(config('testUnit.statuses') as $id => $name) @if($id <= 3)
+          @foreach(config('testUnit.statuses') as $id => $name) @if($id != 4)
             <option value="{{$id}}"{{ $id == old('status', $testUnit->status) ? ' selected' : ''}}>{{$name}}</option>@endif
           @endforeach
         </select>
