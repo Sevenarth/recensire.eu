@@ -1,11 +1,12 @@
 <?php
 return [
   'statuses' => [
-    "In attesa",
-    "Acquistato",
-    "Recensito",
-    "Completato",
-    "Rimborsato"
+    0 => "In attesa",
+    1 => "Acquistato",
+    2 => "Recensito",
+    3 => "Completato",
+    5 => "Annullato",
+    4 => "Rimborsato"
   ],
   'timeSpaces' => [
     'secondi',
