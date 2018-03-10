@@ -115,7 +115,7 @@ class HomeController extends Controller
 
         foreach($statuses as $status) {
           if($status->store_name != $store) {
-            $report .= "---- Store name: <a href=\"".route('panel.stores.view', $status->store_id)."\">" . $status->store_name . "</a><br>";
+            $report .= "---- Store name: <a href=\"".route('panel.stores.view', $status->store_id)."\">" . $status->store_name . "</a>" . PHP_EOL;
             $store = $status->store_name;
           }
           $row = [];
@@ -145,7 +145,7 @@ class HomeController extends Controller
           }
 
           if(count($row) > 0)
-            $report .= implode("\t", $row) . "<br>";
+            $report .= implode("\t", $row) . PHP_EOL;
         }
         $total = count($statuses);
       }
