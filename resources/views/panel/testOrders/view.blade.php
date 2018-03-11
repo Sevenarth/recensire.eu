@@ -135,7 +135,7 @@ Ordine di lavoro #{{ $testOrder->id }}
           })->orWhere(function($q) {
             $q->where('status', 0)->where('expires_on', '>', \Carbon\Carbon::now(config('app.timezone')));
           });
-        })->get() as $unit)
+        })->orderBy('status')->orderBy('expires_on')->get() as $unit)
         <tr>
           <th class="p-2" scope="row">{{ $unit->hash_code }}</th>
           <td class="p-2">@if(!empty($unit->tester)) <a href="{{ route('panel.testers.view', $unit->tester->id) }}">{{ $unit->tester->name }}</a> @else - @endif</td>
@@ -143,7 +143,7 @@ Ordine di lavoro #{{ $testOrder->id }}
           <td class="p-2">
             @if($unit->status > 0)
               @if($accepted_date = $unit->statuses()->where('status', 1)->select('created_at')->first())
-                {{ $accepted_date->created_at }}
+                <span title="{{ $accepted_date->created_at }}">{{ ( new \Carbon\Carbon($accepted_date->created_at, config('app.timezone')))->toDateString() }}</span>
               @else
                 -
               @endif

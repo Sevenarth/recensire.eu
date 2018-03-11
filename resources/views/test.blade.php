@@ -2,6 +2,11 @@
 
 @section('title') Invito di test @endsection
 
+@section('head')
+<meta property="og:title" content="Invito di test per {{ !empty($testUnit->tester) ? $testUnit->tester->name : '-' }}" />
+<meta property="og:image" content="{{ (\Carbon\Carbon::now() > new \Carbon\Carbon($testUnit->starts_on, config('app.timezone'))) ? (!empty($testUnit->testOrder->product->images[0]) ? $testUnit->testOrder->product->images[0] : '/images/package.svg') : '/images/logo.svg' }}" />
+@endsection
+
 @section('content')
   @if(\Carbon\Carbon::now() > new \Carbon\Carbon($testUnit->starts_on, config('app.timezone')))
   <div id="cont" class="container" data-open="true">
@@ -106,6 +111,7 @@
   <div id="cont" class="container">
     <div class="p-3 mb-4 variable-heading border-bottom bg-success">
       <i class="float-left m-1 mr-3 fa-2x fas fa-fw fa-history"></i>
+      <small>Ciao <b>{{ !empty($testUnit->tester) ? $testUnit->tester->name : '-' }}</b>, ci sono</small> 
       <span class="countdown" data-time="{{ (new \Carbon\Carbon($testUnit->starts_on, config('app.timezone')))->toIso8601String() }}"></span> rimanenti<br>
       <small>all'apertura di questo test!</small>
       <div class="clearfix"></div>
