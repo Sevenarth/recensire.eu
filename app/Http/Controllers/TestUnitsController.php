@@ -41,8 +41,10 @@ class TestUnitsController extends Controller
       $testUnit->statuses()->create(['status' => 1]);
       $testUnit->save();
 
-      Notification::route('mail', config('app.notifiable'))
-        ->notify(new BoughtProduct($testUnit));
+      try {
+        Notification::route('mail', config('app.notifiable'))
+          ->notify(new BoughtProduct($testUnit));
+      } catch(Exception $e) {}
 
       return redirect()
         ->route('tests.thankyou', $testUnit->hash_code)

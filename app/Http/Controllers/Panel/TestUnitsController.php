@@ -30,8 +30,8 @@ class TestUnitsController extends Controller
         $testUnits = $testUnits->where(function($query) use($search) {
           $query->where("test_order_id", $search)
             ->orWhere("hash_code", $search)
-            ->orWhere("amazon_order_id", $search)
-            ->orWhere("paypal_account", $search);
+            ->orWhere("amazon_order_id", 'like', '%'.$search.'%')
+            ->orWhere("paypal_account", "like", '%'.$search.'%');
         });
 
       if(!empty($orderBy))

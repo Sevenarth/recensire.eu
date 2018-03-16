@@ -4,8 +4,11 @@ return [
     0 => "In attesa",
     1 => "Acquistato",
     2 => "Recensito",
+    7 => "Feedback",
     3 => "Completato",
+    6 => "Banned",
     5 => "Annullato",
+    8 => "Restituito",
     4 => "Rimborsato"
   ],
   'timeSpaces' => [
