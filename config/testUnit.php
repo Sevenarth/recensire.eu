@@ -9,6 +9,7 @@ return [
     6 => "Banned",
     5 => "Annullato",
     8 => "Restituito",
+    9 => "Saldato",
     4 => "Rimborsato"
   ],
   'timeSpaces' => [
