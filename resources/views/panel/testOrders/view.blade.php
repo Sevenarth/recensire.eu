@@ -131,7 +131,7 @@ Ordine di lavoro #{{ $testOrder->id }}
       <tbody>
         @foreach($testOrder->testUnits()->where(function($q) {
           $q->where(function($q) {
-            $q->where('status', '<>', 3)->where('status', '>', 0);
+            $q->where('status', '<>', 3)->where('status', '<>', 9)->where('status', '>', 0);
           })->orWhere(function($q) {
             $q->where('status', 0)->where('expires_on', '>', \Carbon\Carbon::now(config('app.timezone')));
           });
@@ -176,7 +176,10 @@ Ordine di lavoro #{{ $testOrder->id }}
       </tbody>
     </table>
 
-    <h5>Completate <span class="badge-secondary badge-pill badge">{{ $testOrder->testUnits()->where('status', 3)->count() }}</small></h5>
+    <h5>Completate <span class="badge-secondary badge-pill badge">{{ $testOrder->testUnits()->where(function($q) {
+      $q->where('status', 3)
+        ->orWhere('status', 9);
+      })->count() }}</small></h5>
 
     <table class="table table-sm table-striped">
       <thead>
@@ -187,13 +190,16 @@ Ordine di lavoro #{{ $testOrder->id }}
         <th></th>
       </thead>
       <tbody>
-        @foreach($testOrder->testUnits()->where('status', 3)->get() as $unit)
+        @foreach($testOrder->testUnits()->where(function($q) {
+          $q->where('status', 3)
+            ->orWhere('status', 9);
+          })->get() as $unit)
         <tr>
           <th class="p-2" scope="row">{{ $unit->hash_code }}</th>
           <td class="p-2">@if(!empty($unit->tester)) <a href="{{ route('panel.testers.view', $unit->tester->id) }}">{{ $unit->tester->name }}</a> @else - @endif</td>
           <td class="p-2">{{ config('testUnit.statuses')[$unit->status] }}</td>
           <td class="p-2 text-success">
-            Completo
+            @if($unit->status == 9) Saldato @else Completo @endif
           </td>
           <td>
             <a href="{{ route('panel.testUnits.view', $unit->id) }}" class="btn btn-primary btn-sm"><i class="fa fa-fw fa-external-link-alt"></i> Visualizza</a>
