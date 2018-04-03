@@ -14,7 +14,7 @@ class TestOrdersController extends Controller
 {
   public function index(Request $request) {
     $orderBy = $request->query('orderBy', null);
-    if(!empty($orderBy) && !in_array($orderBy, ['test_order.id', 'store.name', 'product.title', 'test_order.created_at']))
+    if(!empty($orderBy) && !in_array($orderBy, ['test_order.id', 'store.name', 'product.title', 'test_order.created_at', 'incomplete_units']))
       $orderBy = null;
     $sort = $request->query('sort', 'asc');
     if($sort != "asc" && $sort != "desc")
@@ -56,6 +56,7 @@ class TestOrdersController extends Controller
 
     $testOrders = $testOrders
         ->select(
+          DB::raw("(test_order.quantity - (select count(*) from `test_unit` where `test_order_id` = test_order.id and ((`status` > 0 and `status` <> 5) or (`status` = 0 and `expires_on` > '".\Carbon\Carbon::now(config('app.timezone'))."' and `tester_id` is not null)))) as incomplete_units"),
           "test_order.id as testOrder_id",
           "test_order.created_at as testOrder_created_at",
           "test_order.quantity",

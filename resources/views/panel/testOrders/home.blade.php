@@ -38,7 +38,7 @@ Ordini di lavoro
         <thead class="thead-light">
           <tr>
             <th scope="col" class="p-2">
-              Unità incomplete
+              @orderable('incomplete_units', 'Unità incomplete')
             </th>
             <th scope="col"></th>
             <th scope="col" class="p-2">
@@ -55,17 +55,8 @@ Ordini di lavoro
         </thead>
         <tbody>
           @forelse ($testOrders as $testOrder)
-          @php $validCount = \App\TestUnit::where(function($q) {
-            $q->where(function($q) {
-              $q->where('status', '>', 0)->where('status', '<>', 5);
-            })->orWhere(function($q) {
-              $q->where('status', 0)
-                ->where('expires_on', '>', \Carbon\Carbon::now(config('app.timezone')))
-                ->whereNotNull('tester_id');
-            });
-          })->where('test_order_id', $testOrder->testOrder_id)->count();
-          $remainingCount = $testOrder->quantity-$validCount; @endphp
-          <tr{!! $remainingCount === 0 ? ' class="table-success"' : '' !!}>
+          @php $remainingCount = $testOrder->incomplete_units; @endphp
+          <tr{!! $remainingCount === 0 ? ' class="table-success"' : ($remainingCount < 0 ? ' class="table-danger"' : '') !!}>
             <th class="align-middle" scope="row">{{ $remainingCount }}</th>
             <td class="align-middle">
               @php $product_images = json_decode($testOrder->product_images); @endphp
