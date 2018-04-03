@@ -17,7 +17,17 @@ class PanelMenuServiceProvider extends ServiceProvider
     {
       Blade::directive('panelNav', function ($noRoundedCorners = false) {
           return '<?php foreach(config("panel.nav") as $routeName => $entry) {
-            if(Request::is($entry[1])) {
+            if(is_array($entry[1])) {
+              $current = false;
+              foreach($entry[1] as $path)
+                if(Request::is($path)) {
+                  $current = true;
+                  break;
+                }
+            } else
+              $current = Request::is($entry[1]);
+
+            if($current) {
               $active = " '.($noRoundedCorners ? '' : ' rounded-left ').'active";
               $aStart = "";
               $aEnd = "";

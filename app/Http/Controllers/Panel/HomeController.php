@@ -82,27 +82,38 @@ class HomeController extends Controller
       $report = "";
 
       if(!empty($request->input('start_date'))&&!empty($request->input('end_date'))) {
-        $statuses = DB::table('test_unit_status')
-          ->leftJoin('test_unit', 'test_unit_status.test_unit_id', '=', 'test_unit.id')
-          ->leftJoin('test_order', 'test_order.id', '=', 'test_unit.test_order_id')
+        $onlyCurrent = $request->input('current_state') == "on";
+
+        if($onlyCurrent)
+          $statuses = DB::table('test_unit');
+        else
+          $statuses = DB::table('test_unit_status')
+            ->leftJoin('test_unit', 'test_unit_status.test_unit_id', '=', 'test_unit.id');
+
+        $statuses = $statuses->leftJoin('test_order', 'test_order.id', '=', 'test_unit.test_order_id')
           ->leftJoin('store', 'test_order.store_id', '=', 'store.id')
-          ->where('test_unit'.($request->input('status') == -1 ? '.expires_on' : '_status.created_at'), '>', (new Carbon($request->input('start_date')))->startOfDay())
-          ->where('test_unit'.($request->input('status') == -1 ? '.expires_on' : '_status.created_at'), '<', (new Carbon($request->input('end_date')))->endOfDay());
+          ->where('test_unit'.($request->input('status') == -1 ? '.expires_on' : ($onlyCurrent ? '.updated_at' : '_status.created_at')), '>', (new Carbon($request->input('start_date')))->startOfDay())
+          ->where('test_unit'.($request->input('status') == -1 ? '.expires_on' : ($onlyCurrent ? '.updated_at' : '_status.created_at')), '<', (new Carbon($request->input('end_date')))->endOfDay());
 
         if(!empty($request->input('store_id')))
           $statuses = $statuses->where('store.id', $request->input('store_id'));
 
         if(intval($request->input('status')) >= 0)
-          $statuses = $statuses->where('test_unit_status.status', $request->input('status'));
+          $statuses = $statuses->where('test_unit' . (!$onlyCurrent ? '_status' : '') . '.status', $request->input('status'));
         elseif(intval($request->input('status')) == -1)
           $statuses = $statuses->where('test_unit.status', '0');
 
-        $statuses = $statuses->orderBy('store.name')->orderBy('test_unit.test_order_id')->orderBy('test_unit_status.status', 'desc')->select([
+        $statuses = $statuses->orderBy('store.name')->orderBy('test_unit.test_order_id');
+        
+        if(!$onlyCurrent)
+          $statuses = $statuses->orderBy('test_unit_status.status', 'desc');
+        
+        $statuses = $statuses->select([
           'amazon_order_id',
           'paypal_account',
           'review_url',
           'refunded',
-          'test_unit_status.status as status',
+          'test_unit' . (!$onlyCurrent ? '_status' : '') . '.status as status',
           'expires_on',
           'tester_id',
           'hash_code',

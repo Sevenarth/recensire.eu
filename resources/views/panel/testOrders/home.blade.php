@@ -38,7 +38,7 @@ Ordini di lavoro
         <thead class="thead-light">
           <tr>
             <th scope="col" class="p-2">
-              @orderable('test_order.id', '#')
+              Unità mancanti
             </th>
             <th scope="col"></th>
             <th scope="col" class="p-2">
@@ -55,8 +55,14 @@ Ordini di lavoro
         </thead>
         <tbody>
           @forelse ($testOrders as $testOrder)
-          <tr>
-            <th class="align-middle" scope="row">{{ $testOrder->testOrder_id }}</th>
+          @php $validCount = \App\TestUnit::where(function($q) {
+            $q->where('status', '>', 0)->orWhere(function($q) {
+              $q->where('status', 0)->where('expires_on', '>', \Carbon\Carbon::now(config('app.timezone')));
+            });
+          })->where('test_order_id', $testOrder->testOrder_id)->count();
+          $remainingCount = $testOrder->quantity-$validCount; @endphp
+          <tr{!! $remainingCount === 0 ? ' class="table-success"' : '' !!}>
+            <th class="align-middle" scope="row">{{ $remainingCount }}</th>
             <td class="align-middle">
               @php $product_images = json_decode($testOrder->product_images); @endphp
               <img style="min-width: 50px; max-height: 50px" src="@if(empty($product_images[0])) /images/package.svg @else{{ $product_images[0] }}@endif" class="img-fluid img-thumbnail rounded border">
@@ -76,7 +82,7 @@ Ordini di lavoro
                 </a>@else <i>Assente</i> @endif
             </td>
             <td class="align-middle">
-              {{ $testOrder->testOrder_created_at }}
+              {{ (new \Carbon\Carbon($testOrder->testOrder_created_at, config('app.timezone')))->format('d/m/Y') }}
             </td>
             <td class="align-middle">
               <a href="{{ route('panel.testOrders.view', ['testOrder' => $testOrder->testOrder_id]) }}" class="btn btn-sm btn-primary">

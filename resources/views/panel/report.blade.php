@@ -60,6 +60,16 @@
           </fieldset>
         </div>
       </div>
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" name="current_state" id="current_state"{{ old('current_state') == "on" ? ' checked' : '' }}>
+            <label class="custom-control-label" for="current_state">Solo stato corrente</label>
+          </div>
+        </div>
+        <div class="col-sm-6">
+        </div>
+      </div>
       <hr>
       <h4 class="mb-4">Campi da mostrare</h4>
       <div class="row">

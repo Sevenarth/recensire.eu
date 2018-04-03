@@ -143,7 +143,7 @@ Ordine di lavoro #{{ $testOrder->id }}
           <td class="p-2">
             @if($unit->status > 0)
               @if($accepted_date = $unit->statuses()->where('status', 1)->select('created_at')->first())
-                <span title="{{ $accepted_date->created_at }}">{{ ( new \Carbon\Carbon($accepted_date->created_at, config('app.timezone')))->toDateString() }}</span>
+                <span title="{{ $accepted_date->created_at }}">{{ ( new \Carbon\Carbon($accepted_date->created_at, config('app.timezone')))->format('d/m/Y') }}</span>
               @else
                 -
               @endif

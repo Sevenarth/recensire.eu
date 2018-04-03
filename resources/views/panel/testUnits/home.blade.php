@@ -97,7 +97,7 @@ Unità di test
               @endif
             </td>
             <td class="align-middle">
-              {{ $testUnit->created_at }}
+              {{ (new \Carbon\Carbon($testUnit->created_at, config('app.timezone')))->format('d/m/Y H:i:s') }}
             </td>
             <td class="align-middle">
               <a href="{{ route('panel.testUnits.view', ['testUnit' => $testUnit->id]) }}" class="btn btn-sm btn-primary">

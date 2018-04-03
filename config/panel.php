@@ -6,8 +6,8 @@ return [
     "stores.home" => ['Negozi', 'pannello/negozi*', 'fa-shopping-cart'],
     "products.home" => ['Prodotti', 'pannello/prodotti*', 'fa-shopping-bag'],
     "categories.home" => ['Categorie', 'pannello/categorie*', 'fa-list'],
-    "testOrders.home" => ['Ordini di lavoro', 'pannello/ordini-di-lavoro*', 'fa-archive'],
-    "testUnits.home" => ['Unità di test', 'pannello/tests*', 'fa-bug'],
+    "testOrders.home" => ['Ordini di lavoro', ['pannello/ordini-di-lavoro*', 'pannello/tests/*'], 'fa-archive'],
+    "testUnits.home" => ['Unità di test', 'pannello/tests', 'fa-bug'],
     "testers.home" => ['Testers', 'pannello/testers*', 'fa-user-circle'],
     "report" => ['Reportistica', 'pannello/reportistica', 'fa-chart-bar']
   ]

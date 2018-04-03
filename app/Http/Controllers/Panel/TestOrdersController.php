@@ -58,6 +58,7 @@ class TestOrdersController extends Controller
         ->select(
           "test_order.id as testOrder_id",
           "test_order.created_at as testOrder_created_at",
+          "test_order.quantity",
           "product.id as product_id",
           "product.title as product_name",
           "store.id as store_id",
