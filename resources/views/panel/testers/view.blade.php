@@ -86,7 +86,7 @@ Tester #{{ $tester->id }}
           <th></th>
           <th>Ordine di lavoro</th>
           <th>Ultimo stato</th>
-          <th>Scadenza/Acquisto</th>
+          <th>Scadenza/Data ultimo stato</th>
           <th></th>
         </thead>
         <tbody>
@@ -98,8 +98,8 @@ Tester #{{ $tester->id }}
             <td class="align-middle p-2">{{ config('testUnit.statuses')[$unit->status] }}</td>
             <td class="align-middle p-2">
               @if($unit->status > 0)
-                @if($accepted_date = $unit->statuses()->where('status', 1)->select('created_at')->first())
-                  {{ $accepted_date->created_at }}
+                @if($last_status = $unit->statuses()->where('status', '<>', 4)->orderBy('created_at', 'desc')->select('created_at')->first())
+                  {{ (new \Carbon\Carbon($last_status->created_at, config('app.timezone')))->format('d/m/Y H:i') }}
                 @else
                   -
                 @endif

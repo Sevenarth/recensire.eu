@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Collection;
 class HomeController extends Controller
 {
     public function index(Request $request) {
-      $incomplete = [];
+      /*$incomplete = [];
       foreach(TestOrder::all() as $testOrder) {
         $count = $testOrder->testUnits()->where(function($q) {
           $q->where('status', '>', 0)->orWhere(function($q) {
@@ -27,7 +27,7 @@ class HomeController extends Controller
         $testOrder->present = $count;
         if($testOrder->quantity > $count)
           $incomplete[] = $testOrder;
-      }
+      }*/
 
       $acceptedToday = TestUnitStatus::where('status', 1)
         ->where('created_at','>',Carbon::now(config('app.timezone'))->startOfDay())

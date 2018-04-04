@@ -236,7 +236,7 @@ Unità di test #{{ $testUnit->hash_code }}
         @foreach($status_logs as $status)
         <tr>
           <td class="p-2">{{ config('testUnit.statuses')[$status->status] }}</td>
-          <td class="p-2">{{ $status->created_at }}</td>
+          <td class="p-2">{{ (new \Carbon\Carbon($status->created_at, config('app.timezone')))->format('d/m/Y H:i:s') }}</td>
         </tr>
       @endforeach
       </tbody>

@@ -8,24 +8,7 @@
 
 @section('content')
   <div class="px-4 py-3 m-0 h3 border-bottom">
-    Ordini incompleti
-  </div>
-  <div class="px-3 py-2">
-    <table class="table table-striped">
-    @forelse($incomplete as $order)
-      <tr>
-        <td class="p-2 align-middle"><img style="min-width: 50px; max-height: 50px" src="@if(empty($order->product->images[0])) /images/package.svg @else{{ $order->product->images[0] }}@endif" class="img-fluid img-thumbnail rounded border"></td>
-        <td class="p-2 align-middle">L'<a href="{{ route('panel.testOrders.view', $order->id) }}">ordine di lavoro #{{ $order->id }}</a> ha ancora {{ $order->quantity-$order->present }} unità di test da creare.</td>
-      </tr>
-    @empty
-      <tr>
-        <td colspan="2" class="p-2 text-center"><i>Non ci sono ordini di lavoro da completare al momento!</i></td>
-    </tr>
-    @endforelse
-    </table>
-  </div>
-  <div class="px-4 py-3 mt-2 h3 border-bottom">
-    Test accettati oggi
+  Test accettati oggi <span class="badge badge-secondary">{{ count($acceptedToday) }}</span>
   </div>
   <div class="px-3 py-2">
     <table class="table table-striped">
@@ -45,7 +28,7 @@
   </div>
 
   <div class="px-4 py-3 mt-2 h3 border-bottom">
-    Test recensiti oggi
+    Test recensiti oggi <span class="badge badge-secondary">{{ count($reviewedToday) }}</span>
   </div>
   <div class="px-3 py-2">
     <table class="table table-striped">
@@ -65,7 +48,7 @@
   </div>
 
   <div class="px-4 py-3 mt-2 h3 border-bottom">
-    Test completati oggi
+    Test completati oggi <span class="badge badge-secondary">{{ count($completedToday) }}</span>
   </div>
   <div class="px-3 py-2">
     <table class="table table-striped">
