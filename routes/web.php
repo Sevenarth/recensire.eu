@@ -12,7 +12,8 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/posts/p/M7gyrXm');  
+  //return view('welcome');
 });
 
 Route::name('tests.')->prefix('test')->group(function () {
@@ -21,8 +22,8 @@ Route::name('tests.')->prefix('test')->group(function () {
   Route::get('/{testUnit}/grazie', 'TestUnitsController@thankYou')->name('thankyou');
 });
 
-Route::get('contattaci', 'HomeController@contactus')->name('contactus');
-Route::post('contattaci', 'HomeController@send')->name('postContactus');
+Route::get('contactus', 'HomeController@contactus')->name('contactus');
+Route::post('contactus', 'HomeController@send')->name('postContactus');
 
 Route::get('/go/{testUnit}', 'TestUnitsController@go')->name('tests.go');
 

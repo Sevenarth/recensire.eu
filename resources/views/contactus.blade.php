@@ -24,13 +24,13 @@
 <body class="bg-white">
   <div class="container">
     <img src="/images/logo.svg" alt="logo" class="mx-4 mt-4 mb-2 img-fluid">
-      <a href="{{ url('/') }}" class="btn btn-info float-right mx-4 mt-4 mb-2">Pagina principale</a>
+      <a href="{{ url('/') }}" class="btn btn-info float-right mx-4 mt-4 mb-2">Homepage</a>
       <div class="clearfix"></div>
       <div class="mx-4 mt-4 mb-2">
         <div class="h3 mb-1">
-          Contattaci
+          Contact us
         </div><br>
-        <div class="h5 mb-4">Compila il modulo sottostante per contattarci!</div>
+        <div class="h5 mb-4">Fill the form below to contact us!</div>
 
         @if(session('status'))
         <div class="alert alert-success">
@@ -41,8 +41,8 @@
         <form id="contactus" action="{{ route('postContactus') }}" method="post">
           @csrf
           <fieldset class="form-group">
-            <label for="name">Il tuo nome</label>
-            <input type="text" name="name" placeholder="Mario Rossi" value="{{ old('name') }}" class="form-control{{ $errors->has('name') ? ' is-invalid' : ''}}" required>
+            <label for="name">Your name</label>
+            <input type="text" name="name" placeholder="John Doe" value="{{ old('name') }}" class="form-control{{ $errors->has('name') ? ' is-invalid' : ''}}" required>
             @if($errors->has('name'))
             <div class="invalid-feedback">
             @foreach($errors->get('name') as $err)
@@ -52,8 +52,8 @@
             @endif
           </fieldset>
           <fieldset class="form-group">
-            <label for="email">Il tuo indirizzo email</label>
-            <input type="email" name="email" placeholder="mario.rossi@example.com" value="{{ old('email') }}" class="form-control{{ $errors->has('email') ? ' is-invalid' : ''}}" required>
+            <label for="email">Your email address</label>
+            <input type="email" name="email" placeholder="john.doe@example.com" value="{{ old('email') }}" class="form-control{{ $errors->has('email') ? ' is-invalid' : ''}}" required>
             @if($errors->has('email'))
             <div class="invalid-feedback">
             @foreach($errors->get('email') as $err)
@@ -63,7 +63,7 @@
             @endif
           </fieldset>
           <fieldset class="form-group">
-            <label for="content">La tua domanda</label>
+            <label for="content">Your question</label>
             <textarea name="content" style="min-height: 130px" class="form-control{{ $errors->has('content') ? ' is-invalid' : ''}}" required>{{ old('content') }}</textarea>
             @if($errors->has('content'))
             <div class="invalid-feedback">
@@ -74,7 +74,7 @@
             @endif
           </fieldset>
 
-          <button type="submit" data-callback='onSubmit' data-sitekey="{{ config('app.recaptcha_public_key') }}" class="g-recaptcha my-2 btn btn-primary">Invia domanda</button>
+          <button type="submit" data-callback='onSubmit' data-sitekey="{{ config('app.recaptcha_public_key') }}" class="g-recaptcha my-2 btn btn-primary">Send question</button>
           @if($errors->has('g-recaptcha-response'))
           <div class="text-danger"><small>
           @foreach($errors->get('g-recaptcha-response') as $err)

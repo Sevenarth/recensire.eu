@@ -29,6 +29,6 @@ class HomeController extends Controller
 
         return redirect()
           ->back()
-          ->with('status', 'Grazie per averci contattato!');
+          ->with('status', 'Thank you for contacting us!');
     }
 }

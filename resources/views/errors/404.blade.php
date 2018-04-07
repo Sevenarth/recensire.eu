@@ -17,10 +17,10 @@
             <div class="content">
                 <img src="/images/logo.svg" alt="Logo" id="logo">
                 <div class="title">
-                  Oops! La pagina richiesta non esiste... 😞
+                Whoops! The requested page does not exist... 😞 
                 </div>
-                Se pensi di essere sulla pagina giusta, prova a ricontrollare<br>
-                il collegamento per errori, ma può darsi che questa pagina non esiste più.
+                If you think you are on the right page, try to check<br>
+                the link for mistakes, it could even be that this page no longer exists. 
             </div>
         </div>
     </body>
