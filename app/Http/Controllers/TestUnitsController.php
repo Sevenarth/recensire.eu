@@ -44,7 +44,7 @@ class TestUnitsController extends Controller
       try {
         Notification::route('mail', config('app.notifiable'))
           ->notify(new BoughtProduct($testUnit));
-      } catch(Exception $e) {}
+      } catch(\Swift_TransportException $e) {}
 
       return redirect()
         ->route('tests.thankyou', $testUnit->hash_code)
