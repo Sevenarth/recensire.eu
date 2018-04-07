@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return redirect('/posts/p/M7gyrXm');  
+  return redirect()->secure('/posts');  
   //return view('welcome');
 });
 
