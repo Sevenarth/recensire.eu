@@ -43,8 +43,9 @@ class ProductsController extends Controller
   }
 
   public function create(Request $request) {
-
-    return view("panel/products/form", ['product' => new Product, 'catsTree' => Category::tree()]);
+    $product = new Product;
+    $product->images = [];
+    return view("panel/products/form", ['product' => $product, 'catsTree' => Category::tree()]);
   }
 
   public function tags(Request $request) {

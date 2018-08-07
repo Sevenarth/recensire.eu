@@ -105,7 +105,7 @@ $(function () {
 
       if(response.data.length > 0) {
         response.data.forEach(function(elt) {
-          $(result).append('<a class="list-group-item selectable-list-item" data-evt="'+evt+'" data-id="'+elt.id+'">'+(elt.nickname && elt.nickname.length > 0 ? elt.nickname + " - " : '')+(elt.name && elt.name.length > 0 ? elt.name : '')+(elt.email ? ' <small><i>'+elt.email+'</i></small>': '') + '</a>')
+          $(result).append('<a class="list-group-item selectable-list-item' +  (elt.status ? ' tester-status-' + elt.status : '') + '" data-evt="'+evt+'" data-id="'+elt.id+'"' +  (elt.status ? ' data-status="'+elt.status+'"' : '') + '>'+(elt.nickname && elt.nickname.length > 0 ? elt.nickname + " - " : '')+(elt.name && elt.name.length > 0 ? elt.name : '')+(elt.email ? ' <small><i>'+elt.email+'</i></small>': '') + '</a>')
         });
       } else
         $(result).append('<li class="list-group-item"><i>Nessun elemento presente con questi criteri di ricerca</i></li>')
@@ -115,6 +115,10 @@ $(function () {
     });
     return false;
   });
+
+  $("select[data-changeSubmit]").change(function () {
+    $($(this).attr("data-changeSubmit")).submit();
+  })
 
   $("body").on('click', 'a[data-evt=select-seller]', function() {
     $('#select-seller').modal('toggle');
@@ -132,6 +136,8 @@ $(function () {
     $('#select-tester').modal('toggle');
     $("#tester-id").val($(this).attr("data-id"));
     $("#tester-name").val($(this).html().replace(/<[\w]+>.*<\/[\w]+>/ig, '').trim());
+    $("#tester-name").removeClass((idx, cls) => (cls.match(/(^|\s)tester-status-\S+/g) || []).join(" "));
+    $("#tester-name").addClass("tester-status-" + $(this).attr("data-status"));
   })
 
   $("body").on('click', '.image-field', function() {
@@ -237,6 +243,9 @@ $(function () {
     <div class="input-group mt-2">
       <input class="form-control" type="text" name="amazon_profiles[]" placeholder="http://" required>
       <div class="input-group-append">
+        <select name="amazon_profiles_statuses[]" class="custom-select">
+          ` + window.amazon_profiles_statuses.map(entry => `<option value="${entry.key}">${entry.value}</option>`).join('') + `
+        </select>
         <button type="button" class="remove-ig btn btn-danger"><i class="fas fa-times fa-fw"></i></button>
       </div>
     </div>`)

@@ -33,11 +33,11 @@
           <div class="input-group">
             <div class="input-group-prepend">
               <button class="btn btn-outline-secondary" data-toggle="modal" data-target="#select-tester" type="button">Cerca</button>
-              <button type="button" class="btn btn-outline-danger" onclick="$('#tester-id').val('');$('#tester-name').val('');"title="Disassocia"><i class="fa fa-fw fa-unlink"></i></button>
+              <button type="button" class="btn btn-outline-danger" onclick="$('#tester-id').val('');$('#tester-name').val('');$('#tester-name').removeClass(function (idx, cls) { return (cls.match(/(^|\s)tester-status-\S+/g) || []).join(' ') })" title="Disassocia"><i class="fa fa-fw fa-unlink"></i></button>
             </div>
           @endif
             <input type="hidden" value="{{ !empty($testUnit->tester) ? $testUnit->tester->id : '' }}" id="tester-id" name="tester_id">
-            <input class="form-control{{ $errors->has('tester_id') ? ' is-invalid' : '' }}" id="tester-name" type="text" value="{{ !empty($testUnit->tester) ? ($testUnit->tester->name . " - " . $testUnit->tester->email) : '' }}" placeholder="Nessun tester selezionato" readonly>
+            <input class="form-control{{ $errors->has('tester_id') ? ' is-invalid' : '' }}{{ !empty($testUnit->tester) ? ' tester-status-' . $testUnit->tester->status : '' }}" id="tester-name" type="text" value="{{ !empty($testUnit->tester) ? ($testUnit->tester->name . " - " . $testUnit->tester->email) : '' }}" placeholder="Nessun tester selezionato" readonly>
             @if($errors->has('seller_id'))
             <div class="invalid-feedback">
               @php foreach($errors->get('seller_id') as $error) echo $error . "<br>"; @endphp

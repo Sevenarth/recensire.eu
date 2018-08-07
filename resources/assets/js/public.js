@@ -7,6 +7,22 @@ var countdown = require('countdown');
 window.Slick = require('slick-carousel');
 
 $(function () {
+  $("#updateCategory").change(function(e) {
+    let currentURL = window.location.origin + window.location.pathname;
+    if(currentURL.includes("category")) {
+      if(currentURL.lastIndexOf('/') == currentURL.length)
+        currentURL = currentURL.substr(0, currentURL.length-1);
+
+      currentURL = currentURL.substr(0, currentURL.lastIndexOf('/'));
+      currentURL = currentURL.substr(0, currentURL.lastIndexOf('/')+1);
+    }
+
+    if($(this).val())
+      window.location.href = currentURL + 'category/' + $(this).val();
+    else
+      window.location.href = currentURL;
+  });
+
   moment.locale($("html").attr("lang"));
 
   if($("#cont").attr("data-open") == "true") {
@@ -14,7 +30,7 @@ $(function () {
       $(this).html(MD.render($(this).text()));
     });
 
-    if($("#instructions"))
+    if($("#instructions")[0])
       $("#instructions").html($("#instructions").html().replace('#link-amazon', $("#amazon-link").clone().removeClass('d-none')[0].outerHTML))
 
     $(".relative-time").each(function() {

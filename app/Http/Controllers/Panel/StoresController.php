@@ -152,7 +152,7 @@ class StoresController extends Controller
   }
 
   public function fetch(Request $request) {
-    $search = trim($request->input('s', null));
+    $search = $request->input('s', $request->query('s', null));
 
     if(!empty($search)) {
         $stores = Store::where("id", $search)

@@ -22,7 +22,8 @@ class TestersController extends Controller
         $testers = Tester::where("id", $search)
           ->orWhere("name", "like", "%".$search."%")
           ->orWhere("email", "like", "%".$search."%")
-          ->orWhere("facebook_profiles", '%'.$search.'%')
+          ->orWhere("facebook_profiles", "like", '%'.$search.'%')
+          ->orWhere("amazon_profiles", "like", '%'.$search.'%')
           ->orWhere("wechat", '%'.$search.'%');
 
         if(!empty($orderBy))
@@ -41,6 +42,9 @@ class TestersController extends Controller
 
   public function create(Request $request) {
     $tester = new Tester;
+    $tester->amazon_profiles = [];
+    $tester->amazon_profiles_statuses = [];
+    $tester->facebook_profiles = [];
     return view('panel/testers/form', compact('tester'));
   }
 
@@ -67,9 +71,13 @@ class TestersController extends Controller
           'fields' => implode(", ", $confirm_fields)
         ]));
 
-    $tester = Tester::create($request->only([
-      'name', 'email', 'wechat', 'profile_image', 'amazon_profiles', 'facebook_profiles'
-    ]));
+    $amz = $request->input("amazon_profiles");
+    $amz_statuses = $request->input("amazon_profiles_statuses");
+    array_multisort($amz_statuses, $amz);
+
+    $tester = Tester::create(array_merge($request->only([
+      'name', 'email', 'wechat', 'profile_image', 'facebook_profiles', 'status', 'notes'
+    ]), ['amazon_profiles' => $amz, 'amazon_profiles_statuses' => $amz_statuses]));
 
     return redirect()
       ->route('panel.testers.home')
@@ -77,7 +85,7 @@ class TestersController extends Controller
   }
 
   public function view(Request $request, Tester $tester) {
-    $testUnits = $tester->testUnits()->paginate(15);
+    $testUnits = $tester->testUnits()->orderBy('created_at', 'desc')->paginate(15);
     return view('panel/testers/view', compact('tester', 'testUnits'));
   }
 
@@ -108,9 +116,15 @@ class TestersController extends Controller
           'fields' => implode(", ", $confirm_fields)
         ]));
 
+    $amz = $request->input("amazon_profiles");
+    $amz_statuses = $request->input("amazon_profiles_statuses");
+    array_multisort($amz_statuses, $amz);
+
     $tester->fill($request->only([
-      'name', 'email', 'wechat', 'profile_image', 'amazon_profiles', 'facebook_profiles'
+      'name', 'email', 'wechat', 'profile_image', 'facebook_profiles', 'status', 'notes'
     ]));
+    $tester->amazon_profiles = $amz;
+    $tester->amazon_profiles_statuses = $amz_statuses;
     $tester->save();
 
     return redirect()
@@ -134,11 +148,11 @@ class TestersController extends Controller
           ->orWhere("name", "like", "%".$search."%")
           ->orWhere("email", "like", "%".$search."%")
           ->limit(15)
-          ->get(['id', 'name', 'email']);
+          ->get(['id', 'name', 'email', 'status']);
     } else
       $sellers = Tester::orderBy('name', 'asc')
         ->limit(15)
-        ->get(['id', 'name', 'email']);
+        ->get(['id', 'name', 'email', 'status']);
 
     return $sellers;
   }
@@ -185,5 +199,22 @@ class TestersController extends Controller
       return redirect()
         ->back()
         ->withErrors(['sheet' => ['Seleziona un file valido prima di continuare.']]);
+  }
+
+  public function export()
+  {
+    $output = 'Nome contatto,Indirizzo Email,Stato,Accounts PayPal' . PHP_EOL;
+
+    foreach(Tester::orderBy('name', 'asc')->get() as $tester) {
+      $output .= $tester->name . ',' . $tester->email . ',' . config('testers.statuses')[$tester->status] . ',';
+      $output .= implode(',', array_map(function ($t) {
+          return $t['paypal_account'];
+        }, $tester->testUnits()->whereNotNull('paypal_account')->distinct()->get(['paypal_account'])->toArray()
+      )) . PHP_EOL;
+    }
+
+    return response()->streamDownload(function () use($output) {
+      echo $output;
+    }, 'Testers Recensire.eu ' . date('d M Y') . '.csv');
   }
 }

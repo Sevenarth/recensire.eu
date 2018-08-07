@@ -88,7 +88,7 @@ Unità di test #{{ $testUnit->hash_code }}
           <a title="Vai alla pagina del tester" href="{{ route('panel.testers.view', ['tester' => $testUnit->tester->id]) }}" class="btn btn-sm btn-primary">
             <i class="fas fa-external-link-alt"></i>
           </a></label>@endif
-          <input type="text" readonly class="form-control-plaintext" value="{{ !empty($testUnit->tester) ? $testUnit->tester->name : '-' }}">
+          <input type="text" readonly class="form-control-plaintext {{ !empty($testUnit->tester) ? 'tester-status-' . $testUnit->tester->status : '' }}" value="{{ !empty($testUnit->tester) ? $testUnit->tester->name : '-' }}">
         </fieldset>
       </div>
       <div class="col-sm-4">

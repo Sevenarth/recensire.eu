@@ -11,10 +11,8 @@
 |
 */
 
-Route::get('/', function () {
-  return redirect()->secure('/posts');  
-  //return view('welcome');
-});
+Route::get('/', 'HomeController@front');
+Route::get('/category/{category_slug}', 'HomeController@front');
 
 Route::name('tests.')->prefix('test')->group(function () {
   Route::get('/{testUnit}', 'TestUnitsController@view')->name('view');
@@ -47,6 +45,7 @@ Route::namespace('Panel')->name('panel.')->middleware('auth')->prefix('pannello'
       Route::patch('/visualizza-{seller}', 'SellersController@update')->name('update');
       Route::delete('/visualizza-{seller}', 'SellersController@delete')->name('delete');
       Route::post('/fetch', 'SellersController@fetch')->name('fetch');
+      Route::get('/fetch', 'SellersController@fetch')->name('fetch');
     });
     Route::prefix('negozi')->name('stores.')->group(function () {
       Route::get('/', 'StoresController@index')->name('home');
@@ -60,6 +59,7 @@ Route::namespace('Panel')->name('panel.')->middleware('auth')->prefix('pannello'
       Route::put('/prodotti-{store}', 'StoresController@attachProduct')->name('attachProduct');
       Route::delete('/prodotti-{store}/disassocia-{product}', 'StoresController@detachProduct')->name('detachProduct');
       Route::post('/fetch', 'StoresController@fetch')->name('fetch');
+      Route::get('/fetch', 'StoresController@fetch')->name('fetch');
     });
     Route::prefix('prodotti')->name('products.')->group(function () {
       Route::get('/', 'ProductsController@index')->name('home');
@@ -105,6 +105,7 @@ Route::namespace('Panel')->name('panel.')->middleware('auth')->prefix('pannello'
       Route::patch('/visualizza-{tester}', 'TestersController@update')->name('update');
       Route::delete('/visualizza-{tester}', 'TestersController@delete')->name('delete');
       Route::put('/importa', 'TestersController@import')->name('import');
+      Route::get('/esporta', 'TestersController@export')->name('export');
     });
     Route::prefix('categorie')->name('categories.')->group(function () {
       Route::get('/', 'CategoriesController@index')->name('home');
@@ -114,4 +115,7 @@ Route::namespace('Panel')->name('panel.')->middleware('auth')->prefix('pannello'
       Route::patch('/modifica-{cat}', 'CategoriesController@update')->name('update');
       Route::delete('/elimina-{cat}', 'CategoriesController@delete')->name('delete');
     });
+
+    Route::get('/opzioni', 'OptionsController@index')->name('options');
+    Route::post('/opzioni', 'OptionsController@update')->name('options.update');
 });

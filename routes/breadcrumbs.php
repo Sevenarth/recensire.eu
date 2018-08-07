@@ -4,6 +4,11 @@ Breadcrumbs::register('home', function ($breadcrumbs) {
     $breadcrumbs->push('Home', route('panel.home'));
 });
 
+Breadcrumbs::register('options', function ($breadcrumbs) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push('Opzioni', route('panel.options'));
+});
+
 Breadcrumbs::register('sellers', function ($breadcrumbs) {
     $breadcrumbs->parent('home');
     $breadcrumbs->push('Venditori', route('panel.sellers.home'));

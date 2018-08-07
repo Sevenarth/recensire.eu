@@ -1,32 +1,16 @@
-<!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}">
-<head>
-    <meta charset="utf-8">
-    <meta name="referrer" content="no-referrer">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+@extends('layouts.front')
 
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+@section('title') Contact us @endsection
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+@section('navbar')
+<div>
+    <a href="/" class="btn btn-info">Homepage</a>
+    <a href="/posts" class="btn btn-info">Apply</a>
+</div>
+@endsection
 
-    <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-     <script>
-       function onSubmit(token) {
-         document.getElementById("contactus").submit();
-       }
-     </script>
-</head>
-<body class="bg-white">
+@section('content')
   <div class="container">
-    <img src="/images/logo.svg" alt="logo" class="mx-4 mt-4 mb-2 img-fluid">
-      <a href="{{ url('/') }}" class="btn btn-info float-right mx-4 mt-4 mb-2">Homepage</a>
-      <div class="clearfix"></div>
-      <div class="mx-4 mt-4 mb-2">
         <div class="h3 mb-1">
           Contact us
         </div><br>
@@ -84,5 +68,13 @@
           @endif
         </form>
       </div>
-  </body>
-  </html>
+@endsection
+
+@section('scripts')
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<script>
+  function onSubmit(token) {
+    document.getElementById("contactus").submit();
+  }
+</script>
+@endsection

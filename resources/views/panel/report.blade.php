@@ -36,21 +36,40 @@
       <div class="row">
         <div class="col-sm-6">
           <fieldset class="form-group">
-            <label for="store_id">Negozio <small class="text-muted">(lascia vuoto per tutti)</small></label>
-            <div class="input-group">
-              <div class="input-group-prepend">
-                <button class="btn btn-outline-secondary" data-toggle="modal" data-target="#select-store" type="button">Cerca</button>
-                <button type="button" class="btn btn-outline-danger" onclick="$('#store-id').val('');$('#store-name').val('');"title="Disassocia"><i class="fa fa-fw fa-unlink"></i></button>
+              <label for="sellers">Venditori <small class="text-muted">(lascia vuoto per tutti)</small></label>
+        
+              <select id="sellers" name="sellers[]" data-role="tagsinput" multiple></select>
+              @if($errors->has('sellers'))
+              <div class="invalid-feedback">
+                @foreach ($errors->get('sellers') as $err)
+                  {{ $err }}<br>
+                @endforeach
               </div>
-              <input type="hidden" value="{{ old('store_id') }}" id="store-id" name="store_id">
-              <input class="form-control" id="store-name" name="store_name" type="text" value="{{ old('store_name') }}" placeholder="Nessun negozio selezionato" required readonly>
-            </div>
-          </fieldset>
+              @endif
+              <small class="text-muted">Digita il nome del venditore, e separa multipli da una virgola.</small>
+            </fieldset>
         </div>
         <div class="col-sm-6">
           <fieldset class="form-group">
+              <label for="stores">Negozi <small class="text-muted">(lascia vuoto per tutti)</small></label>
+        
+              <select id="stores" name="stores[]" data-role="tagsinput" multiple></select>
+              @if($errors->has('stores'))
+              <div class="invalid-feedback">
+                @foreach ($errors->get('stores') as $err)
+                  {{ $err }}<br>
+                @endforeach
+              </div>
+              @endif
+              <small class="text-muted">Digita il nome del negozio, e separa multipli da una virgola.</small>
+            </fieldset>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-6">
+          <fieldset class="form-group">
             <label for="status">Stato</label>
-            <select class="custom-select" name="status">
+            <select class="custom-select" multiple name="status[]">
               <option value="-2"{{ intval(old('status', -2)) === -2 ? ' selected' : '' }}>Tutti</option>
               <option value="-1"{{ intval(old('status', -2)) === -1 ? ' selected' : '' }}>In scadenza/Scaduti</option>
               @foreach(config('testUnit.statuses') as $id => $status)
@@ -132,6 +151,20 @@
           </div>
         </div>
       </div>
+      <div class="row my-3">
+        <div class="col-sm-4">
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" name="asin" id="asin"{{ old('asin') == "on" ? ' checked' : '' }}>
+            <label class="custom-control-label" for="asin">ASIN</label>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" name="refunded_amount" id="refunded_amount"{{ old('refunded_amount') == "on" ? ' checked' : '' }}>
+            <label class="custom-control-label" for="refunded_amount">Importo rimborsato</label>
+          </div>
+        </div>
+      </div>
       <button type="submit" class="mb-2 btn btn-primary">Genera report</button> <button type="button" onclick="window.location.reload()" class="mb-2 btn btn-outline-primary">Reset</button>
       @closeForm
       @if(!empty(old('report', null)))
@@ -161,4 +194,84 @@
           </div>
         </div>
     </div>
+@endsection
+
+@section('scripts')
+<script>
+var sellers = new Bloodhound({
+  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+  queryTokenizer: Bloodhound.tokenizers.whitespace,
+  remote: {
+    wildcard: '%QUERY',
+    url: '{{ route('panel.sellers.fetch') }}?s=%QUERY',
+    transform: function (data) {
+      return $.map(data, function (store) {
+          return {
+            id: store.id,
+            name: store.nickname
+          };
+      });
+    }
+  }
+});
+
+sellers.initialize();
+
+$('#sellers').tagsinput({
+  tagClass: 'badge',
+  itemValue: 'id',
+  itemText: 'name',
+  typeaheadjs: [{
+    minLength: 3,
+    highlight: true
+  },{
+    name: 'sellers',
+    displayKey: 'name',
+    source: sellers.ttAdapter()
+  }],
+  freeInput: false
+});
+
+@foreach($sellers as $seller)
+$('#sellers').tagsinput("add", {!! json_encode($seller) !!});
+@endforeach
+
+var stores = new Bloodhound({
+  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+  queryTokenizer: Bloodhound.tokenizers.whitespace,
+  remote: {
+    wildcard: '%QUERY',
+    url: '{{ route('panel.stores.fetch') }}?s=%QUERY',
+    transform: function (data) {
+      return $.map(data, function (store) {
+          return {
+            id: store.id,
+            name: store.name
+          };
+      });
+    }
+  }
+});
+
+stores.initialize();
+
+$('#stores').tagsinput({
+  tagClass: 'badge',
+  itemValue: 'id',
+  itemText: 'name',
+  typeaheadjs: [{
+    minLength: 3,
+    highlight: true
+  },{
+    name: 'stores',
+    displayKey: 'name',
+    source: stores.ttAdapter()
+  }],
+  freeInput: false
+});
+
+@foreach($stores as $store)
+$('#stores').tagsinput("add", {!! json_encode($store) !!});
+@endforeach
+</script>
 @endsection

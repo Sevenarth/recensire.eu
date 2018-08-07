@@ -48,7 +48,7 @@ Unità di test
               @orderable('tester_name', 'Nome tester')
             </th>
             <th scope="col" class="p-2">
-              @orderable('status', 'Stato')
+              @orderable('test_unit.status', 'Stato')
             </th>
             <th scope="col" class="p-2">
               @orderable('test_unit.created_at', 'Data creazione')
@@ -63,7 +63,7 @@ Unità di test
             <td class="align-middle">
               @if($testUnit->test_order_id)
               @php $product = \App\TestOrder::find($testUnit->test_order_id)->product; @endphp
-              <img style="min-width: 50px; max-height: 50px" src="@if(empty($product->images[0])) /images/package.svg @else{{ $product->images[0] }}@endif" class="img-fluid img-thumbnail rounded border">
+              <img style="min-width: 70px; max-height: 70px" src="@if(empty($product->images[0])) /images/package.svg @else{{ $product->images[0] }}@endif" class="img-fluid img-thumbnail rounded border">
               @endif
             </td>
             <td class="align-middle">
@@ -73,7 +73,7 @@ Unità di test
                 <i class="fa fa-external-link-alt"></i>
               </a>@else <i>Assente</i> @endif
             </td>
-            <td class="align-middle">
+          <td class="align-middle {{ $testUnit->tester_status ? 'tester-status-' . $testUnit->tester_status : "" }}">
               @if($testUnit->tester_id)
                 {{ $testUnit->tester_name }}
                 <a title="Vai al tester" href="{{ route('panel.testers.view', ['tester' => $testUnit->tester_id]) }}" class="btn btn-sm btn-primary">

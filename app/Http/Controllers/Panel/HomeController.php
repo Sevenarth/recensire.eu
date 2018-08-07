@@ -6,10 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ImageUploadRequest;
 use Storage;
-use App\TestOrder;
-use App\TestUnit;
-use App\TestUnitStatus;
-use App\Tester;
+use App\{TestOrder, TestUnit, TestUnitStatus, Tester, Product, Store, Seller};
 use DB;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
@@ -75,7 +72,19 @@ class HomeController extends Controller
     }
 
     public function report(Request $request) {
-      return view('panel/report');
+      $sellers = [];
+      if(old('sellers'))
+        foreach(old('sellers') as $seller_id)
+          if($seller = Seller::where('id', $seller_id)->select('id', 'nickname as name')->first())
+            $sellers[] = $seller;
+
+      $stores = [];
+      if(old('stores'))
+        foreach(old('stores') as $store_id)
+          if($store = Store::where('id', $store_id)->select('id', 'name')->first())
+            $stores[] = $store;
+
+      return view('panel/report', compact('stores', 'sellers'));
     }
 
     public function postReport(Request $request) {
@@ -114,11 +123,13 @@ class HomeController extends Controller
           'review_url',
           'refunded',
           'test_unit' . (!$onlyCurrent ? '_status' : '') . '.status as status',
+          'refunded_amount',
           'expires_on',
           'tester_id',
           'hash_code',
           'test_unit.id as unit_id',
           'store.name as store_name',
+          'product_id',
           'store.id as store_id'
         ])->get();
 
@@ -147,6 +158,12 @@ class HomeController extends Controller
             $row[] = 'Facebook ID: ' . (!empty($tester->facebook_profiles[0]) ? $tester->facebook_profiles[0] : 'N/A');
           if($request->input('refunded') == "on")
             $row[] = 'Refunded: ' . (!empty($status->refunded) ? 'Yes' : 'No');
+          if($request->input('asin') == "on") {
+            $product = Product::find($status->product_id);
+            $row[] = 'ASIN: ' . $product->ASIN;
+          }
+          if($request->input('refunded_amount') == "on")
+            $row[] = 'Refunded amount: ' . (!empty($status->refunded_amount) ? config('app.currency') . " " . number_format($status->refunded_amount, 2, '.', '') : 'N/A');
           if($request->input('status_check') == "on") {
             $expiration = new \Carbon\Carbon($status->expires_on, config('app.timezone'));
             if($expiration->gt(\Carbon\Carbon::now(config('app.timezone'))) || $status->status > 0)

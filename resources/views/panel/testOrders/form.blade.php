@@ -27,13 +27,29 @@
         </a>@endif</label>
         <input type="text" id="store" readonly class="form-control-plaintext" value="{{ !empty($testOrder->store) ? $testOrder->store->name : 'Negozio assente' }}">
       </fieldset>
-      <fieldset class="form-group">
-        <label for="product"><b>Prodotto</b>
-        @if(!empty($testOrder->product))<a title="Vai al prodotto" href="{{ route('panel.products.view', $testOrder->product->id) }}" class="btn btn-sm btn-primary">
-          <i class="fas fa-external-link-alt"></i>
-        </a>@endif</label>
-        <input type="text" id="product" readonly class="form-control-plaintext" value="{{ !empty($testOrder->product) ? $testOrder->product->title : 'Prodotto assente' }}">
-      </fieldset>
+      <div class="row">
+        <div class="col-sm-6">
+          <fieldset class="form-group">
+            <label for="product"><b>Prodotto</b>
+            @if(!empty($testOrder->product))<a title="Vai al prodotto" href="{{ route('panel.products.view', $testOrder->product->id) }}" class="btn btn-sm btn-primary">
+              <i class="fas fa-external-link-alt"></i>
+            </a>@endif</label>
+            <input type="text" id="product" readonly class="form-control-plaintext" value="{{ !empty($testOrder->product) ? $testOrder->product->title : 'Prodotto assente' }}">
+          </fieldset>
+        </div>
+        <div class="col-sm-3">
+          <div class="custom-control mt-4 mb-sm-0 mb-4 custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="is_product_public" name="is_product_public" {{ old('is_product_public', !empty($testOrder->id) ? $testOrder->is_product_public : true) ? 'checked' : ''}}>
+            <label class="custom-control-label" for="is_product_public">Pubblico?</label>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="custom-control mt-4 mb-sm-0 mb-4 custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="is_product_link_public" name="is_product_link_public" {{ old('is_product_link_public', $testOrder->is_product_link_public) ? 'checked' : ''}}>
+            <label class="custom-control-label" for="is_product_link_public">Link pubblico?</label>
+          </div>
+        </div>
+      </div>
 
       <fieldset class="form-group">
         <label for="fee">Commissione <small class="text-muted">(opzionale)</small></label>

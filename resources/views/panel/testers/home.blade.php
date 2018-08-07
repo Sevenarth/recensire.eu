@@ -14,9 +14,11 @@ Testers
       <i class="fa fa-fw fa-plus"></i>
       Nuovo tester
     </button></a>
+    <a href="{{route("panel.testers.export")}}" class="float-right btn btn-outline-info d-none d-md-block mr-2"><i class="fa fa-fw fa-download"></i> Esporta</a>
     Testers
   </div>
   <div class="px-4 py-3">
+    <a href="{{route("panel.testers.export")}}" class="btn btn-outline-info d-block d-md-none"><i class="fa fa-fw fa-download"></i> Esporta</a>
     <a href="{{ route('panel.testers.create') }}" class="mb-4 btn-block btn btn-outline-primary d-block d-md-none">
       <i class="fa fa-fw fa-plus"></i>
       Nuovo tester
@@ -84,7 +86,7 @@ Testers
             <td class="align-middle">
               <img style="min-width: 50px; max-height: 50px" id="profile_image" src="@if(empty($tester->profile_image)) /images/profile_image.svg @else{{ $tester->profile_image }}@endif" class="img-fluid img-thumbnail rounded border">
             </td>
-            <td class="align-middle">{{ $tester->name }}</td>
+            <td class="align-middle tester-status-{{ $tester->status }}">{{ $tester->name }}</td>
             <td class="align-middle">{{ !empty($tester->email) ? $tester->email : '-' }}</td>
             <td class="align-middle">
               <a href="{{ route('panel.testers.view', ['tester' => $tester->id]) }}" class="btn btn-sm btn-primary">

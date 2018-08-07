@@ -9,6 +9,7 @@ return [
     "testOrders.home" => ['Ordini di lavoro', ['pannello/ordini-di-lavoro*', 'pannello/tests/*'], 'fa-archive'],
     "testUnits.home" => ['Unità di test', 'pannello/tests', 'fa-bug'],
     "testers.home" => ['Testers', 'pannello/testers*', 'fa-user-circle'],
-    "report" => ['Reportistica', 'pannello/reportistica', 'fa-chart-bar']
+    "report" => ['Reportistica', 'pannello/reportistica', 'fa-chart-bar'],
+    "options" => ['Opzioni', 'pannello/opzioni', 'fa-cog']
   ]
 ];

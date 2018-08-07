@@ -50,18 +50,37 @@ Tester #{{ $tester->id }}
             </fieldset>
           </div>
         </div>
-        <fieldset class="form-group">
-          <label for="wechat"><b><i class="fab fa-fw fa-weixin"></i> WeChat ID</b></label>
-          <input type="text" id="wechat" readonly class="form-control-plaintext" value="{{ !empty($tester->wechat) ? $tester->wechat : '-' }}">
-        </fieldset>
+        <div class="row">
+          <div class="col-sm-6">
+            <fieldset class="form-group">
+              <label for="wechat"><b><i class="fab fa-fw fa-weixin"></i> WeChat ID</b></label>
+              <input type="text" id="wechat" readonly class="form-control-plaintext" value="{{ !empty($tester->wechat) ? $tester->wechat : '-' }}">
+            </fieldset>
+          </div>
+          <div class="col-sm-6">
+            <fieldset class="form-group">
+              <label for="status"><b>Stato</b></label>
+              <input type="text" id="status" readonly class="form-control-plaintext tester-status-{{ $tester->status }}" value="{{ config('testers.statuses')[$tester->status] }}">
+            </fieldset>
+          </div>
+        </div>
       </div>
     </div>
+    <fieldset class="form-group mb-4">
+      <label><b>Note</b></label>
+      @if($tester->notes)
+      <div class="form-control markdown p-3" style="max-height: 300px; overflow-y: auto">{{ $tester->notes }}</div>
+      @else
+      <input type="text" id="notes" readonly class="form-control-plaintext" value="-"> 
+      @endif
+    </fieldset>
     <fieldset class="form-group">
       <label for="amazon_profiles"><b><i class="fab fa-fw fa-amazon"></i> Profili Amazon</b></label>
-      @foreach($tester->amazon_profiles as $amz)
+      @foreach($tester->amazon_profiles as $idx => $amz)
         @if(!empty($amz)) <div class="input-group mb-2"> @endif
         <input type="text" class="form-control{{ !empty($amz)?'':'-plaintext'}}" readonly value="{{ !empty($amz) ? $amz : '-' }}">
         @if(!empty($amz)) <div class="input-group-append">
+          <input type="text" class="form-control{{ !empty($amz)?'':'-plaintext'}}" readonly value="{{ is_numeric($tester->amazon_profiles_statuses[$idx]) ? config('testers.amz_statuses')[$tester->amazon_profiles_statuses[$idx]] : '-'}}">
           <a title="Apri link in una nuova pagina" class="btn btn-primary" href="{{ $amz }}" target="_blank"><i class="fa fa-fw fa-external-link-alt"></i></a>
         </div></div> @endif
       @endforeach

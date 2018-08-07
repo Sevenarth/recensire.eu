@@ -91,6 +91,21 @@ Ordine di lavoro #{{ $testOrder->id }}
     <div class="row">
       <div class="col-sm-6">
         <div class="form-group">
+          <label><b>Prodotto pubblico?</b></label>
+          <input class="form-control-plaintext" type="text" value="{{ $testOrder->is_product_public ? 'Sì' : 'No' }}" readonly>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <fieldset class="form-group">
+          <label><b>Link prodotto pubblico?</b></label>
+          <input class="form-control-plaintext" type="text" value="{{ $testOrder->is_product_link_public ? 'Sì' : 'No' }}" readonly>
+        </fieldset>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="form-group">
           <label><b>Commissione</b></label>
           <input class="form-control-plaintext" type="text" value="&euro; {{ number_format($testOrder->fee, 2) }}" readonly>
         </div>
@@ -105,7 +120,11 @@ Ordine di lavoro #{{ $testOrder->id }}
 
     <fieldset class="form-group mb-4">
       <label><b>Descrizione</b></label>
+      @if($testOrder->description)
       <div class="form-control markdown p-3" style="max-height: 300px; overflow-y: auto">{{ $testOrder->description }}</div>
+      @else
+      <input class="form-control-plaintext" readonly value="-">
+      @endif
     </fieldset>
 
     <h4 class="mb-3">Unit&agrave; di test <span class="badge-secondary badge-pill badge">{{ $testOrder->testUnits()->count() }}</small></h4>
@@ -138,7 +157,7 @@ Ordine di lavoro #{{ $testOrder->id }}
         })->orderBy('status')->orderBy('expires_on')->get() as $unit)
         <tr>
           <th class="p-2" scope="row">{{ $unit->hash_code }}</th>
-          <td class="p-2">@if(!empty($unit->tester)) <a href="{{ route('panel.testers.view', $unit->tester->id) }}">{{ $unit->tester->name }}</a> @else - @endif</td>
+          <td class="p-2">@if(!empty($unit->tester)) <a class="tester-status-{{ $unit->tester->status }}" href="{{ route('panel.testers.view', $unit->tester->id) }}">{{ $unit->tester->name }}</a> @else - @endif</td>
           <td class="p-2">{{ config('testUnit.statuses')[$unit->status] }}</td>
           <td class="p-2">
             @if($unit->status > 0)
@@ -196,7 +215,7 @@ Ordine di lavoro #{{ $testOrder->id }}
           })->get() as $unit)
         <tr>
           <th class="p-2" scope="row">{{ $unit->hash_code }}</th>
-          <td class="p-2">@if(!empty($unit->tester)) <a href="{{ route('panel.testers.view', $unit->tester->id) }}">{{ $unit->tester->name }}</a> @else - @endif</td>
+          <td class="p-2">@if(!empty($unit->tester)) <a class="tester-status-{{ $unit->tester->status }}" href="{{ route('panel.testers.view', $unit->tester->id) }}">{{ $unit->tester->name }}</a> @else - @endif</td>
           <td class="p-2">{{ config('testUnit.statuses')[$unit->status] }}</td>
           <td class="p-2 text-success">
             @if($unit->status == 9) Saldato @else Completo @endif
@@ -223,7 +242,7 @@ Ordine di lavoro #{{ $testOrder->id }}
         @foreach($testOrder->testUnits()->where('status', 0)->where('expires_on', '<', \Carbon\Carbon::now(config('app.timezone')))->get() as $unit)
         <tr>
           <th class="p-2" scope="row">{{ $unit->hash_code }}</th>
-          <td class="p-2">@if(!empty($unit->tester)) <a href="{{ route('panel.testers.view', $unit->tester->id) }}">{{ $unit->tester->name }}</a> @else - @endif</td>
+          <td class="p-2">@if(!empty($unit->tester)) <a class="tester-status-{{ $unit->tester->status }}" href="{{ route('panel.testers.view', $unit->tester->id) }}">{{ $unit->tester->name }}</a> @else - @endif</td>
           <td class="p-2">{{ config('testUnit.statuses')[$unit->status] }}</td>
           <td class="p-2">
             @php $expiration = new \Carbon\Carbon($unit->expires_on, config('app.timezone')); @endphp

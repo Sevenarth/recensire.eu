@@ -59,7 +59,7 @@
               </fieldset>
             </div>
           </div>
-          <a id="amazon-link" href="{{ route('tests.go', $testUnit->hash_code) }}" class="d-none btn btn-primary my-2" target="_blank"><i class="fa fa-fw fa-external-link-alt"></i> Vai alla ricerca di Amazon</a>
+          <a id="amazon-link" href="{{ route('tests.go', $testUnit->hash_code) }}" class="d-none btn btn-primary my-2" target="_blank"><i class="fa fa-fw fa-link"></i> Amazon</a>
 
           </div>
         </div>

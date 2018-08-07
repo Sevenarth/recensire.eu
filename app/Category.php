@@ -57,6 +57,24 @@ class Category extends Model
       return self::recursiveTree($fixedCats);
     }
 
+    protected static function recursiveTreeIds($parent_id) {
+      $cats = Category::where('parent_id', $parent_id)
+        ->orderBy('title')
+        ->select('id')
+        ->get();
+
+      $tree = [];
+
+      foreach($cats as $cat)
+        $tree = array_merge($tree, [$cat->id], self::recursiveTreeIds($cat->id));
+
+      return $tree;
+    }
+
+    public function getFamily() {
+      return array_merge([$this->id], self::recursiveTreeIds($this->id));
+    }
+
     public function setTitleAttribute($title) {
       $this->attributes['title'] = $title;
       $this->attributes['slug'] = str_slug($title);

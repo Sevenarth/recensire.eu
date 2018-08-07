@@ -20,15 +20,35 @@ Ordini di lavoro
     </div>
     @endif
 
-    <form class="fakelink-get" data-action="{{ route("panel.testOrders.home") }}" method="get">
+    <form id="filter-search" class="fakelink-get" data-action="{{ route("panel.testOrders.home") }}" method="get">
       <div class="row">
-        <div class="input-group mb-3 col-sm-6">
+        <div class="input-group mb-3 col-sm-5">
             <input type="text" name="s" value="{{ Request::query("s") }}" class="form-control" placeholder="ASIN prodotto, ID negozio...">
             <div class="input-group-append">
               <button class="btn btn-outline-secondary" type="submit">
                 <i class="fa fa-fw fa-search"></i>
               </button>
             </div>
+        </div>
+        <div class="col-sm-4">
+          <fieldset class="form-group">
+            <label for="completed">Completato</label>
+            <select class="custom-select w-auto" data-changeSubmit="#filter-search" id="completed" name="completed">
+              <option value="">Tutto</option>
+              <option value="y" @if(request()->query('completed') == 'y') selected @endif>Sì</option>
+              <option value="n" @if(request()->query('completed') == 'n') selected @endif>No</option>
+            </select>
+          </fieldset>
+        </div>
+        <div class="col-sm-3">
+          <fieldset class="form-group">
+            <label for="visible">Visibilità</label>
+            <select class="custom-select w-auto" data-changeSubmit="#filter-search" id="visible" name="visible">
+              <option value="">Tutto</option>
+              <option value="y" @if(request()->query('visible') == 'y') selected @endif>Sì</option>
+              <option value="n" @if(request()->query('visible') == 'n') selected @endif>No</option>
+            </select>
+          </fieldset>
         </div>
       </div>
     </form>
@@ -60,7 +80,7 @@ Ordini di lavoro
             <th class="align-middle" scope="row">{{ $remainingCount }}</th>
             <td class="align-middle">
               @php $product_images = json_decode($testOrder->product_images); @endphp
-              <img style="min-width: 50px; max-height: 50px" src="@if(empty($product_images[0])) /images/package.svg @else{{ $product_images[0] }}@endif" class="img-fluid img-thumbnail rounded border">
+              <img style="min-width: 70px; max-height: 70px" src="@if(empty($product_images[0])) /images/package.svg @else{{ $product_images[0] }}@endif" class="img-fluid img-thumbnail rounded border">
             </td>
             <td class="align-middle">
               @if($testOrder->product_id)

@@ -16,7 +16,7 @@ class TestUnitsController extends Controller
     public function index(Request $request) {
       $orderBy = $request->query('orderBy', null);
 
-      if(!in_array($orderBy, ['hash_code', 'test_order_id', 'tester_name', 'status', 'test_unit.created_at']))
+      if(!in_array($orderBy, ['hash_code', 'test_order_id', 'tester_name', 'test_unit.status', 'test_unit.created_at']))
         $orderBy = null;
       $sort = $request->query('sort');
       if($sort != "asc" && $sort != "desc")
@@ -42,9 +42,10 @@ class TestUnitsController extends Controller
       $testUnits = $testUnits
           ->select(
             "test_order_id",
-            "status",
+            "test_unit.status",
             "tester.id as tester_id",
             "tester.name as tester_name",
+            "tester.status as tester_status",
             "test_unit.id as id",
             "test_unit.created_at as created_at",
             "expires_on",

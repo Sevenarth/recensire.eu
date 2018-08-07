@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-
+use Illuminate\Validation\Rule;
 class TesterFormRequest extends FormRequest
 {
     /**
@@ -27,9 +27,12 @@ class TesterFormRequest extends FormRequest
           'name' => 'required|string|max:191',
           'email' => 'nullable|email|max:191',
           'amazon_profiles.*' => 'nullable|present|url',
+          'amazon_profiles_statuses.*' => ['nullable', 'present', Rule::in(array_keys(config('testers.amz_statuses')))],
           'facebook_profiles.*' => 'nullable|present|string',
           'wechat' => 'nullable|string|max:191',
-          'profile_image' => 'nullable|url|max:191'
+          'profile_image' => 'nullable|url|max:191',
+          'status' => ['required', Rule::in(array_keys(config('testers.statuses')))],
+          'notes' => 'nullable|present'
         ];
     }
 

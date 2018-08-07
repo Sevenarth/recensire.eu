@@ -223,5 +223,5 @@ return [
         'Hashids' => Vinkla\Hashids\Facades\Hashids::class
     ],
 
-
+    'currency' => 'EUR'
 ];
