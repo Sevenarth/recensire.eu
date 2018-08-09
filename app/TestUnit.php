@@ -46,4 +46,22 @@ class TestUnit extends Model
     public function startsTime() {
       return (new Carbon($this->starts_on, config('app.timezone')))->format("H:i");
     }
+
+    public function getInstructionsAttribute() {
+      if(!empty($this->attributes['instructions']))
+        $instructions = $this->attributes['instructions'];
+      else
+        return null;
+        
+      foreach(Shortcode::all() as $sc)
+        $instructions = preg_replace('/#'.preg_quote($sc->key).'(?![a-zA-Z0-9\-])/m', $sc->value, $instructions);
+      return $instructions;
+    }
+
+    public function originalInstructions() {
+      if(!empty($this->attributes['instructions']))
+        return $this->attributes['instructions'];
+      else
+        return null;
+    }
 }

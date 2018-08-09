@@ -15191,5 +15191,10 @@ a:focus {
   }
 }
 
+.maxScroll {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
 
 /*# sourceMappingURL=app.css.map*/

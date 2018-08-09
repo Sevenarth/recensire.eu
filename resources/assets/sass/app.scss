@@ -224,3 +224,8 @@ a:active, a:focus {
     max-width: 100%;
   }
 }
+
+.maxScroll {
+  max-height: 200px;
+  overflow-y: auto;
+}

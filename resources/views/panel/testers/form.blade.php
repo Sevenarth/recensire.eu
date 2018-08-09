@@ -129,7 +129,7 @@
       </fieldset>
       <fieldset class="form-group">
         <label for="notes">Note <small class="text-muted">(opzionale)</small></label>
-        <textarea id="notes" name="notes">{{ !empty($tester) ? $tester->notes : '' }}</textarea>
+        <textarea id="notes" name="notes">{{ !empty($tester) ? $tester->originalNotes() : '' }}</textarea>
       </fieldset>
       <div class="row">
         <div class="col-3 text-center">

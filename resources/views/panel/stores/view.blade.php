@@ -67,10 +67,44 @@ Negozio #{{ $store->id }}
         </fieldset>
       </div>
     </div>
-    <fieldset class="form-group">
-      <label for="VAT"><b>Partiva IVA</b></label>
-      <input type="text" readonly class="form-control-plaintext" name="VAT" value="{{ !empty($store->VAT)? $store->VAT : '-' }}">
-    </fieldset>
+    <div class="row">
+      <div class="col-sm-6">
+        <fieldset class="form-group">
+          <label for="VAT"><b>Partiva IVA</b></label>
+          <input type="text" readonly class="form-control-plaintext" name="VAT" value="{{ !empty($store->VAT)? $store->VAT : '-' }}">
+        </fieldset>
+      </div>
+      <div class="col-sm-6">
+        <fieldset class="form-group">
+          <label><b>Reports</b></label>
+          @php $custom = !empty($store->reports['type']) && $store->reports['type'] == 'custom'; @endphp
+          @if($custom)
+          <div class="input-group">
+          @endif
+          <input type="text" readonly class="form-control{{ $custom ? '' : '-plaintext' }}" value="{{ !empty($store->reports['type']) && $store->reports['type'] != "none" ? ($store->reports['type'] == 'custom' ? 'Personalizzato' : 'Preset') : 'No' }}">
+          @if($custom)
+            <div class="input-group-append">
+                <a href="{{ route('panel.stores.reports', $store->id) }}" class="btn btn-primary">Opzioni</a>
+            </div>
+          </div>
+          @endif
+        </fieldset>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6">
+        <fieldset class="form-group">
+          <label><b>To emails</b></label>
+          <input type="text" readonly class="form-control-plaintext" value="{{ !empty($store->to_emails) ? implode(", ", $store->to_emails) : '-' }}">
+        </fieldset>
+      </div>
+      <div class="col-sm-6">
+          <fieldset class="form-group">
+            <label><b>BCC emails</b></label>
+            <input type="text" readonly class="form-control-plaintext" value="{{ !empty($store->bcc_emails) ? implode(", ", $store->bcc_emails) : '-' }}">
+          </fieldset>
+      </div>
+    </div>
 
     <h5>Visualizza:</h5>
 

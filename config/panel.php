@@ -10,6 +10,8 @@ return [
     "testUnits.home" => ['Unità di test', 'pannello/tests', 'fa-bug'],
     "testers.home" => ['Testers', 'pannello/testers*', 'fa-user-circle'],
     "report" => ['Reportistica', 'pannello/reportistica', 'fa-chart-bar'],
-    "options" => ['Opzioni', 'pannello/opzioni', 'fa-cog']
+    "options" => ['Opzioni', 'pannello/opzioni', 'fa-cog'],
+    "shortcodes" => ['Shortcodes', 'pannello/shortcodes', 'fa-hashtag'],
+    "reports" => ['Reports email', 'pannello/reports', 'fa-envelope']
   ]
 ];

@@ -11,6 +11,7 @@ require('bootstrap-tagsinput');
 window.MD = require('markdown-it')();
 var moment = require('moment');
 require('./specialmde');
+require('./react');
 
 $(function () {
   moment.locale($("html").attr("lang"));

@@ -1,10 +1,6 @@
 @extends('layouts.front')
 
 @section('navbar')
-<div>
-<a href="/posts" class="btn btn-info">Apply</a>
-<a href="/contactus" class="btn btn-info">Contact us</a>
-</div>
 @endsection
 
 @section('content')
@@ -27,6 +23,7 @@
         </select>
     </div>
     <p>Showing {{ $products->count() }} of {{ $products->total() }} @if($category_slug) products in the selected category @else of the most recent products @endif</p>
+    {{ $products->appends(request()->query())->links() }}
     @if($products->count() > 0)
     <div class="card-columns">
         @foreach($products as $product)

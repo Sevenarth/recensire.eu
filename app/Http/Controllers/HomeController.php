@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\ContactUsRequest;
 use Notification;
 use App\Notifications\ContactUsNotification;
-use App\{Category, Product, Option};
+use App\{Category, Product, Option, Shortcode};
 use DB;
 use Carbon\Carbon;
 
@@ -69,9 +69,17 @@ class HomeController extends Controller
         ->select('product.images', 'product.URL', 'product.title', 'product.id')
         ->paginate(20);
 
+      $header = Option::get('header-data');
+      $footer = Option::get('footer-data');
+
+      foreach(Shortcode::all() as $sc) {
+        $header = preg_replace('/#'.preg_quote($sc->key).'(?![a-zA-Z0-9\-])/m', $sc->value, $header);
+        $footer = preg_replace('/#'.preg_quote($sc->key).'(?![a-zA-Z0-9\-])/m', $sc->value, $footer);
+      }
+
       return view('front', [
-        'header' => Option::get('header-data'),
-        'footer' => Option::get('footer-data'),
+        'header' => $header,
+        'footer' => $footer,
         'category_slug' => $category_slug,
         'categories' => $categories,
         'products' => $products,

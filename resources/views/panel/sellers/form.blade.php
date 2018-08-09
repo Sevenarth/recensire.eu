@@ -35,7 +35,7 @@
       </div>
       <fieldset class="form-group">
         <label for="notes">Note <small class="text-muted">(opzionale)</small></label>
-        <textarea id="notes" name="notes">{{ !empty($seller) ? $seller->notes : '' }}</textarea>
+        <textarea id="notes" name="notes">{{ !empty($seller) ? $seller->originalNotes() : '' }}</textarea>
       </fieldset>
       <button type="submit" class="mt-3 mb-2 btn btn-primary">@php echo !empty($seller) ? 'Modifica venditore' : 'Aggiungi nuovo venditore' @endphp</button>
     @closeForm

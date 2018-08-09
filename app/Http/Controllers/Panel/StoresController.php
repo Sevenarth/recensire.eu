@@ -48,18 +48,27 @@ class StoresController extends Controller
   }
 
   public function create(Request $request) {
-
+    
     return view("panel/stores/form");
   }
 
   public function edit(Request $request, Store $store) {
+    //dd($store->reports);
     return view("panel/stores/form", ['store' => $store]);
   }
 
   public function update(StoreFormRequest $request, Store $store) {
     $store->fill($request->only([
-      'name', 'company_name', 'company_registration_no', 'url', 'VAT', 'country', 'seller_id'
+      'name', 'company_name', 'company_registration_no', 'url', 'VAT', 'country', 'seller_id', 'to_emails', 'bcc_emails'
     ]));
+
+    if(!empty($store->reports) && is_array($store->reports)) {
+      $reports = $store->reports;
+      $reports['type'] = $request->input('reports');
+      $store->reports = $reports;
+    } else
+      $store->reports = ['type' => $request->input('reports'), 'emails' => []];
+
     $store->save();
 
     return redirect()
@@ -80,9 +89,18 @@ class StoresController extends Controller
   }
 
   public function put(StoreFormRequest $request) {
-    Store::create($request->only([
-      'name', 'company_name', 'company_registration_no', 'url', 'VAT', 'country', 'seller_id'
-    ]))->save();
+    $store = Store::create($request->only([
+      'name', 'company_name', 'company_registration_no', 'url', 'VAT', 'country', 'seller_id', 'to_emails', 'bcc_emails'
+    ]));
+
+    if(!empty($store->reports) && is_array($store->reports)) {
+      $reports = $store->reports;
+      $reports['type'] = $request->input('reports');
+      $store->reports = $reports;
+    } else
+      $store->reports = ['type' => $request->input('reports'), 'emails' => []];
+    
+    $store->save();
 
     return redirect()
       ->route('panel.stores.home')
@@ -154,17 +172,22 @@ class StoresController extends Controller
   public function fetch(Request $request) {
     $search = $request->input('s', $request->query('s', null));
 
-    if(!empty($search)) {
-        $stores = Store::where("id", $search)
-          ->orWhere("name", "like", "%".$search."%")
-          ->orWhere("company_name", "like", "%".$search."%")
-          ->limit(15)
-          ->get(['id', 'name']);
-    } else
-      $stores = Store::orderBy('name', 'asc')
-        ->limit(15)
-        ->get(['id', 'name']);
+    if(!empty($search))
+      $stores = Store::where(function($q) use($search) { 
+        $q->where("id", $search)
+          ->orWhere("name", "like", "%".$search."%");
+      });
+    else
+      $stores = Store::orderBy('name', 'asc');
 
-    return $stores;
+    if($request->input('except') && is_array($request->input('except')))
+      $stores = $stores->whereNotIn('id', $request->input('except'));
+
+    if($request->input('sellers') && is_array($request->input('sellers')))
+      $stores = $stores->whereIn('seller_id', $request->input('sellers'));
+
+    return $stores
+      ->limit(20)
+      ->get(['id', 'name']);
   }
 }

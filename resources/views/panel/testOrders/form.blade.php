@@ -71,7 +71,7 @@
       <fieldset class="form-group">
         <a id="uploader" href="{{ route('panel.upload') }}" class="d-none"></a>
         <label for="description">Descrizione <small class="text-muted">(opzionale)</small></label>
-        <textarea id="description" name="description">{{ old('description', $testOrder->description) }}</textarea>
+        <textarea id="description" name="description">{{ old('description', $testOrder->originalDescription()) }}</textarea>
       </fieldset>
 
       <button type="submit" class="mt-3 mb-2 btn btn-primary">@php echo !empty($testOrder->id) ? 'Modifica ordine di lavoro' : 'Crea nuovo ordine di lavoro' @endphp</button>

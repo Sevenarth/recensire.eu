@@ -36,6 +36,70 @@
           @formTextfield('country', 'Paese di registrazione', placeholder="Italia", editMode="store", required="false")
         </div>
       </div>
+        <label>Report automatici</label>
+      <div class="row mb-3">
+        <div class="col-sm-4">
+          <div class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input" name="reports" value="none" id="reports_none"{{ old('reports', !empty($store->reports['type']) ? $store->reports['type'] : "none") == "none" ? ' checked' : '' }}>
+            <label class="custom-control-label" for="reports_none">No</label>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input" name="reports" value="preset" id="reports_preset"{{ old('reports', !empty($store->reports['type']) ? $store->reports['type'] : "none") == "preset" ? ' checked' : '' }}>
+            <label class="custom-control-label" for="reports_preset">Preset</label>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input" name="reports" value="custom" id="reports_custom"{{ old('reports', !empty($store->reports['type']) ? $store->reports['type'] : "none") == "custom" ? ' checked' : '' }}>
+            <label class="custom-control-label" for="reports_custom">Personalizzato</label>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-6">
+          <fieldset class="form-group">
+              <label for="to_emails">To Emails <small class="text-muted">(obbligatorio per i report)</small></label>
+        
+              <select id="to_emails" name="to_emails[]" data-role="tagsinput" multiple>
+                  @if(is_array(old('to_emails', !empty($store->to_emails) ? $store->to_emails : null)))
+                  @foreach(old('to_emails', $store->to_emails) as $email)
+                  <option value="{{$email}}">{{$email}}</option>
+                  @endforeach
+                  @endif
+              </select>
+              @if($errors->has('to_emails'))
+              <div class="invalid-feedback d-block">
+                @foreach ($errors->get('to_emails') as $err)
+                  {{ $err }}<br>
+                @endforeach
+              </div>
+              @endif
+              <small class="text-muted">Digita gli indirizzi email separati da una virgola.</small>
+            </fieldset>
+        </div>
+        <div class="col-sm-6">
+          <fieldset class="form-group">
+              <label for="bcc_emails">BCC Emails <small class="text-muted">(opzionale)</small></label>
+              <select id="bcc_emails" name="bcc_emails[]" data-role="tagsinput" multiple>
+                @if(is_array(old('bcc_emails', !empty($store->bcc_emails) ? $store->bcc_emails : null)))
+                @foreach(old('bcc_emails', $store->bcc_emails) as $email)
+                <option value="{{$email}}">{{$email}}</option>
+                @endforeach
+                @endif
+              </select>
+              @if($errors->has('bcc_emails'))
+              <div class="invalid-feedback">
+                @foreach ($errors->get('bcc_emails') as $err)
+                  {{ $err }}<br>
+                @endforeach
+              </div>
+              @endif
+              <small class="text-muted">Digita gli indirizzi email separati da una virgola.</small>
+            </fieldset>
+        </div>
+      </div>
       <fieldset class="form-group">
         <label for="seller_id">Venditore</label>
         <div class="input-group">
@@ -76,4 +140,27 @@
         </div>
       </div>
   </div>
+@endsection
+
+@section('scripts')
+<script>
+<!--
+function validateEmail(email) {
+  var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(String(email).toLowerCase());
+}
+$('#bcc_emails').tagsinput({
+  tagClass: 'badge',
+  trimValue: true
+});
+$('#to_emails').tagsinput({
+  tagClass: 'badge',
+  trimValue: true
+});
+$('select').on('beforeItemAdd', function(event) {
+  if(!validateEmail(event.item))
+    event.cancel = true;
+});
+-->
+</script>
 @endsection

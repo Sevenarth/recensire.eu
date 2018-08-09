@@ -49,6 +49,16 @@ Breadcrumbs::register('report', function ($breadcrumbs) {
     $breadcrumbs->push('Reportistica');
 });
 
+Breadcrumbs::register('shortcodes', function ($breadcrumbs) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push('Shortcodes', route('panel.shortcodes'));
+});
+
+Breadcrumbs::register('emailreports', function ($breadcrumbs) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push('Reports email', route('panel.reports'));
+});
+
 Breadcrumbs::register('sellers.create', function ($breadcrumbs) {
     $breadcrumbs->parent('sellers');
     $breadcrumbs->push('Nuovo venditore', route('panel.sellers.create'));

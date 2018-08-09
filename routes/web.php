@@ -55,6 +55,7 @@ Route::namespace('Panel')->name('panel.')->middleware('auth')->prefix('pannello'
       Route::get('/modifica-{store}', 'StoresController@edit')->name('edit');
       Route::patch('/visualizza-{store}', 'StoresController@update')->name('update');
       Route::delete('/visualizza-{store}', 'StoresController@delete')->name('delete');
+      Route::get('/reports-{store}', 'StoresController@reports')->name('reports');
       Route::get('/prodotti-{store}', 'StoresController@products')->name('products');
       Route::put('/prodotti-{store}', 'StoresController@attachProduct')->name('attachProduct');
       Route::delete('/prodotti-{store}/disassocia-{product}', 'StoresController@detachProduct')->name('detachProduct');
@@ -118,4 +119,9 @@ Route::namespace('Panel')->name('panel.')->middleware('auth')->prefix('pannello'
 
     Route::get('/opzioni', 'OptionsController@index')->name('options');
     Route::post('/opzioni', 'OptionsController@update')->name('options.update');
+
+    Route::get('/shortcodes', 'OptionsController@shortcodes')->name('shortcodes');
+    Route::post('/shortcodes', 'OptionsController@shortcodesUpdate')->name('shortcodesUpdate');
+
+    Route::get('/reports', 'OptionsController@reports')->name('reports');
 });

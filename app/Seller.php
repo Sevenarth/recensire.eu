@@ -17,4 +17,22 @@ class Seller extends Model
     public function stores() {
       return $this->hasMany('App\Store');
     }
+    
+    public function getNotesAttribute() {
+      if(!empty($this->attributes['notes']))
+        $notes = $this->attributes['notes'];
+      else
+        return null;
+      
+      foreach(Shortcode::all() as $sc)
+        $notes = preg_replace('/#'.preg_quote($sc->key).'(?![a-zA-Z0-9\-])/m', $sc->value, $notes);
+      return $notes;
+    }
+
+    public function originalNotes() {
+      if(!empty($this->attributes['notes']))
+        return $this->attributes['notes'];
+      else
+        return null;
+    }
 }

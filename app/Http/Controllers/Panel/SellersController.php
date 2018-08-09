@@ -86,19 +86,22 @@ class SellersController extends Controller
     $search = $request->input('s', $request->query('s', null));
 
     if(!empty($search)) {
-        $sellers = Seller::where("id", $search)
+        $sellers = Seller::where(function($q) use($search) {
+          $q->where("id", $search)
           ->orWhere("nickname", "like", "%".$search."%")
           ->orWhere("name", "like", "%".$search."%")
           ->orWhere("email", "like", "%".$search."%")
           ->orWhere("facebook", $search)
-          ->orWhere("wechat", $search)
-          ->limit(15)
-          ->get(['id', 'nickname', 'name', 'email']);
+          ->orWhere("wechat", $search);
+        });
     } else
-      $sellers = Seller::orderBy('name', 'asc')
-        ->limit(15)
-        ->get(['id', 'nickname', 'name', 'email']);
+      $sellers = Seller::orderBy('name', 'asc');
 
-    return $sellers;
+    if($request->input('except') && is_array($request->input('except')))
+      $sellers = $sellers->whereNotIn('id', $request->input('except'));
+
+    return $sellers
+      ->limit(20)
+      ->get(['id', 'nickname', 'name', 'email']);
   }
 }

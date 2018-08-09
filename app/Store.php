@@ -8,7 +8,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Store extends Model
 {
     protected $table = "store";
-    protected $fillable = ['name', 'company_name', 'company_registration_no', 'url', 'VAT', 'country', 'seller_id'];
+    protected $fillable = ['name', 'company_name', 'company_registration_no', 'url', 'VAT', 'country', 'seller_id', 'to_emails', 'bcc_emails'];
+    protected $casts = [
+      'reports' => 'array',
+      'to_emails' => 'array',
+      'bcc_emails' => 'array'
+    ];
 
     public function seller() {
       return $this->belongsTo('App\Seller');

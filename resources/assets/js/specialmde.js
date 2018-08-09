@@ -2,6 +2,8 @@
 import SimpleMDE from 'simplemde';
 import 'simplemde/dist/simplemde.min.css';
 window.SimpleMDE = SimpleMDE;
+import SimpleMDEEditor from 'react-simplemde-editor';
+import React from 'react';
 
 function _replaceSelection(cm, active, startEnd, url) {
 	if(/editor-preview-active/.test(cm.getWrapperElement().lastChild.className))
@@ -308,4 +310,11 @@ jQuery.fn.extend({
       toolbar: toolbar
     });
   }
-})
+});
+
+export default props => <SimpleMDEEditor {...props} options={{
+	//element: this[0],
+	spellChecker: false,
+	status: false,
+	toolbar: toolbar
+}} />;

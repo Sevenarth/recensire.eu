@@ -49,7 +49,7 @@ class TestOrdersController extends Controller
             ->orWhere("product.title", "like", "%".$search."%");
         });
 
-    $completed_filter = request()->query('completed');
+    $completed_filter = request()->query('completed', 'n');
     if($completed_filter == 'y' || $completed_filter == 'n') {
       $op = $completed_filter == 'y' ? '=' : '>';
       $testOrders = $testOrders->whereRaw("(test_order.quantity - (select count(*) from `test_unit` where `test_order_id` = test_order.id and ((`status` > 0 and `status` <> 5) or (`status` = 0 and `expires_on` > '".\Carbon\Carbon::now(config('app.timezone'))."' and `tester_id` is not null)))) ".$op." 0");
@@ -74,7 +74,8 @@ class TestOrdersController extends Controller
           "product.title as product_name",
           "store.id as store_id",
           "store.name as store_name",
-          "product.images as product_images"
+          "product.images as product_images",
+          "product.URL as product_URL"
         )->paginate(15);
 
     return view("panel/testOrders/home", ['testOrders' => $testOrders]);

@@ -23,7 +23,7 @@
 
     <fieldset class="form-group">
       <label for="description">Descrizione <small class="text-muted">(opzionale)</small></label>
-      <textarea id="description" name="description">{{ old('description', $cat->description) }}</textarea>
+      <textarea id="description" name="description">{{ old('description', $cat->originalDescription()) }}</textarea>
     </fieldset>
 
     <fieldset class="form-group">

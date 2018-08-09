@@ -18,4 +18,21 @@ class Tester extends Model
     public function testUnits() {
       return $this->hasMany('App\TestUnit');
     }
+    public function getNotesAttribute() {
+      if(!empty($this->attributes['notes']))
+        $notes = $this->attributes['notes'];
+      else
+        return null;
+      
+      foreach(Shortcode::all() as $sc)
+        $notes = preg_replace('/#'.preg_quote($sc->key).'(?![a-zA-Z0-9\-])/m', $sc->value, $notes);
+      return $notes;
+    }
+
+    public function originalNotes() {
+      if(!empty($this->attributes['notes']))
+        return $this->attributes['notes'];
+      else
+        return null;
+    }
 }

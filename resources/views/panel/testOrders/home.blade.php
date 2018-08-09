@@ -34,9 +34,9 @@ Ordini di lavoro
           <fieldset class="form-group">
             <label for="completed">Completato</label>
             <select class="custom-select w-auto" data-changeSubmit="#filter-search" id="completed" name="completed">
-              <option value="">Tutto</option>
+              <option value="all" @if(request()->query('completed') == 'all') selected @endif>Tutto</option>
               <option value="y" @if(request()->query('completed') == 'y') selected @endif>Sì</option>
-              <option value="n" @if(request()->query('completed') == 'n') selected @endif>No</option>
+              <option value="n" @if(request()->query('completed', 'n') == 'n') selected @endif>No</option>
             </select>
           </fieldset>
         </div>
@@ -87,6 +87,8 @@ Ordini di lavoro
               {{ $testOrder->product_name }}
               <a title="Vai al prodotto" href="{{ route('panel.products.view', $testOrder->product_id) }}" class="btn btn-sm btn-primary">
                 <i class="fa fa-external-link-alt"></i>
+              </a> <a title="Apri su Amazon" href="{{ $testOrder->product_URL }}" target="_blank" rel="nofollow noreferrer" class="btn btn-sm btn-info">
+                <i class="fa fa-link"></i>
               </a>@else <i>Assente</i> @endif
             </td>
             <td class="align-middle">

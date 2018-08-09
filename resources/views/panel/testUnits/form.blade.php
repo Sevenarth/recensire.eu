@@ -197,7 +197,7 @@
     <fieldset class="form-group">
       <label for="instructions">Istruzioni</label>
       <a id="uploader" href="{{ route('panel.upload') }}" class="d-none"></a>
-      <textarea id="instructions" name="instructions">{{ old('instructions', $testUnit->instructions) }}</textarea>
+      <textarea id="instructions" name="instructions">{{ old('instructions', $testUnit->originalInstructions()) }}</textarea>
       @if($errors->has('instructions'))
         <div class="text-danger"><small>@foreach($errors->get('instructions') as $err){{ $err }}<br>@endforeach</small></div>
       @endif

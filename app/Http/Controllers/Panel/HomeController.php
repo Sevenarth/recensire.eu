@@ -101,15 +101,17 @@ class HomeController extends Controller
 
         $statuses = $statuses->leftJoin('test_order', 'test_order.id', '=', 'test_unit.test_order_id')
           ->leftJoin('store', 'test_order.store_id', '=', 'store.id')
-          ->where('test_unit'.($request->input('status') == -1 ? '.expires_on' : ($onlyCurrent ? '.updated_at' : '_status.created_at')), '>', (new Carbon($request->input('start_date')))->startOfDay())
-          ->where('test_unit'.($request->input('status') == -1 ? '.expires_on' : ($onlyCurrent ? '.updated_at' : '_status.created_at')), '<', (new Carbon($request->input('end_date')))->endOfDay());
+          ->where('test_unit'.($request->input('status') == "expiring" ? '.expires_on' : ($onlyCurrent ? '.updated_at' : '_status.created_at')), '>', (new Carbon($request->input('start_date')))->startOfDay())
+          ->where('test_unit'.($request->input('status') == "expiring" ? '.expires_on' : ($onlyCurrent ? '.updated_at' : '_status.created_at')), '<', (new Carbon($request->input('end_date')))->endOfDay());
 
-        if(!empty($request->input('store_id')))
-          $statuses = $statuses->where('store.id', $request->input('store_id'));
+        if(!empty($request->input('sellers')) && is_array($request->input('sellers')))
+          $statuses = $statuses->whereIn('store.seller_id', $request->input('sellers'));
+        if(!empty($request->input('stores')) && is_array($request->input('stores')))
+          $statuses = $statuses->whereIn('store.id', $request->input('stores'));
 
-        if(intval($request->input('status')) >= 0)
-          $statuses = $statuses->where('test_unit' . (!$onlyCurrent ? '_status' : '') . '.status', $request->input('status'));
-        elseif(intval($request->input('status')) == -1)
+        if($request->input('status') == "others" && is_array($request->input('statuses')) && count($request->input('statuses')))
+          $statuses = $statuses->whereIn('test_unit' . (!$onlyCurrent ? '_status' : '') . '.status', $request->input('statuses'));
+        elseif($request->input('status') == "expiring")
           $statuses = $statuses->where('test_unit.status', '0');
 
         $statuses = $statuses->orderBy('store.name')->orderBy('test_unit.test_order_id');

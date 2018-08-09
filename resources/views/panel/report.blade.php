@@ -65,20 +65,35 @@
             </fieldset>
         </div>
       </div>
-      <div class="row">
-        <div class="col-sm-6">
-          <fieldset class="form-group">
-            <label for="status">Stato</label>
-            <select class="custom-select" multiple name="status[]">
-              <option value="-2"{{ intval(old('status', -2)) === -2 ? ' selected' : '' }}>Tutti</option>
-              <option value="-1"{{ intval(old('status', -2)) === -1 ? ' selected' : '' }}>In scadenza/Scaduti</option>
-              @foreach(config('testUnit.statuses') as $id => $status)
-              <option value="{{ $id }}"{{ intval(old('status', -1)) === $id ? ' selected' : '' }}>{{ $status }}</option>
-              @endforeach
-            </select>
-          </fieldset>
+      <fieldset class="form-group">
+          <label>Stato</label>
+        <div class="row">
+          <div class="col-sm-3">
+            <div class="custom-control custom-radio">
+              <input type="radio" class="custom-control-input" name="status" value="all" id="status_all"{{ old('status', "all") == "all" ? ' checked' : '' }}>
+              <label class="custom-control-label" for="status_all">Tutti</label>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="custom-control custom-radio">
+              <input type="radio" class="custom-control-input" name="status" value="expiring" id="status_expiring"{{ old('status') == "expiring" ? ' checked' : '' }}>
+              <label class="custom-control-label" for="status_expiring">In scadenza/Scaduti</label>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="custom-control custom-radio">
+                <input type="radio" class="custom-control-input" name="status" value="others" id="status_others"{{ old('status') == "others" ? ' checked' : '' }}>
+                <label class="custom-control-label w-100" for="status_others">
+                  <select size="{{ count(config('testUnit.statuses')) }}" onClick="$('#status_others').click()" class="custom-select" multiple name="statuses[]">
+                      @foreach(config('testUnit.statuses') as $id => $status)
+                      <option value="{{ $id }}"{{ in_array($id, old('statuses', [])) ? ' selected' : '' }}>{{ $status }}</option>
+                      @endforeach
+                    </select>
+                </label>
+              </div>
+          </div>
         </div>
-      </div>
+      </fieldset>
       <div class="row">
         <div class="col-sm-6">
           <div class="custom-control custom-checkbox">
@@ -201,9 +216,21 @@
 var sellers = new Bloodhound({
   datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
   queryTokenizer: Bloodhound.tokenizers.whitespace,
+  identify: function(obj) { return obj.id; },
   remote: {
-    wildcard: '%QUERY',
-    url: '{{ route('panel.sellers.fetch') }}?s=%QUERY',
+    url: '{{ route('panel.sellers.fetch') }}',
+    prepare: function (query, settings) {
+        settings.type = "POST";
+        settings.contentType = "application/json; charset=utf-8"
+        settings.headers = {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        };
+        settings.data = JSON.stringify({
+          s: query,
+          except: $("#sellers").val(),
+        });
+        return settings;
+    },
     transform: function (data) {
       return $.map(data, function (store) {
           return {
@@ -222,12 +249,14 @@ $('#sellers').tagsinput({
   itemValue: 'id',
   itemText: 'name',
   typeaheadjs: [{
-    minLength: 3,
+    minLength: 1,
     highlight: true
   },{
     name: 'sellers',
     displayKey: 'name',
-    source: sellers.ttAdapter()
+    source: sellers.ttAdapter(),
+    limit: Infinity,
+    hint: true
   }],
   freeInput: false
 });
@@ -239,9 +268,22 @@ $('#sellers').tagsinput("add", {!! json_encode($seller) !!});
 var stores = new Bloodhound({
   datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
   queryTokenizer: Bloodhound.tokenizers.whitespace,
+  identify: function(obj) { return obj.id; },
   remote: {
-    wildcard: '%QUERY',
-    url: '{{ route('panel.stores.fetch') }}?s=%QUERY',
+    url: '{{ route('panel.stores.fetch') }}',
+    prepare: function (query, settings) {
+        settings.type = "POST";
+        settings.contentType = "application/json; charset=utf-8"
+        settings.headers = {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        };
+        settings.data = JSON.stringify({
+          s: query,
+          except: $("#stores").val(),
+          sellers: $("#sellers").val()
+        });
+        return settings;
+    },
     transform: function (data) {
       return $.map(data, function (store) {
           return {
@@ -260,12 +302,14 @@ $('#stores').tagsinput({
   itemValue: 'id',
   itemText: 'name',
   typeaheadjs: [{
-    minLength: 3,
+    minLength: 1,
     highlight: true
   },{
     name: 'stores',
     displayKey: 'name',
-    source: stores.ttAdapter()
+    source: stores.ttAdapter(),
+    limit: Infinity,
+    hint: true
   }],
   freeInput: false
 });

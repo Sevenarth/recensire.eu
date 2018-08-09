@@ -32,7 +32,7 @@
     <fieldset class="form-group">
       <a id="uploader" href="{{ route('panel.upload') }}" class="d-none"></a>
       <label for="description">Descrizione <small class="text-muted">(opzionale)</small></label>
-      <textarea id="description" name="description">{{ old('description', $product->description) }}</textarea>
+      <textarea id="description" name="description">{{ old('description', $product->originalDescription()) }}</textarea>
     </fieldset>
 
     <fieldset class="form-group">

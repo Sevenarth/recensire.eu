@@ -30,7 +30,12 @@ class StoreFormRequest extends FormRequest
              'VAT' => 'nullable|string|max:191',
              'country' => 'string|nullable|max:191',
              'seller_id' => 'exists:seller,id',
-             'url' => 'nullable|url|max:191'
+             'url' => 'nullable|url|max:191',
+             'reports' => 'required|in:none,preset,custom',
+             'to_emails' => 'required_unless:reports,none',
+             'to_emails.*' => 'email',
+             'bcc_emails' => 'nullable',
+             'bcc_emails.*' => 'email'
          ];
      }
 
@@ -46,7 +51,8 @@ class StoreFormRequest extends FormRequest
            'seller_id.exists' => "Il venditore selezionato non &egrave; valido.",
            'country.required' => "Questo campo non pu&ograve; essere vuoto.",
            'country.string' => "Il paese di registrazione deve essere una stringa valida.",
-           'url.url' => "L'indirizzo web del negozio non &egrave; valido."
+           'url.url' => "L'indirizzo web del negozio non &egrave; valido.",
+           'to_emails.required_unless' => 'Questo campo è obbligatorio quando i reports sono attivi.'
        ];
      }
 }

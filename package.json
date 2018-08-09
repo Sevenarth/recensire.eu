@@ -12,6 +12,7 @@
   "devDependencies": {
     "@fortawesome/fontawesome-free-webfonts": "^1.0.3",
     "axios": "^0.17",
+    "babel-preset-react": "^6.24.1",
     "bootstrap": "^4.0.0",
     "countdown": "^2.6.0",
     "cross-env": "^5.1",
@@ -31,6 +32,7 @@
     "moment-timezone": "^0.5.14",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
+    "react-simplemde-editor": "^3.6.16",
     "select2": "^4.0.6-rc.1",
     "select2-bootstrap4-theme": "^1.0.0",
     "simplemde": "^1.11.2",

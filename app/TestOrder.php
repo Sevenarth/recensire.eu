@@ -28,4 +28,22 @@ class TestOrder extends Model
 
       return false;
     }
+
+    public function getDescriptionAttribute() {
+      if(!empty($this->attributes['description']))
+        $description = $this->attributes['description'];
+      else
+        return null;
+        
+      foreach(Shortcode::all() as $sc)
+        $description = preg_replace('/#'.preg_quote($sc->key).'(?![a-zA-Z0-9\-])/m', $sc->value, $description);
+      return $description;
+    }
+
+    public function originalDescription() {
+      if(!empty($this->attributes['description']))
+        return $this->attributes['description'];
+      else
+        return null;
+    }
 }
