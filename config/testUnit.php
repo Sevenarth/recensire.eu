@@ -12,6 +12,18 @@ return [
     9 => "Saldato",
     4 => "Rimborsato"
   ],
+  'englishStatuses' => [
+    0 => "Waiting",
+    1 => "Bought",
+    2 => "Reviewed",
+    7 => "Feedback",
+    3 => "Completed",
+    6 => "Banned",
+    5 => "Cancelled",
+    8 => "Returned",
+    9 => "Settled",
+    4 => "Refunded"
+  ],
   'timeSpaces' => [
     'secondi',
     'minuti',
@@ -28,5 +40,17 @@ return [
     'PayPal - Fee dopo recensione',
     'PayPal - Fee dopo spedizione',
     'PayPal - Fee dopo ordine'
+  ],
+  'reportFields' => [
+    'amazon-order-no' => 'Amazon Order No.',
+    'amazon-profile' => 'Amazon Profile',
+    'asin' => 'ASIN',
+    'facebook-id' => 'Facebook ID',
+    'paypal-account' => 'PayPal Account',
+    'refunded' => 'Refunded?',
+    'refunded-amount' => 'Refunded Amount',
+    'review-url' => 'Review URL',
+    'state' => 'State',
+    'tester-name' => 'Tester Name'
   ]
 ];

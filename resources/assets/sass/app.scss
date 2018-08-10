@@ -229,3 +229,36 @@ a:active, a:focus {
   max-height: 200px;
   overflow-y: auto;
 }
+
+.fields-row {
+  font-size: 1.2em;
+  display: flex;
+  flex-direction: row;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  overflow-x: auto;
+  min-height: 2em;
+  transition: background-color .3s ease-out;
+}
+
+.field-column {
+  padding: .2em .5em;
+  border-right: 1px solid #ccc;
+  white-space: nowrap;
+  transition: all .3s ease-out;
+
+  &:last-child {
+    border: none;
+  }
+
+  &.dragging {
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    background-color: #fff;
+    box-shadow: 0 0 1px 1px rgba(0,0,0,0.1);
+  }
+}
+
+.break-word {
+  word-wrap: break-word;
+}

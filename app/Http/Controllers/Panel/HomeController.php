@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ImageUploadRequest;
 use Storage;
-use App\{TestOrder, TestUnit, TestUnitStatus, Tester, Product, Store, Seller};
+use App\{TestOrder, TestUnit, TestUnitStatus, Tester, Product, Store, Seller, BannedPaypal};
 use DB;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
@@ -188,5 +188,92 @@ class HomeController extends Controller
         return redirect()
           ->route('panel.report')
           ->withInput(array_merge($request->all(), ["report" => $report]));
+    }
+
+    public function banlist() {
+      $bpp = BannedPaypal::orderBy('created_at','desc')->orderBy('email')->get();
+      return view('panel.banlist', compact('bpp'));
+    }
+
+    public function banlistUpdate()
+    {
+        $create = request()->input('create', false);
+        $delete = request()->input('delete', false);
+        $mass = request()->input('mass');
+        $key = request()->input('email');
+        $value = request()->input('notes');
+
+        if($mass) {
+          $i = 0;
+          $bans = [];
+
+          foreach($mass as $entry) {
+            $key = $entry['email'];
+            $value = $entry['notes'];
+
+            if(!preg_match("/^(([^<>()\[\]\\.,;:\s@\"]+(\.[^<>()\[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i", $key))
+              continue;
+            
+            $ban = BannedPaypal::where('email', $key)->first();
+            if($ban)
+              continue;
+            
+            $ban = new BannedPaypal;
+            $ban->email = $key;
+            $ban->notes = $value;
+            $ban->save();
+            $i++;
+            $bans[] = $ban;
+          }
+
+          return response()->json([
+            'bans' => $bans,
+            'count' => $i
+          ]);
+        }
+
+        $ban = BannedPaypal::where('email', $key)->first();
+
+        if($delete) {
+            if($ban) {
+                $ban->delete();
+                return response()->json(['status' => 'Ban eliminato con successo!']);
+            } else
+                return response()->json(['email' => 'Questa email bannata è inesistente'], 404);
+        }
+
+        if(!preg_match("/^(([^<>()\[\]\\.,;:\s@\"]+(\.[^<>()\[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i", $key))
+            return response()->json(['email' => 'Inserire una email valida!'], 400);
+
+        if($create) {
+            if($ban)
+                return response()->json(['email' => 'Questa email esiste già'], 409);
+
+            $ban = new BannedPaypal;
+        }
+        
+        if($ban) {
+            $ban->email = $key;
+            $ban->notes = $value;
+            $ban->save();
+
+            return response()->json([
+                'ban' => $ban,
+                'status' => 'Ban ' . ($create ? 'aggiunto' : 'modificato') . ' con successo!'
+            ]);
+        }
+
+        return response()->json(['email' => 'Questa email bannata è inesistente'], 404);
+    }
+
+    public function banlistExport() {
+      $output = "Email,Creato il,Note".PHP_EOL;
+
+      foreach(BannedPaypal::orderBy('created_at','desc')->orderBy('email')->get() as $ban)
+        $output .= $ban->email . "," . \Carbon::Carbon($ban->created_at)->format("d M Y H:i") . "," . json_encode($ban->notes) . PHP_EOL;
+
+      return response()->streamDownload(function () use($output) {
+        echo $output;
+      }, 'Ban list Recensire.eu ' . date('d M Y') . '.csv');
     }
 }

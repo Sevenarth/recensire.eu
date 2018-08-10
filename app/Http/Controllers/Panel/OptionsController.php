@@ -22,6 +22,7 @@ class OptionsController extends Controller
     {
         Option::set('header-data', request()->input('header-data'));
         Option::set('footer-data', request()->input('footer-data'));
+        Option::set('front_show_limit', request()->input('front_show_limit'));
 
         return redirect()->action('Panel\OptionsController@index')->with('status', 'Opzioni aggiornate con successo!');
     }
@@ -74,6 +75,20 @@ class OptionsController extends Controller
 
     public function reports()
     {
-        return view('panel.emailreports');
+        $fields = config('testUnit.reportFields');
+        $statuses = [];
+        foreach(config('testUnit.englishStatuses') as $key => $value)
+            $statuses[] = ['value' => $key, 'display' => $value];
+
+        $reports = json_decode(Option::get('reports'));
+        if(!is_array($reports)) $reports = [];
+        return view('panel.emailreports', compact('fields', 'statuses', 'reports'));
+    }
+
+    public function reportsUpdate()
+    {
+        Option::set('reports', json_encode(request()->input('reports')));
+
+        return response()->json(['status' => 'Tutti i cambiamenti sono stati salvati con successo!']);
     }
 }

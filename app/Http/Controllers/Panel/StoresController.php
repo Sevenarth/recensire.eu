@@ -14,7 +14,7 @@ class StoresController extends Controller
 {
   public function index(Request $request) {
     $orderBy = $request->query('orderBy', null);
-    if(!empty($orderBy) && !in_array($orderBy, ['seller.name', 'store.name', 'store.id']))
+    if(!empty($orderBy) && !in_array($orderBy, ['seller.name', 'store.name', 'store.id', 'store.reports']))
       $orderBy = null;
     $sort = $request->query('sort', 'asc');
     if($sort != "asc" && $sort != "desc")
@@ -53,21 +53,13 @@ class StoresController extends Controller
   }
 
   public function edit(Request $request, Store $store) {
-    //dd($store->reports);
     return view("panel/stores/form", ['store' => $store]);
   }
 
   public function update(StoreFormRequest $request, Store $store) {
     $store->fill($request->only([
-      'name', 'company_name', 'company_registration_no', 'url', 'VAT', 'country', 'seller_id', 'to_emails', 'bcc_emails'
+      'name', 'company_name', 'company_registration_no', 'url', 'VAT', 'country', 'seller_id', 'to_emails', 'bcc_emails', 'reports'
     ]));
-
-    if(!empty($store->reports) && is_array($store->reports)) {
-      $reports = $store->reports;
-      $reports['type'] = $request->input('reports');
-      $store->reports = $reports;
-    } else
-      $store->reports = ['type' => $request->input('reports'), 'emails' => []];
 
     $store->save();
 
@@ -88,19 +80,26 @@ class StoresController extends Controller
     return view("panel/stores/view", ['store' => $store]);
   }
 
+  public function reports(Request $request, Store $store) {
+    $fields = config('testUnit.reportFields');
+    $statuses = [];
+    foreach(config('testUnit.englishStatuses') as $key => $value)
+        $statuses[] = ['value' => $key, 'display' => $value];
+
+    return view("panel/stores/reports", compact('store', 'fields', 'statuses'));
+  }
+
+  public function reportsUpdate(Request $request, Store $store) {
+    $store->custom_reports = $request->input('reports');
+    $store->save();
+
+    return response()->json(['status' => 'Tutti i cambiamenti sono stati salvati con successo!']);
+  }
+
   public function put(StoreFormRequest $request) {
     $store = Store::create($request->only([
-      'name', 'company_name', 'company_registration_no', 'url', 'VAT', 'country', 'seller_id', 'to_emails', 'bcc_emails'
-    ]));
-
-    if(!empty($store->reports) && is_array($store->reports)) {
-      $reports = $store->reports;
-      $reports['type'] = $request->input('reports');
-      $store->reports = $reports;
-    } else
-      $store->reports = ['type' => $request->input('reports'), 'emails' => []];
-    
-    $store->save();
+      'name', 'company_name', 'company_registration_no', 'url', 'VAT', 'country', 'seller_id', 'to_emails', 'bcc_emails', 'reports'
+    ]))->save();
 
     return redirect()
       ->route('panel.stores.home')

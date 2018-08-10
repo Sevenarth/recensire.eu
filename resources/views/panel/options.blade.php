@@ -26,6 +26,10 @@
         <label for="footer-data">Footer frontpage</label>
         <textarea id="footer-data" name="footer-data">{{ !empty($options['footer-data']) ? $options['footer-data'] : '' }}</textarea>
     </fieldset>
+    <fieldset class="form-group">
+        <label for="footer-data">Limite massimo dimostrazione prodotti <small>(tempo relativo in inglese)</small></label>
+        <input type="text" class="form-control" name="front_show_limit" placeholder="+1 month/+30 days..." value="{{ !empty($options['front_show_limit']) ? $options['front_show_limit'] : '' }}" />
+    </fieldset>
     <button type="submit" class="mt-3 mb-2 btn btn-primary">Aggiorna opzioni</button>
     @closeForm
 </div>

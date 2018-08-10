@@ -40,19 +40,19 @@
       <div class="row mb-3">
         <div class="col-sm-4">
           <div class="custom-control custom-radio">
-            <input type="radio" class="custom-control-input" name="reports" value="none" id="reports_none"{{ old('reports', !empty($store->reports['type']) ? $store->reports['type'] : "none") == "none" ? ' checked' : '' }}>
+            <input type="radio" class="custom-control-input" name="reports" value="none" id="reports_none"{{ old('reports', $store->reports) == "none" ? ' checked' : '' }}>
             <label class="custom-control-label" for="reports_none">No</label>
           </div>
         </div>
         <div class="col-sm-4">
           <div class="custom-control custom-radio">
-            <input type="radio" class="custom-control-input" name="reports" value="preset" id="reports_preset"{{ old('reports', !empty($store->reports['type']) ? $store->reports['type'] : "none") == "preset" ? ' checked' : '' }}>
+            <input type="radio" class="custom-control-input" name="reports" value="preset" id="reports_preset"{{ old('reports', $store->reports) == "preset" ? ' checked' : '' }}>
             <label class="custom-control-label" for="reports_preset">Preset</label>
           </div>
         </div>
         <div class="col-sm-4">
           <div class="custom-control custom-radio">
-            <input type="radio" class="custom-control-input" name="reports" value="custom" id="reports_custom"{{ old('reports', !empty($store->reports['type']) ? $store->reports['type'] : "none") == "custom" ? ' checked' : '' }}>
+            <input type="radio" class="custom-control-input" name="reports" value="custom" id="reports_custom"{{ old('reports', $store->reports) == "custom" ? ' checked' : '' }}>
             <label class="custom-control-label" for="reports_custom">Personalizzato</label>
           </div>
         </div>

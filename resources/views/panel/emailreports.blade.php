@@ -11,11 +11,20 @@
         Reports email
       </div>
       <div class="px-4 py-3">
-          @if (session('status'))
-          <div class="alert alert-success">
-              {{ session('status') }}
-          </div>
-          @endif
+            <a id="uploader" href="{{ route('panel.upload') }}" class="d-none"></a>
+        <div id="reports"></div>
       </div>
     </div>
+@endsection
+
+@section('scripts')
+<script>
+<!--
+window.reportsData = {!! json_encode($reports) !!};
+window.reportsEntity = {};
+window.reportsFields = {!! json_encode($fields) !!};
+window.statuses = {!! json_encode($statuses); !!};
+window.shortcodes = {!! json_encode(\App\Shortcode::all()) !!};
+-->
+</script>
 @endsection

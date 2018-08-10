@@ -49,7 +49,7 @@ class HomeController extends Controller
           'test_order.created_at',
           'test_order.is_product_public',
           'test_order.is_product_link_public',
-          DB::raw("(test_order.quantity - (select count(*) from `test_unit` where `test_order_id` = test_order.id and ((`status` > 0 and `status` <> 5) or (`status` = 0 and `expires_on` > '".\Carbon\Carbon::now(config('app.timezone'))."' and `tester_id` is not null)))) as `remaining`")
+          DB::raw("(test_order.quantity - (select count(*) from `test_unit` where `test_order_id` = test_order.id and ((`status` > 0 and `status` <> 5 and `status` <> 6 and `status` <> 8) or (`status` = 0 and `expires_on` > '".\Carbon\Carbon::now(config('app.timezone'))."' and `tester_id` is not null)))) as `remaining`")
         )->get();
 
       $active_products = [];
@@ -58,7 +58,7 @@ class HomeController extends Controller
       foreach($test_orders as $test_order)
         if(!in_array($test_order->product_id, $watched_products) && $test_order->remaining > 0) {
             $watched_products[] = $test_order->product_id;
-            if($test_order->is_product_public) {
+            if($test_order->is_product_public && (new \Carbon\Carbon($test_order->created_at))->modify(Option::get('front_show_limit', '+30 years')) > \Carbon\Carbon::now()) {
               $active_products[] = $test_order->product_id;
               $products_links[$test_order->product_id] = $test_order->is_product_link_public;
             }

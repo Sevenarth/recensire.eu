@@ -59,6 +59,11 @@ Breadcrumbs::register('emailreports', function ($breadcrumbs) {
     $breadcrumbs->push('Reports email', route('panel.reports'));
 });
 
+Breadcrumbs::register('banlist', function ($breadcrumbs) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push('Ban list', route('panel.banlist'));
+});
+
 Breadcrumbs::register('sellers.create', function ($breadcrumbs) {
     $breadcrumbs->parent('sellers');
     $breadcrumbs->push('Nuovo venditore', route('panel.sellers.create'));
@@ -87,6 +92,11 @@ Breadcrumbs::register('stores.view', function ($breadcrumbs, $store) {
 Breadcrumbs::register('stores.edit', function ($breadcrumbs, $store) {
     $breadcrumbs->parent('stores.view', $store);
     $breadcrumbs->push('Modifica', route('panel.stores.edit', $store->id));
+});
+
+Breadcrumbs::register('stores.reports', function ($breadcrumbs, $store) {
+    $breadcrumbs->parent('stores.view', $store);
+    $breadcrumbs->push('Reports', route('panel.stores.reports', $store->id));
 });
 
 Breadcrumbs::register('stores.products', function ($breadcrumbs, $store) {

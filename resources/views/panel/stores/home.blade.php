@@ -55,6 +55,9 @@ Negozi
               <th scope="col" class="p-2">
                 @orderable('seller.name', 'Venditore')
               </th>
+              <th scope="col" class="p-2">
+                @orderable('store.reports', 'Reports')
+              </th>
               <th scope="col" class="p-2"></th>
             </tr>
           </thead>
@@ -65,14 +68,17 @@ Negozi
               <td class="align-middle">
                 {{ $store->name }}
                 @if(!empty($store->url))
-                  <a title="Apri il sito del negozio" target="_blank" href="{{ $store->url }}" class="btn btn-sm btn-primary">
-                    <i class="fa fa-external-link-alt"></i>
+                  <a title="Apri il sito del negozio" target="_blank" rel="noreferrer nofollow" href="{{ $store->url }}" class="btn btn-sm btn-info">
+                    <i class="fa fa-link"></i>
                   </a>
                 @endif
               </td>
               <td class="align-middle">
-                <a title="Visualizza" href="{{ route('panel.sellers.view', ['seller' => $store->seller_id]) }}"><img style="min-width: 50px; max-height: 50px" id="profile_image" src="@if(empty($store->profile_image)) /images/profile_image.svg @else{{ $store->profile_image }}@endif" class="img-fluid img-thumbnail rounded border"></a>
+                <a title="Visualizza" href="{{ route('panel.sellers.view', ['seller' => $store->seller_id]) }}"><img style="max-width: 50px; max-height: 50px" id="profile_image" src="@if(empty($store->profile_image)) /images/profile_image.svg @else{{ $store->profile_image }}@endif" class="img-fluid img-thumbnail rounded border"></a>
                    {{ !empty($store->seller_nickname) ? $store->seller_nickname : $store->seller_name }}
+              </td>
+              <td class="align-middle">
+                {{$store->reports == "preset" ? "Preset" : ($store->reports == "custom" ? 'Personalizzato' : 'No')}}
               </td>
               <td class="align-middle">
                 <a href="{{ route('panel.stores.view', ['store' => $store->id]) }}" class="btn btn-sm btn-primary">

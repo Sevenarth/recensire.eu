@@ -56,6 +56,7 @@ Route::namespace('Panel')->name('panel.')->middleware('auth')->prefix('pannello'
       Route::patch('/visualizza-{store}', 'StoresController@update')->name('update');
       Route::delete('/visualizza-{store}', 'StoresController@delete')->name('delete');
       Route::get('/reports-{store}', 'StoresController@reports')->name('reports');
+      Route::post('/reports-{store}', 'StoresController@reportsUpdate')->name('reportsUpdate');
       Route::get('/prodotti-{store}', 'StoresController@products')->name('products');
       Route::put('/prodotti-{store}', 'StoresController@attachProduct')->name('attachProduct');
       Route::delete('/prodotti-{store}/disassocia-{product}', 'StoresController@detachProduct')->name('detachProduct');
@@ -124,4 +125,9 @@ Route::namespace('Panel')->name('panel.')->middleware('auth')->prefix('pannello'
     Route::post('/shortcodes', 'OptionsController@shortcodesUpdate')->name('shortcodesUpdate');
 
     Route::get('/reports', 'OptionsController@reports')->name('reports');
+    Route::post('/reports', 'OptionsController@reportsUpdate')->name('reportsUpdate');
+
+    Route::get('/banlist', 'HomeController@banlist')->name('banlist');
+    Route::get('/banlist/esporta', 'HomeController@banlistExport')->name('banlist.export');
+    Route::post('/banlist', 'HomeController@banlistUpdate')->name('banlistUpdate');
 });

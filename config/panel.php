@@ -12,6 +12,7 @@ return [
     "report" => ['Reportistica', 'pannello/reportistica', 'fa-chart-bar'],
     "options" => ['Opzioni', 'pannello/opzioni', 'fa-cog'],
     "shortcodes" => ['Shortcodes', 'pannello/shortcodes', 'fa-hashtag'],
-    "reports" => ['Reports email', 'pannello/reports', 'fa-envelope']
+    "reports" => ['Reports email', 'pannello/reports', 'fa-envelope'],
+    "banlist" => ['Ban list', 'pannello/banlist', 'fa-ban']
   ]
 ];
