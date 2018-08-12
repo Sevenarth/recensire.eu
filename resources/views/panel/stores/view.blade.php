@@ -77,17 +77,7 @@ Negozio #{{ $store->id }}
       <div class="col-sm-6">
         <fieldset class="form-group">
           <label><b>Reports</b></label>
-          @php $custom = $store->reports == 'custom'; @endphp
-          @if($custom)
-          <div class="input-group">
-          @endif
-          <input type="text" readonly class="form-control{{ $custom ? '' : '-plaintext' }}" value="{{ $store->reports != "none" ? ($store->reports == 'custom' ? 'Personalizzato' : 'Preset') : 'No' }}">
-          @if($custom)
-            <div class="input-group-append">
-                <a href="{{ route('panel.stores.reports', $store->id) }}" class="btn btn-primary">Opzioni</a>
-            </div>
-          </div>
-          @endif
+          <input type="text" readonly class="form-control-plaintext" value="{{ !empty($store->report) ? $store->report->title : 'No' }}">
         </fieldset>
       </div>
     </div>

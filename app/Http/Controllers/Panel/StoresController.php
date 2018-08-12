@@ -5,16 +5,15 @@ namespace App\Http\Controllers\Panel;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Store;
 use App\Http\Requests\StoreFormRequest;
 use Validator;
-use App\Product;
+use App\{Report, Store, Product};
 
 class StoresController extends Controller
 {
   public function index(Request $request) {
     $orderBy = $request->query('orderBy', null);
-    if(!empty($orderBy) && !in_array($orderBy, ['seller.name', 'store.name', 'store.id', 'store.reports']))
+    if(!empty($orderBy) && !in_array($orderBy, ['seller.name', 'store.name', 'store.id', 'reports.title']))
       $orderBy = null;
     $sort = $request->query('sort', 'asc');
     if($sort != "asc" && $sort != "desc")
@@ -22,7 +21,8 @@ class StoresController extends Controller
     $search = trim($request->query('s', null));
 
     $stores = DB::table('store')
-        ->leftJoin('seller', 'store.seller_id', '=', 'seller.id');
+        ->leftJoin('seller', 'store.seller_id', '=', 'seller.id')
+        ->leftJoin('reports', 'store.report_id', '=', 'reports.id');
 
     if(!empty($search))
       $stores = $stores->where("store.id", $search)
@@ -41,24 +41,24 @@ class StoresController extends Controller
           "seller.id AS seller_id",
           "seller.name AS seller_name",
           "seller.profile_image AS profile_image",
-          "seller.nickname AS seller_nickname"
+          "seller.nickname AS seller_nickname",
+          "reports.title AS report_title"
         )->paginate(15);
 
     return view("panel/stores/home")->with('stores', $stores);
   }
 
   public function create(Request $request) {
-    
-    return view("panel/stores/form");
+    return view("panel/stores/form", ['reports' => Report::all()]);
   }
 
   public function edit(Request $request, Store $store) {
-    return view("panel/stores/form", ['store' => $store]);
+    return view("panel/stores/form", ['store' => $store, 'reports' => Report::all()]);
   }
 
   public function update(StoreFormRequest $request, Store $store) {
     $store->fill($request->only([
-      'name', 'company_name', 'company_registration_no', 'url', 'VAT', 'country', 'seller_id', 'to_emails', 'bcc_emails', 'reports'
+      'name', 'company_name', 'company_registration_no', 'url', 'VAT', 'country', 'seller_id', 'to_emails', 'bcc_emails', 'report_id'
     ]));
 
     $store->save();
@@ -98,7 +98,7 @@ class StoresController extends Controller
 
   public function put(StoreFormRequest $request) {
     $store = Store::create($request->only([
-      'name', 'company_name', 'company_registration_no', 'url', 'VAT', 'country', 'seller_id', 'to_emails', 'bcc_emails', 'reports'
+      'name', 'company_name', 'company_registration_no', 'url', 'VAT', 'country', 'seller_id', 'to_emails', 'bcc_emails', 'reports', 'report_id'
     ]))->save();
 
     return redirect()

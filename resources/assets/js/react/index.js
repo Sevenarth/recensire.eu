@@ -10,5 +10,5 @@ $(function() {
     if(window.bppData !== undefined)
         ReactDOM.render(<BanList banlist={window.bppData} />, document.getElementById("banlist"));
     if(window.reportsData !== undefined)
-        ReactDOM.render(<Reports reports={window.reportsData} entity={window.reportsEntity} />, document.getElementById("reports"));
+        ReactDOM.render(<Reports reports={window.reportsData} />, document.getElementById("reports"));
 });

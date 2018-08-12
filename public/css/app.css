@@ -15237,5 +15237,9 @@ a:focus {
   word-wrap: break-word;
 }
 
+.pointer {
+  cursor: pointer;
+}
+
 
 /*# sourceMappingURL=app.css.map*/

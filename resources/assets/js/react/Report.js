@@ -1,164 +1,197 @@
 import React from 'react';
+import Query from './Query';
 import SpecialMDE from '../specialmde';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import _ from 'lodash';
-
-RegExp.quote = function(str) {
-    return (str+'').replace(/[.?*+^$[\]\\(){}|-]/g, "\\$&");
-};
 
 export default class Report extends React.Component {
     constructor(props) {
         super(props);
-        const fields = props.report.fields || [];
+
+        const queries = [...props.queries];
+        let ids = 0;
+        queries.forEach((query, idx) => queries[idx].id = ++ids);
 
         this.state = {
-            subject: props.report.subject || "",
-            preface: props.report.preface || "",
-            postface: props.report.postface || "",
-            fields: {
-                report: fields,
-                available: _.difference(Object.keys(window.reportsFields), fields)
-            },
-            statusType: props.report.statusType || "all",
-            statuses: props.report.statuses || [],
-            onlyCurrent: props.report.onlyCurrent || false,
-            orderBy: props.report.orderBy || {},
+            id: props.id,
+            title: props.title || "",
+            subject: props.subject || "",
+            preface: props.preface || "",
+            postface: props.postface || "",
+            queries,
+            status: undefined,
+            changed: false,
+            addQuery: false,
+            disabled: false,
             edit: props.edit || false,
+            ids,
             errors: {}
-        }
-        
-        this.change = this.change.bind(this);
-        this.save = this.save.bind(this);
-        this.cancel = this.cancel.bind(this);
-        this.remove = this.remove.bind(this);
-        this.onDragEnd = this.onDragEnd.bind(this);
-        this.handleStatusTypeChange = this.handleStatusTypeChange.bind(this);
-        this.handleMultipleSelectChange = this.handleMultipleSelectChange.bind(this);
-    }
-
-    change(key, eventful = true) {
-        return data => this.setState({
-            [key]: eventful ? data.target.value : data
-        });
-    }
-
-    save() {
-        if(!this.state.subject.trim().length) {
-            this.setState({
-                errors: {
-                    subject: "Questo campo è obbligatorio"
-                }
-            });
-            return;
-        }
-        if(!this.state.fields.report.length) {
-            this.setState({
-                errors: {
-                    fields: "Bisogna inserire almeno un campo!"
-                }
-            });
-            return;
+        };
+        window.onbeforeunload = () => {
+            if(this.state.changed)
+                return "Sono stati rilevati dei cambiamenti, continuare senza salvare?";
         }
 
-        this.setState({
-            edit: false,
-            errors: {}
-        });
-        this.props.changed({
-            subject: this.state.subject.trim(),
-            preface: this.state.preface.trim(),
-            fields: this.state.fields.report,
-            postface: this.state.postface.trim(),
-            statusType: this.state.statusType,
-            orderBy: this.state.orderBy,
-            statuses: this.state.statuses,
-            onlyCurrent: this.state.onlyCurrent,
-        });
-        this.container.scrollIntoView({ behavior: 'smooth' });
+        this.add = this.add.bind(this);
+        this.update = this.update.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.resetChanges = this.resetChanges.bind(this);
+        this.applyCodes = this.applyCodes.bind(this);
+        this.delete = this.delete.bind(this);
     }
 
-    cancel() {
-        this.container.scrollIntoView({ behavior: 'smooth' });
-        if(this.props.cancel)
-            this.props.cancel();
-        else {
-            const fields = this.props.report.fields || [];
+    componentWillUpdate(prevProps) {
+        if(prevProps.id !== this.state.id) {
+            const queries = [...this.props.queries];
+            let ids = 0;
+            queries.forEach((query, idx) => queries[idx].id = ++ids);
+
             this.setState({
-                edit: false,
-                subject: this.props.report.subject || "",
-                preface: this.props.report.preface || "",
-                fields: {
-                    report: fields,
-                    available: _.difference(Object.keys(window.reportsFields), fields)
-                },
-                statusType: this.props.report.statusType || "all",
-                statuses: this.props.report.statuses || [],
-                onlyCurrent: this.props.report.onlyCurrent || false,
-                postface: this.props.report.postface || "",
-                orderBy: this.props.report.orderBy || {},
+                id: this.props.id,
+                title: this.props.title || "",
+                subject: this.props.subject || "",
+                preface: this.props.preface || "",
+                postface: this.props.postface || "",
+                queries,
+                status: undefined,
+                changed: false,
+                addQuery: false,
+                disabled: false,
+                edit: this.props.edit || false,
+                ids,
                 errors: {}
             });
         }
     }
 
-    remove() {
-        this.props.changed();
+    add(query) {
+        const queries = this.state.queries;
+        query.id = this.state.ids+1;
+        queries.push(query);
+        
+        this.setState({
+            queries,
+            addQuery: false,
+            changed: true,
+            status: "Nuova query aggiunta con successo!",
+            ids: this.state.ids+1
+        });
+        setTimeout(() => this.setState({
+            status: undefined
+        }), 3000);
     }
 
-    onDragEnd(result){
-        // Apply changes
-        const { destination, source, draggableId } = result;
-
-        if(!destination) return;
-
-        if(
-            destination.droppableId === source.droppableId &&
-            destination.index === source.index
-        ) return;
-
-        const start = this.state.fields[source.droppableId];
-        const finish = this.state.fields[destination.droppableId];
-
-        if(start === finish) {
-            const reordered = Array.from(start);
-            reordered.splice(source.index, 1);
-            reordered.splice(destination.index, 0, draggableId);
+    update(id) {
+        return query => {
+            let queries = this.state.queries;
+            if(query) {
+                queries[queries.findIndex(el => el.id === id)] = {...query, id};
+            } else
+                queries = queries.filter(el => el.id !== id);
 
             this.setState({
-                fields: {
-                    ...this.state.fields,
-                    [source.droppableId]: reordered
-                }
+                queries,
+                changed: true,
+                status: `Query ${query ? 'aggiornata' : 'eliminata'} con successo!`
             });
-            
-            return;
+            setTimeout(() => this.setState({
+                status: undefined
+            }), 3000);
         }
+    }
 
-        const startReordered = Array.from(start);
-        startReordered.splice(source.index, 1);
-        const finishReordered = Array.from(finish);
-        finishReordered.splice(destination.index, 0, draggableId);
-
-        this.setState({
-            fields: {
-                ...this.state.fields,
-                [source.droppableId]: startReordered,
-                [destination.droppableId]: finishReordered
+    handleSubmit(e) {
+        e.preventDefault();
+        if(!this.state.disabled) {
+            if(!this.state.title.trim().length) {
+                this.setState({ errors: { title: "Inserisci un titolo valido!" } });
+                return;
             }
-        });
+
+            if(!this.state.subject.trim().length) {
+                this.setState({ errors: { subject: "Inserisci un subject valido!" } });
+                return;
+            }
+
+            if(!this.state.queries.length) {
+                this.setState({ errors: { queries: "Inserisci almeno una query!" } });
+                return;
+            }
+
+            this.setState({ disabled: true });
+            axios.post(
+                window.location.href,
+                { 
+                    id: this.state.id,
+                    title: this.state.title,
+                    subject: this.state.subject,
+                    preface: this.state.preface,
+                    postface: this.state.postface,
+                    queries: this.state.queries
+                }
+            ).then(({data}) => {
+                this.setState({
+                    id: data.report.id,
+                    edit: false,
+                    disabled: false,
+                    changed: false,
+                    status: data.status,
+                    errors: {}
+                });
+                this.props.update(data.report);
+                setTimeout(() => this.setState({
+                    status: undefined
+                }), 3000);
+            }).catch(err => Promise.reject(err));
+        }
     }
 
-    handleStatusTypeChange(e) {
-        this.setState({
-          statusType: e.target.value
-        });
+    delete() {
+        if(!this.state.disabled) {
+            this.setState({ disabled: true });
+            axios.post(
+                window.location.href,
+                { 
+                    id: this.state.id,
+                    delete: true
+                }
+            ).then(({data}) => {
+                const id = this.state.id;
+                this.setState({
+                    edit: false,
+                    disabled: false,
+                    changed: false,
+                    status: data.status,
+                    errors: {}
+                });
+
+                this.props.delete(id);
+                
+                setTimeout(() => this.setState({
+                    status: undefined
+                }), 3000);
+            }).catch(err => Promise.reject(err));
+        }
     }
 
-    handleMultipleSelectChange(e) {
-        this.setState({
-            statuses: [...e.target.options].filter(({selected}) => selected).map(({value}) => value)
-        });
+    resetChanges() {
+        if(!this.state.disabled) {
+            const queries = [...this.props.queries];
+            let ids = 0;
+            queries.forEach((query, idx) => queries[idx].id = ++ids);
+
+            this.setState({
+                id: this.props.id,
+                title: this.props.title || "",
+                subject: this.props.subject || "",
+                preface: this.props.preface || "",
+                postface: this.props.postface || "",
+                queries: queries,
+                status: undefined,
+                changed: false,
+                addQuery: false,
+                edit: false,
+                errors: {}
+            });
+        }
     }
 
     applyCodes(_text, mdEnabled = true) {
@@ -180,115 +213,59 @@ export default class Report extends React.Component {
     }
 
     render() {
-        const Blank = props => props.children;
+        return <div>
+            {this.state.status && <div className="alert alert-success">
+            {this.state.status}
+            </div>}
+            <form onSubmit={this.handleSubmit}>
+                <div className="form-group">
+                    <label>Titolo report</label>
+                    {this.state.edit ?
+                    <input type="text" className="form-control" value={this.state.title} onChange={e => this.setState({title: e.target.value})} />
+                    : <div className="form-control">{this.state.title}</div>}
+                    {this.state.errors.title && <div className="invalid-feedback d-block">{this.state.errors.title}</div>}
+                </div>
 
-        return <div ref={ref => this.container = ref} className="card mb-4">
-            <h5 className="card-header">
-                {this.state.edit ?
-                    <input type="text" className="form-control" placeholder="Oggetto" value={this.state.subject} onChange={this.change('subject')} />
-                    : this.applyCodes(this.state.subject, false)}
-                {this.state.errors.subject && <div className="invalid-feedback d-block">{this.state.errors.subject}</div>}
-            </h5>
-            <div className="card-body">
-                {this.state.edit && <h5 className="card-title">Prefazione</h5>}
-                {this.state.edit ?
-                    <SpecialMDE value={this.state.preface} onChange={this.change('preface', false)} />
-                    : (this.state.preface && <div className="card-text maxScroll" dangerouslySetInnerHTML={{__html: MD.render(this.applyCodes(this.state.preface))}} />)}
-                {(this.state.preface || this.state.edit) && <hr />}
-                {this.state.edit && <h5 className="card-title">Tabella</h5>}
-                {this.state.edit ? <div className="row">
-                    <div className="col-sm-3">
-                        <div className="custom-control custom-radio">
-                            <input type="radio" className="custom-control-input" name="status" value="all" id="status_all" onChange={this.handleStatusTypeChange} checked={this.state.statusType === "all"} />
-                            <label className="custom-control-label" htmlFor="status_all">Tutti</label>
-                        </div>
-                    </div>
-                    <div className="col-sm-3">
-                        <div className="custom-control custom-radio">
-                            <input type="radio" className="custom-control-input" name="status" value="expiring" id="status_expiring" onChange={this.handleStatusTypeChange} checked={this.state.statusType === "expiring"} />
-                            <label className="custom-control-label" htmlFor="status_expiring">In scadenza/Scaduti</label>
-                        </div>
-                    </div>
-                    <div className="col-sm-6">
-                        <div className="custom-control custom-radio">
-                            <input type="radio" className="custom-control-input" name="status" value="others" id="status_others" onChange={this.handleStatusTypeChange} checked={this.state.statusType === "others"} />
-                            <label className="custom-control-label w-100" htmlFor="status_others">
-                                <select size={window.statuses.length} value={this.state.statuses} onClick={e => this.setState({statusType: 'others'})} onChange={this.handleMultipleSelectChange} className="custom-select" multiple>
-                                    {window.statuses.map(status => <option key={status.value} value={status.value}>{status.display}</option>)}
-                                </select>
-                            </label>
-                        </div>
-                    </div>
-                </div> : <p><b>Stati delle unità di test</b>: {this.state.statusType == "all" ? "Tutti" : (this.state.statusType == "expiring" ? "In scadenza/Scaduti" : this.state.statuses.map(status => window.statuses.filter(el => el.value == status)[0].display).join(", "))}</p>}
-                {this.state.edit ? <div className="row">
-                    <div className="col-sm-6">
-                        <div className="custom-control custom-checkbox">
-                            <input type="checkbox" className="custom-control-input" checked={this.state.onlyCurrent} onChange={e => this.setState({onlyCurrent: !this.state.onlyCurrent})} id="current_state" />
-                            <label className="custom-control-label" htmlFor="current_state">Solo stato corrente</label>
-                        </div>
-                    </div>
-                </div> : <p><b>Mostra solo stato corrente?</b> {this.state.onlyCurrent ? 'Sì' : 'No'}</p>}
-                {this.state.edit ? <DragDropContext onDragEnd={this.onDragEnd}>
-                    <label className="mt-3">Campi disponibili</label>
-                    <Droppable droppableId="available" direction="horizontal">
-                        {(provided, snapshot) => <div ref={provided.innerRef} style={snapshot.isDraggingOver ? {backgroundColor: '#ffe8be'} : {}} className="fields-row" {...provided.droppableProps}>
-                            {this.state.fields.available.map((field, idx) => <Blank key={field}>
-                                <Draggable draggableId={field} index={idx}>
-                                    {(provided_, snapshot_) => <div {...provided_.draggableProps} {...provided_.dragHandleProps} ref={provided_.innerRef} className={"field-column" + (snapshot_.isDragging ? ' dragging' : '')}>
-                                        {window.reportsFields[field]}
-                                    </div>}
-                                </Draggable>
-                            </Blank>)}
-                            {provided.placeholder}
-                        </div>}
-                    </Droppable>
-                    <label className="mt-3">Colonne in tabella</label>
-                    <Droppable droppableId="report" direction="horizontal">
-                        {(provided, snapshot) => <div ref={provided.innerRef} style={snapshot.isDraggingOver ? {backgroundColor: '#ffe8be'} : {}} className="fields-row" {...provided.droppableProps}>
-                            {this.state.fields.report.map((field, idx) => <Blank key={field}>
-                                <Draggable draggableId={field} index={idx}>
-                                    {(provided_, snapshot_) => <div {...provided_.draggableProps} {...provided_.dragHandleProps} ref={provided_.innerRef} className={"field-column" + (snapshot_.isDragging ? ' dragging' : '')}>
-                                        {window.reportsFields[field]}
-                                    </div>}
-                                </Draggable>
-                            </Blank>)}
-                            {provided.placeholder}
-                        </div>}
-                    </Droppable>
-                </DragDropContext> : <div className="form-group"><label>Colonne in tabella</label><div className="fields-row">
-                    {this.state.fields.report.map(field => <div className="field-column" key={field}>{window.reportsFields[field]}</div>)}
-                </div></div>}
-                {this.state.errors.fields && <div className="invalid-feedback d-block">{this.state.errors.fields}</div>}
-                <label className="mt-3">Ordina per</label>
-                {this.state.edit ? <div className="row">
-                    <div className="col-sm-4">
-                    <select className="custom-select" value={this.state.orderBy.field} onChange={e => this.setState({orderBy: {...this.state.orderBy, field: e.target.value}})}>
-                        <option>-- nessun ordine --</option>
-                        {Object.keys(window.reportsFields).map(field => <option value={field} key={field}>{window.reportsFields[field]}</option>)}
-                    </select>
-                    </div>
-                    <div className="col-sm-3">
-                    <select className="custom-select" value={this.state.orderBy.type} onChange={e => this.setState({orderBy: {...this.state.orderBy, type: e.target.value}})}>
-                        <option value="asc">Ascendente</option>
-                        <option value="desc">Discendente</option>
-                    </select>
-                    </div>
-                </div> : <p className="form-control">{this.state.orderBy.field ? (window.reportsFields[this.state.orderBy.field] + " • " + (this.state.orderBy.type == "desc" ? "Discendente" : "Ascendente")) : '-'}</p>}
-                {(this.state.postface || this.state.edit) && <hr />}
-                {this.state.edit && <h5 className="card-title">Postfazione</h5>}
-                {this.state.edit ?
-                    <SpecialMDE value={this.state.postface} onChange={this.change('postface', false)} />
-                    : (this.state.postface && <div className="card-text maxScroll" dangerouslySetInnerHTML={{__html: MD.render(this.applyCodes(this.state.postface))}} />)}
-            </div>    
-            <div className="card-footer">
-                {this.state.edit ? <div className="btn-group">
-                    <button type="button" className="btn btn-primary" onClick={this.save}>{this.props.id ? 'Salva' : 'Aggiungi'}</button>
-                    <button type="button" className="btn btn-outline-info" onClick={this.cancel}>Annulla</button>
-                </div> : <div className="btn-group">
-                    <button type="button" className="btn btn-primary" onClick={e => this.setState({edit: true})}>Modifica</button>
-                    <button type="button" onClick={this.remove} data-placement="top" className="remove-confirmation btn btn-danger" data-html="true" data-toggle="popover" data-trigger="focus" title="Richiesta di conferma" data-content="Sei sicuro di voler eliminare questa email report?"><i className="fa fa-fw fa-times"></i> Elimina</button>
+                <div className="form-group">
+                    <label>Subject email</label>
+                    {this.state.edit ?
+                    <input type="text" className="form-control" value={this.state.subject} onChange={e => this.setState({subject: e.target.value})} />
+                    : <div className="form-control">{this.applyCodes(this.state.subject, false)}</div>}
+                    {this.state.errors.subject && <div className="invalid-feedback d-block">{this.state.errors.subject}</div>}
+                </div>
+
+                <div className="form-group">
+                    <label>Header</label>
+                    {this.state.edit ?
+                    <SpecialMDE value={this.state.preface} onChange={preface => this.setState({preface})} />
+                    : <div className="maxScroll form-control" dangerouslySetInnerHTML={{__html: MD.render(this.applyCodes(this.state.preface))}} />}
+                </div>
+            </form>
+
+            <button className="btn btn-info mb-3" type="button" onClick={evt => this.setState({addQuery: true})}>Nuova query</button>
+            {this.state.addQuery && <Query id={undefined} edit={true} cancel={() => this.setState({addQuery:false})}changed={this.add} report={{}} />}
+            {!this.state.queries.length && <p><i>Non ci sono ancora queries, creane una subito!</i></p>}
+            <form onSubmit={this.handleSubmit}>
+                {this.state.queries.map(query => <Query hasChanged={this.state.changed} key={query.id} id={query.id} changed={this.update(query.id)} report={query} />)}
+                {this.state.errors.queries && <div className="invalid-feedback d-block">{this.state.errors.queries}</div>}
+
+                <div className="form-group">
+                    <label>Footer</label>
+                    {this.state.edit ?
+                    <SpecialMDE value={this.state.postface} onChange={postface => this.setState({postface})} />
+                    : <div className="maxScroll form-control" dangerouslySetInnerHTML={{__html: MD.render(this.applyCodes(this.state.postface))}} />}
+                </div>
+
+                {(this.state.changed || this.state.edit) && <div className="btn-group w-100 mb-3">
+                    <button disabled={this.state.disabled} className="btn btn-primary" type="submit">Salva cambiamenti</button>
+                    <button disabled={this.state.disabled} onClick={this.resetChanges} type="button" data-placement="top" className="remove-confirmation btn btn-outline-info" data-html="true" data-toggle="popover" data-trigger="focus" title="Richiesta di conferma" data-content="Sei sicuro di voler annullare tutti i cambiamenti?">Annulla tutti i cambiamenti</button>
                 </div>}
-            </div>
+
+                {!this.state.edit && <div className="btn-group">
+                    <button disabled={this.state.disabled} className="btn btn-primary" onClick={e => this.setState({edit:true})} type="button">Modifica campi</button>
+                    <button disabled={this.state.disabled} onClick={this.delete} type="button" data-placement="top" className="remove-confirmation btn btn-danger" data-html="true" data-toggle="popover" data-trigger="focus" title="Richiesta di conferma" data-content="Sei sicuro di voler eliminare il report corrente?"><i className="fa fa-fw fa-times"></i> Elimina</button>
+                </div>}
+            </form>
         </div>;
     }
 }

@@ -13,9 +13,19 @@ class AddEmailsToStore extends Migration
      */
     public function up()
     {
+        Schema::create('reports', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('title');
+            $table->string('subject');
+            $table->text('preface')->nullable();
+            $table->text('queries');
+            $table->text('postface')->nullable();
+            $table->timestamps();
+        });
+
         Schema::table('store', function (Blueprint $table) {
-            $table->enum('reports', ['none','preset','custom'])->default('none');
-            $table->text('custom_reports')->nullable();
+            $table->unsignedInteger('report_id')->nullable();
+            $table->foreign('report_id')->references('id')->on('reports')->onDelete('set null')->nullable();
             $table->text('to_emails');
             $table->text('bcc_emails');
         });
@@ -29,7 +39,9 @@ class AddEmailsToStore extends Migration
     public function down()
     {
         Schema::table('store', function (Blueprint $table) {
-            $table->dropColumn(['reports', 'custom_reports', 'to_emails', 'bcc_emails']);
+            $table->dropForeign('store_report_id_foreign');
+            $table->dropColumn(['report_id', 'to_emails', 'bcc_emails']);
         });
+        Schema::dropIfExists('reports');
     }
 }

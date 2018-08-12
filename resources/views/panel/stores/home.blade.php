@@ -56,7 +56,7 @@ Negozi
                 @orderable('seller.name', 'Venditore')
               </th>
               <th scope="col" class="p-2">
-                @orderable('store.reports', 'Reports')
+                @orderable('reports.title', 'Reports')
               </th>
               <th scope="col" class="p-2"></th>
             </tr>
@@ -78,7 +78,7 @@ Negozi
                    {{ !empty($store->seller_nickname) ? $store->seller_nickname : $store->seller_name }}
               </td>
               <td class="align-middle">
-                {{$store->reports == "preset" ? "Preset" : ($store->reports == "custom" ? 'Personalizzato' : 'No')}}
+                {{ !empty($store->report_title) ? $store->report_title : 'No'}}
               </td>
               <td class="align-middle">
                 <a href="{{ route('panel.stores.view', ['store' => $store->id]) }}" class="btn btn-sm btn-primary">

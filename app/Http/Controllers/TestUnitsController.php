@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\TestUnit;
+use App\{TestUnit, BannedPaypal};
 use DB;
 use \Carbon\Carbon;
 use App\Http\Requests\TestAcceptRequest;
-use App\Notifications\BoughtProduct;
+use App\Notifications\{BoughtProduct, BannedPaypalEmail};
 use Notification;
 
 class TestUnitsController extends Controller
@@ -45,6 +45,13 @@ class TestUnitsController extends Controller
         Notification::route('mail', config('app.notifiable'))
           ->notify(new BoughtProduct($testUnit));
       } catch(\Swift_TransportException $e) {}
+
+      if(BannedPaypal::where('email', $request->input('paypal_account'))->first()) {
+        try {
+          Notification::route('mail', config('app.notifiable'))
+            ->notify(new BannedPaypalEmail($testUnit));
+        } catch(\Swift_TransportException $e) {}
+      }
 
       return redirect()
         ->route('tests.thankyou', $testUnit->hash_code)

@@ -29,6 +29,8 @@ Route::prefix('pannello')->group(function () {
     Auth::routes();
 });
 
+Route::get('/sendOutReports', 'SendReportsController@send')->middleware('auth.basic');
+
 Route::namespace('Panel')->name('panel.')->middleware('auth')->prefix('pannello')->group(function () {
     Route::get('/', 'HomeController@index')->name('home');
     Route::get('/upload', 'HomeController@upload')->name('upload');

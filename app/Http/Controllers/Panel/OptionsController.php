@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Panel;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\{Option, Shortcode};
+use App\{Option, Shortcode, Report};
 
 class OptionsController extends Controller
 {
@@ -80,15 +80,50 @@ class OptionsController extends Controller
         foreach(config('testUnit.englishStatuses') as $key => $value)
             $statuses[] = ['value' => $key, 'display' => $value];
 
-        $reports = json_decode(Option::get('reports'));
-        if(!is_array($reports)) $reports = [];
+        $reports = Report::all();
         return view('panel.emailreports', compact('fields', 'statuses', 'reports'));
     }
 
     public function reportsUpdate()
     {
-        Option::set('reports', json_encode(request()->input('reports')));
+        $id = request()->input('id');
+        $title = request()->input('title');
+        $preface = request()->input('preface');
+        $postface = request()->input('postface');
+        $subject = request()->input('subject');
+        $queries = request()->input('queries');
+        $delete = request()->input('delete', false);
 
-        return response()->json(['status' => 'Tutti i cambiamenti sono stati salvati con successo!']);
+        if($delete) {
+            $report = Report::find($id);
+            if(!$report)
+                abort(404);
+
+            $report->delete();
+
+            return response()->json([
+                'status' => 'Report eliminato con successo!'
+            ]);
+        }
+        
+        if($title && $subject && is_array($queries) && count($queries) > 0) {
+            if($id == "new") {
+                $report = new Report;
+                $report->fill(compact('title','preface','postface','subject','queries'));
+                $report->save();
+            } else {
+                $report = Report::find($id);
+                if(!$report)
+                    abort(404);
+                
+                $report->fill(compact('title','preface','postface','subject','queries'));
+                $report->save();
+            }
+
+            return response()->json([
+                'report' => $report,
+                'status' => 'Tutti i cambiamenti sono stati salvati con successo!'
+            ]);
+        }
     }
 }

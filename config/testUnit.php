@@ -43,9 +43,7 @@ return [
   ],
   'reportFields' => [
     'amazon-order-no' => 'Amazon Order No.',
-    'amazon-profile' => 'Amazon Profile',
     'asin' => 'ASIN',
-    'facebook-id' => 'Facebook ID',
     'paypal-account' => 'PayPal Account',
     'refunded' => 'Refunded?',
     'refunded-amount' => 'Refunded Amount',

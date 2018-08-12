@@ -270,7 +270,7 @@ class HomeController extends Controller
       $output = "Email,Creato il,Note".PHP_EOL;
 
       foreach(BannedPaypal::orderBy('created_at','desc')->orderBy('email')->get() as $ban)
-        $output .= $ban->email . "," . \Carbon::Carbon($ban->created_at)->format("d M Y H:i") . "," . json_encode($ban->notes) . PHP_EOL;
+        $output .= $ban->email . "," . (new \Carbon\Carbon($ban->created_at))->format("d M Y H:i") . "," . json_encode($ban->notes) . PHP_EOL;
 
       return response()->streamDownload(function () use($output) {
         echo $output;

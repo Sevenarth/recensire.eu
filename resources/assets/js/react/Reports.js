@@ -4,113 +4,81 @@ import Report from './Report';
 export default class Reports extends React.Component {
     constructor(props) {
         super(props);
-
-        const reports = [...props.reports];
-        let ids = 0;
-        reports.forEach((report, idx) => reports[idx].id = ++ids);
-
         this.state = {
-            reports,
-            status: undefined,
-            changed: false,
-            addReport: false,
-            disabled: false,
-            ids
+            reports: props.reports,
+            selected: props.reports.length > 0 ? props.reports[0].id : undefined,
+            addReport: false
         };
-        window.onbeforeunload = () => {
-            if(this.state.changed)
-                return "Sono stati rilevati dei cambiamenti, continuare senza salvare?";
-        }
-
-        this.add = this.add.bind(this);
+        this.create = this.create.bind(this);
         this.update = this.update.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.resetChanges = this.resetChanges.bind(this);
+        this.delete = this.delete.bind(this);
     }
 
-    add(report) {
-        const reports = this.state.reports;
-        report.id = this.state.ids+1;
-        reports.push(report);
-        
-        this.setState({
-            reports,
-            addReport: false,
-            changed: true,
-            status: "Nuovo report aggiunto con successo!",
-            ids: this.state.ids+1
-        });
-        setTimeout(() => this.setState({
-            status: undefined
-        }), 3000);
+    create() {
+        if(this.state.reports.findIndex(el => el.id == "new") === -1) {
+            const reports = this.state.reports;
+            reports.push({id: "new", queries: []});
+            this.setState({
+                reports,
+                selected: "new"
+            });
+        } else
+            this.setState({
+                selected: "new"
+            });
+    }
+
+    delete(id) {
+        let idx = this.state.reports.findIndex(el => el.id === id);
+        if(idx >= 0) {
+            let reports = [...this.state.reports];
+            reports.splice(idx, 1);
+            this.setState({
+                reports,
+                selected: undefined
+            })
+        }
+
     }
 
     update(id) {
         return report => {
-            let reports = this.state.reports;
-            if(report) {
-                reports[reports.findIndex(el => el.id === id)] = {...report, id};
-            } else
-                reports = reports.filter(el => el.id !== id);
-
+            const reports = this.state.reports;
+            reports[reports.findIndex(el => el.id === id)] = report;
             this.setState({
-                reports,
-                changed: true,
-                status: `Report ${report ? 'aggiornato' : 'eliminato'} con successo!`
-            });
-            setTimeout(() => this.setState({
-                status: undefined
-            }), 3000);
-        }
-    }
-
-    handleSubmit(e) {
-        e.preventDefault();
-        if(!this.state.disabled) {
-            this.setState({ disabled: true });
-            axios.post(
-                window.location.href,
-                { reports: this.state.reports }
-            ).then(({data}) => {
-                this.setState({
-                    disabled: false,
-                    changed: false,
-                    status: data.status
-                });
-                setTimeout(() => this.setState({
-                    status: undefined
-                }), 3000);
-            }).catch(err => Promise.reject(err));
-        }
-    }
-
-    resetChanges() {
-        if(!this.state.disabled) {
-            this.setState({
-                reports: this.props.reports,
-                status: undefined,
-                changed: false,
-                addReport: false
+                selected: report.id,
+                reports
             });
         }
     }
 
     render() {
+        let index = this.state.reports.findIndex(el => el.id === this.state.selected);
+        if(index === -1) index = this.state.reports.length > 0 ? 0 : undefined;
+
         return <div>
-            {this.state.status && <div className="alert alert-success">
-            {this.state.status}
+            {this.state.reports.length > 0 ? <div>
+                <label>Reports disponibili: </label><div className="row">
+                <div className="col-sm-6 input-group">
+                <select value={this.state.reports[index].id} onChange={e => this.setState({selected: e.target.value == "new" ? "new" : parseInt(e.target.value)})} className="custom-select">
+                    {this.state.reports.map(report => <option key={report.id} value={report.id}>{report.title || "-- nuovo report --"}</option>)}
+                </select>
+                <button className="btn btn-primary" onClick={this.create}>Crea nuovo report</button></div></div>
+            </div> : <div>
+                Per iniziare: <button className="btn btn-primary" onClick={this.create}>Crea nuovo report</button>
             </div>}
 
-            <button className="btn btn-info mb-3" type="button" onClick={evt => this.setState({addReport: true})}>Nuovo report</button>
-            {this.state.addReport && <Report id={undefined} edit={true} cancel={() => this.setState({addReport:false})}changed={this.add} report={{}} />}
-            {!this.state.reports.length && <p><i>Non ci sono ancora email report, creane una subito!</i></p>}
-            <form onSubmit={this.handleSubmit}>
-                {this.state.reports.map(report => <Report key={report.id} id={report.id} changed={this.update(report.id)} report={report} />)}
-                {this.state.changed && <div className="btn-group">
-                    <button disabled={this.state.disabled} className="btn btn-primary" type="submit">Salva cambiamenti</button>
-                    <button disabled={this.state.disabled} onClick={this.resetChanges} type="button" data-placement="top" className="remove-confirmation btn btn-outline-info" data-html="true" data-toggle="popover" data-trigger="focus" title="Richiesta di conferma" data-content="Sei sicuro di voler annullare tutti i cambiamenti?">Annulla tutti i cambiamenti</button>
-                </div>}
-            </form>
-        </div>;
+            {this.state.reports[index] && <div><hr /><Report
+                id={this.state.reports[index].id}
+                title={this.state.reports[index].title}
+                subject={this.state.reports[index].subject}
+                preface={this.state.reports[index].preface}
+                postface={this.state.reports[index].postface}
+                queries={this.state.reports[index].queries}
+                edit={this.state.reports[index].id == "new"}
+                update={this.update(this.state.reports[index].id)}
+                delete={this.delete}
+            /></div>}
+        </div>
     }
-}
+};

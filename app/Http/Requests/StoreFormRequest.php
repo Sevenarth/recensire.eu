@@ -31,8 +31,8 @@ class StoreFormRequest extends FormRequest
              'country' => 'string|nullable|max:191',
              'seller_id' => 'exists:seller,id',
              'url' => 'nullable|url|max:191',
-             'reports' => 'required|in:none,preset,custom',
-             'to_emails' => 'required_unless:reports,none',
+             'report_id' => 'nullable|exists:reports,id',
+             'to_emails' => 'required_with:report_id',
              'to_emails.*' => 'email',
              'bcc_emails' => 'nullable',
              'bcc_emails.*' => 'email'
@@ -52,7 +52,7 @@ class StoreFormRequest extends FormRequest
            'country.required' => "Questo campo non pu&ograve; essere vuoto.",
            'country.string' => "Il paese di registrazione deve essere una stringa valida.",
            'url.url' => "L'indirizzo web del negozio non &egrave; valido.",
-           'to_emails.required_unless' => 'Questo campo è obbligatorio quando i reports sono attivi.'
+           'to_emails.required_with' => 'Questo campo è obbligatorio quando un report è impostato.'
        ];
      }
 }
