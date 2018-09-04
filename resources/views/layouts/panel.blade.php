@@ -22,8 +22,8 @@
                 <a class="navbar-brand" href="{{ url('/') }}">
                     <img src="/images/arts.svg" class="image-responsive" height="50" alt="{{ config('app.name', 'Laravel') }}">
                 </a>
-                <a href="https://www.recensire.eu/it/" target="_blank" style="font-size: 2em; margin-right: .75rem">🇮🇹</a>
-                <a href="https://www.recensire.eu/de/" target="_blank" style="font-size: 2em; margin-right: .75rem">🇩🇪</a>
+                <a href="https://www.recensire.eu/it/pannello" target="_blank" style="font-size: 2em; margin-right: .75rem">🇮🇹</a>
+                <a href="https://www.recensire.eu/de/pannello" target="_blank" style="font-size: 2em; margin-right: .75rem">🇩🇪</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
