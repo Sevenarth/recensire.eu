@@ -56,7 +56,9 @@ Ordine di lavoro #{{ $testOrder->id }}
         <div class="row">
           <div class="col-sm-6">
             <fieldset class="form-group">
-              <label><b>Marchio e nome prodotto</b> @if(!empty($testOrder->product->id))<a class="btn btn-sm btn-primary" href="{{ route('panel.products.view', $testOrder->product->id)}}"><i class="fa fa-fw fa-external-link-alt"></i></a>@endif</label>
+              <label><b>Marchio e nome prodotto</b> @if(!empty($testOrder->product->id))<a class="btn btn-sm btn-primary" href="{{ route('panel.products.view', $testOrder->product->id)}}"><i class="fa fa-fw fa-external-link-alt"></i></a> <a title="Apri su Amazon" href="{{ $testOrder->product->URL }}" target="_blank" rel="nofollow noreferrer" class="btn btn-sm btn-info">
+                <i class="fa fa-link"></i>
+              </a>@endif</label>
               <input type="text" readonly class="form-control-plaintext" value="{{ !empty($testOrder->product->id) ? $testOrder->product->brand . ' '. $testOrder->product->title : 'Prodotto assente' }}">
             </fieldset>
           </div>

@@ -113,7 +113,9 @@ Tester #{{ $tester->id }}
           <tr>
             <th class="align-middle p-2" scope="row">{{ $unit->hash_code }}</th>
             <td class="align-middle p-2"><img style="min-width: 50px; max-height: 50px" src="@if(empty($unit->testOrder->product->images[0])) /images/package.svg @else{{ $unit->testOrder->product->images[0] }}@endif" class="img-fluid img-thumbnail rounded border"></td>
-            <td class="align-middle"><a href="{{ route('panel.testOrders.view', $unit->testOrder->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-fw fa-external-link-alt"></i> Vai</a></td>
+            <td class="align-middle"><a href="{{ route('panel.testOrders.view', $unit->testOrder->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-fw fa-external-link-alt"></i> Vai</a> @if(!empty($unit->testOrder->product->id)) <a title="Apri prodotto su Amazon" href="{{ $unit->testOrder->product->URL }}" target="_blank" rel="nofollow noreferrer" class="btn btn-sm btn-info">
+                <i class="fa fa-link"></i> Prodotto
+              </a> @endif </td>
             <td class="align-middle p-2">{{ config('testUnit.statuses')[$unit->status] }}</td>
             <td class="align-middle p-2">
               @if($unit->status > 0)
