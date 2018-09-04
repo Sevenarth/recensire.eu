@@ -7,10 +7,12 @@ return [
     7 => "Feedback",
     3 => "Completato",
     6 => "Banned",
+    10 => "Banned conteggiato",
     5 => "Annullato",
     8 => "Restituito",
     9 => "Saldato",
-    4 => "Rimborsato"
+    4 => "Rimborsato",
+    11 => "Altro"
   ],
   'englishStatuses' => [
     0 => "Waiting",
@@ -19,10 +21,12 @@ return [
     7 => "Feedback",
     3 => "Completed",
     6 => "Banned",
+    10 => "Counted banned",
     5 => "Cancelled",
     8 => "Returned",
     9 => "Settled",
-    4 => "Refunded"
+    4 => "Refunded",
+    11 => "Other"
   ],
   'timeSpaces' => [
     'secondi',
