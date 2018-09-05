@@ -26,7 +26,8 @@ export default class Query extends React.Component {
             orderBy: props.report.orderBy || {},
             edit: props.edit || false,
             collapsed: props.edit ? false : true,
-            errors: {}
+            errors: {},
+            hash: JSON.stringify(props.report)
         }
         
         this.change = this.change.bind(this);
@@ -77,6 +78,28 @@ export default class Query extends React.Component {
             onlyCurrent: this.state.onlyCurrent,
         });
         this.container.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    componentDidUpdate() {
+        if(this.state.hash !== JSON.stringify(this.props.report)) {
+            this.setState({
+                edit: false,
+                subject: this.props.report.subject || "",
+                preface: this.props.report.preface || "",
+                fields: {
+                    report: fields,
+                    available: _.difference(Object.keys(window.reportsFields), fields)
+                },
+                statusType: this.props.report.statusType || "all",
+                statuses: this.props.report.statuses || [],
+                onlyCurrent: this.props.report.onlyCurrent || false,
+                postface: this.props.report.postface || "",
+                orderBy: this.props.report.orderBy || {},
+                errors: {},
+                collapsed: true,
+                hash: JSON.stringify(this.props.report)
+            });
+        }
     }
 
     cancel() {
