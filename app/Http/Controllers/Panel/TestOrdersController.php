@@ -52,7 +52,7 @@ class TestOrdersController extends Controller
     $completed_filter = request()->query('completed', 'n');
     if($completed_filter == 'y' || $completed_filter == 'n') {
       $op = $completed_filter == 'y' ? '=' : '>';
-      $testOrders = $testOrders->whereRaw("(test_order.quantity - (select count(*) from `test_unit` where `test_order_id` = test_order.id and ((`status` > 0 and `status` <> 5 and `status` <> 6 and `status` <> 8) or (`status` = 0 and `expires_on` > '".\Carbon\Carbon::now(config('app.timezone'))."' and `tester_id` is not null)))) ".$op." 0");
+      $testOrders = $testOrders->whereRaw("(".DB::getTablePrefix()."test_order.quantity - (select count(*) from `".DB::getTablePrefix()."test_unit` where `test_order_id` = ".DB::getTablePrefix()."test_order.id and ((`status` > 0 and `status` <> 5 and `status` <> 6 and `status` <> 8) or (`status` = 0 and `expires_on` > '".\Carbon\Carbon::now(config('app.timezone'))."' and `tester_id` is not null)))) ".$op." 0");
     }
 
     $visible_filter = request()->query('visible');
@@ -66,7 +66,7 @@ class TestOrdersController extends Controller
 
     $testOrders = $testOrders
         ->select(
-          DB::raw("(test_order.quantity - (select count(*) from `test_unit` where `test_order_id` = test_order.id and ((`status` > 0 and `status` <> 5 and `status` <> 6 and `status` <> 8) or (`status` = 0 and `expires_on` > '".\Carbon\Carbon::now(config('app.timezone'))."' and `tester_id` is not null)))) as incomplete_units"),
+          DB::raw("(".DB::getTablePrefix()."test_order.quantity - (select count(*) from `".DB::getTablePrefix()."test_unit` where `test_order_id` = ".DB::getTablePrefix()."test_order.id and ((`status` > 0 and `status` <> 5 and `status` <> 6 and `status` <> 8) or (`status` = 0 and `expires_on` > '".\Carbon\Carbon::now(config('app.timezone'))."' and `tester_id` is not null)))) as incomplete_units"),
           "test_order.id as testOrder_id",
           "test_order.created_at as testOrder_created_at",
           "test_order.quantity",

@@ -49,7 +49,7 @@ class HomeController extends Controller
           'test_order.created_at',
           'test_order.is_product_public',
           'test_order.is_product_link_public',
-          DB::raw("(test_order.quantity - (select count(*) from `test_unit` where `test_order_id` = test_order.id and ((`status` > 0 and `status` <> 5 and `status` <> 6 and `status` <> 8) or (`status` = 0 and `expires_on` > '".\Carbon\Carbon::now(config('app.timezone'))."' and `tester_id` is not null)))) as `remaining`")
+          DB::raw("(".DB::getTablePrefix()."test_order.quantity - (select count(*) from `".DB::getTablePrefix()."test_unit` where `test_order_id` = ".DB::getTablePrefix()."test_order.id and ((`status` > 0 and `status` <> 5 and `status` <> 6 and `status` <> 8) or (`status` = 0 and `expires_on` > '".\Carbon\Carbon::now(config('app.timezone'))."' and `tester_id` is not null)))) as `remaining`")
         )->get();
 
       $active_products = [];
