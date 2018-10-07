@@ -26,8 +26,8 @@ class AddEmailsToStore extends Migration
         Schema::table('store', function (Blueprint $table) {
             $table->unsignedInteger('report_id')->nullable();
             $table->foreign('report_id')->references('id')->on('reports')->onDelete('set null')->nullable();
-            $table->text('to_emails');
-            $table->text('bcc_emails');
+            $table->text('to_emails')->nullable();
+            $table->text('bcc_emails')->nullable();
         });
     }
 
