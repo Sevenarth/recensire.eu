@@ -65,7 +65,7 @@ class HomeController extends Controller
         }
       $products = $products
         ->whereIn('product.id', $active_products)
-        ->orderByRaw('FIELD(product.id,'.implode(',',$active_products).')')
+        ->orderByRaw('FIELD('.DB::getTablePrefix().'product.id,'.implode(',',$active_products).')')
         ->select('product.images', 'product.URL', 'product.title', 'product.id')
         ->paginate(20);
 
