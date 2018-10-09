@@ -9,6 +9,10 @@ use Carbon\Carbon;
 use DB;
 use App\Mail\DailyReport;
 
+function escapeMD($text) {
+    return str_replace(["-", ".", "_", "#", "?", "!", "|", "*"], ["\\-", "\\.", "\\_", "\\#", "\\?", "\\!", "\\|", "\\*"], $text);
+}
+
 class SendReportsController extends Controller
 {
     public function send() {
@@ -154,7 +158,7 @@ class SendReportsController extends Controller
                         if($field == "state")
                             $output .= "|" . config('testUnit.englishStatuses')[$entry->{$mappings[$field]['alias']}];
                         else
-                            $output .= "|" . $entry->{$mappings[$field]['alias']};
+                            $output .= "|" . escapeMD($entry->{$mappings[$field]['alias']});
                     }
                     $output .= "|" . PHP_EOL;
                 }
