@@ -157,7 +157,7 @@ class SendReportsController extends Controller
                     foreach($fields as $field) {
                         if($field == "state")
                             $output .= "|" . config('testUnit.englishStatuses')[$entry->{$mappings[$field]['alias']}];
-                        else if($field == "paypal_account")
+                        else if($field == "paypal-account")
                             $output .= "|" . escapeMD($entry->{$mappings[$field]['alias']});
                         else
                             $output .= "|" . $entry->{$mappings[$field]['alias']};
