@@ -39,6 +39,7 @@ class TestUnitsController extends Controller
       $testUnit->fill($request->only('paypal_account', 'amazon_order_id', 'tester_notes'));
       $testUnit->status = 1;
       $testUnit->statuses()->create(['status' => 1]);
+      $testUnit->status_updated_at = Carbon::now(config('app.timezone'));
       $testUnit->save();
 
       try {

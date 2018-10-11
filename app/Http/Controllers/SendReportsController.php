@@ -103,8 +103,8 @@ class SendReportsController extends Controller
           ->leftJoin('store', 'test_order.store_id', '=', 'store.id')
           ->leftJoin('tester', 'test_unit.tester_id', '=', 'tester.id')
           ->leftJoin('product', 'test_order.product_id', '=', 'product.id')
-          ->where('test_unit'.($query['statusType'] == "expiring" ? '.expires_on' : ($onlyCurrent ? '.updated_at' : '_status.created_at')), '>', $startDate)
-          ->where('test_unit'.($query['statusType'] == "expiring" ? '.expires_on' : ($onlyCurrent ? '.updated_at' : '_status.created_at')), '<', $endDate)
+          ->where('test_unit'.($query['statusType'] == "expiring" ? '.expires_on' : ($onlyCurrent ? '.status_updated_at' : '_status.created_at')), '>', $startDate)
+          ->where('test_unit'.($query['statusType'] == "expiring" ? '.expires_on' : ($onlyCurrent ? '.status_updated_at' : '_status.created_at')), '<', $endDate)
           ->where('store.id', $store->id);
 
         if($query['statusType'] == "others" && is_array($query['statuses']) && count($query['statuses']))

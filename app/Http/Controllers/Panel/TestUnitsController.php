@@ -100,7 +100,7 @@ class TestUnitsController extends Controller
         $testUnit->starts_on = $starts_on->toDateTimeString();
 
         $testUnit->expires_on = $starts_on->add(new \DateInterval(sprintf('P'.$spaceSpecs[$request->input('expires_on_space')], $request->input('expires_on_time'))));
-
+        $testUnit->status_updated_at = Carbon::now(config('app.timezone'));
         $testUnit->testOrder()->associate($testOrder);
         $testUnit->save();
 
@@ -144,6 +144,7 @@ class TestUnitsController extends Controller
 
       $testUnit->tester()->associate(Tester::find($request->input('tester_id')));
       $testUnit->testOrder()->associate($testOrder);
+      $testUnit->status_updated_at = Carbon::now(config('app.timezone'));
       $testUnit->save();
 
       $testUnit->statuses()->create([
@@ -214,10 +215,12 @@ class TestUnitsController extends Controller
       if($testUnit->status < 1 && (empty($testUnit->tester) || $testUnit->tester->id != $request->input('tester_id')))
         $testUnit->tester()->associate(Tester::find($request->input('tester_id')));
 
-      if(intval($testUnit->status) !== intval($request->input('status')))
+      if(intval($testUnit->status) !== intval($request->input('status'))) {
         $testUnit->statuses()->create([
           'status' => $request->input('status')
         ]);
+        $testUnit->status_updated_at = Carbon::now(config('app.timezone'));
+      }
 
       $testUnit->status = $request->input('status');
       $testUnit->save();

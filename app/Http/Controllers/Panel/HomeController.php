@@ -101,8 +101,8 @@ class HomeController extends Controller
 
         $statuses = $statuses->leftJoin('test_order', 'test_order.id', '=', 'test_unit.test_order_id')
           ->leftJoin('store', 'test_order.store_id', '=', 'store.id')
-          ->where('test_unit'.($request->input('status') == "expiring" ? '.expires_on' : ($onlyCurrent ? '.updated_at' : '_status.created_at')), '>', (new Carbon($request->input('start_date')))->startOfDay())
-          ->where('test_unit'.($request->input('status') == "expiring" ? '.expires_on' : ($onlyCurrent ? '.updated_at' : '_status.created_at')), '<', (new Carbon($request->input('end_date')))->endOfDay());
+          ->where('test_unit'.($request->input('status') == "expiring" ? '.expires_on' : ($onlyCurrent ? '.status_updated_at' : '_status.created_at')), '>', (new Carbon($request->input('start_date')))->startOfDay())
+          ->where('test_unit'.($request->input('status') == "expiring" ? '.expires_on' : ($onlyCurrent ? '.status_updated_at' : '_status.created_at')), '<', (new Carbon($request->input('end_date')))->endOfDay());
 
         if(!empty($request->input('sellers')) && is_array($request->input('sellers')))
           $statuses = $statuses->whereIn('store.seller_id', $request->input('sellers'));
