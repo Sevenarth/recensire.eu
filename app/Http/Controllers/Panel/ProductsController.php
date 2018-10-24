@@ -66,7 +66,10 @@ class ProductsController extends Controller
     if(count($tags) > 0)
       $product->tag($tags);
 
-    $cats = array_map('intval', $request->input('categories'));
+    if(is_array($request->input('categories')))
+      $cats = array_map('intval', $request->input('categories'));
+    else
+      $cats = [];
 
     foreach($cats as $i => $cat)
       if($cat === 0)
