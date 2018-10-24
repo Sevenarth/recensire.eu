@@ -95,17 +95,17 @@ class TestersController extends Controller
 
   public function update(TesterFormRequest $request, Tester $tester) {
     $confirm_fields = [];
-    if(Tester::where('id', '<>', $tester->id)->where('name', trim($request->input('name')))->count() > 0)
+    if($tester->name != $request->input('name') && Tester::where('id', '<>', $tester->id)->where('name', trim($request->input('name')))->count() > 0)
       $confirm_fields[] = 'nome';
-    if(Tester::where('id', '<>', $tester->id)->where('email', trim($request->input('email')))->count() > 0)
+    if($tester->email != $request->input('email') && Tester::where('id', '<>', $tester->id)->where('email', trim($request->input('email')))->count() > 0)
       $confirm_fields[] = 'indirizzo email';
-    if(Tester::where('id', '<>', $tester->id)->where('wechat', trim($request->input('wechat')))->count() > 0)
+    if($tester->wechat != $request->input('wechat') && Tester::where('id', '<>', $tester->id)->where('wechat', trim($request->input('wechat')))->count() > 0)
       $confirm_fields[] = 'WeChat';
     foreach($request->input('amazon_profiles') as $key => $amz)
-      if(!empty($amz) && Tester::where('id', '<>', $tester->id)->where('amazon_profiles', 'like', '%'.trim($amz).'%')->count() > 0)
+      if(!empty($amz) && ((is_array($tester->amazon_profiles) && in_array($amz, $tester->amazon_profiles)) || !$tester->amazon_profiles) && Tester::where('id', '<>', $tester->id)->where('amazon_profiles', 'like', '%'.trim($amz).'%')->count() > 0)
         $confirm_fields[] = 'profilo Amazon no. ' . ($key+1);
     foreach($request->input('facebook_profiles') as $key => $fb)
-      if(!empty($fb) && Tester::where('id', '<>', $tester->id)->where('facebook_profiles', 'like', '%'.trim($fb).'%')->count() > 0)
+      if(!empty($fb) && ((is_array($tester->facebook_profiles) && in_array($fb, $tester->amazon_profiles)) || !$tester->facebook_profiles) && Tester::where('id', '<>', $tester->id)->where('facebook_profiles', 'like', '%'.trim($fb).'%')->count() > 0)
         $confirm_fields[] = 'Facebook ID no. ' . ($key+1);
 
     if(count($confirm_fields) > 0 && $request->input('confirmation') != sha1(json_encode($request->only(['name','email','wechat','amazon_profiles','facebook_profiles']))))
