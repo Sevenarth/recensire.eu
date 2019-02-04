@@ -76,6 +76,13 @@ Venditore #{{ $seller->id }}
       <div class="markdown form-control">{{ !empty($seller->notes) ? $seller->notes : 'N/D' }}</div>
     </fieldset>
 
+    <h5>Visualizza:</h5>
+
+    <div class="mb-2 btn-group" role="group">
+      <a href="{{ route("panel.testOrders.home", ['s' => ':seller='.$seller->id]) }}" class="btn btn-outline-secondary"><i class="fa fa-fw fa-archive"></i> Ordini di lavoro</a>
+      <a href="{{ route("panel.sellers.products", $seller->id) }}" class="btn btn-outline-secondary"><i class="fa fa-fw fa-shopping-bag"></i> Prodotti</a>
+    </div>
+
     <div class="h5">
       Negozi
     </div>

@@ -185,7 +185,14 @@
       @if(!empty(old('report', null)))
         <hr>
         <h4 class="mb-4">Report</h4>
+        @openForm('panel.completeUnits', 'post')
+        <div class="btn-group">
+          <button type="button" style="btn btn-secondary">Seleziona tutto</button>
+          <button type="button" style="btn btn-outline-secondary">Deseleziona tutto</button>
+        </div>
         <pre class="form-control" style="max-height: 350px; overflow-y: auto">{!! old('report') !!}</pre>
+        <button type="submit" style="btn btn-primary">Imposta come salvato</button>
+        @closeForm
       @endif
     </div>
     <div id="select-store" class="modal fade" tabindex="-1" role="dialog">

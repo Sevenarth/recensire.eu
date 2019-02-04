@@ -104,4 +104,37 @@ class SellersController extends Controller
       ->limit(20)
       ->get(['id', 'nickname', 'name', 'email']);
   }
+
+  public function products(Request $request, Seller $seller) {
+    $orderBy = $request->query('orderBy', null);
+    if(!empty($orderBy) && !in_array($orderBy, ['ASIN', 'brand', 'title']))
+      $orderBy = null;
+    $sort = $request->query('sort', 'asc');
+    if($sort != "asc" && $sort != "desc")
+      $sort = "asc";
+    $search = trim($request->query('s', null));
+
+    foreach($seller->stores as $store) {
+      $store_ids[] = $store->id;
+      $store_names[$store->id] = $store->name;
+    }
+
+    $products = Product::whereHas('stores', function($q) use($store_ids) {
+      $q->whereIn('id', $store_ids);
+    });
+
+    if(!empty($search))
+      $products = $products->where(function($query) use ($search) {
+        $query->where('ASIN', $search)
+          ->orWhere('title', 'like', '%'.$search.'%')
+          ->orWhere('brand', 'like', $search.'%');
+      });
+
+    if(!empty($orderBy))
+      $products = $products->orderBy($orderBy, $sort);
+
+    $products = $products->paginate(15);
+
+    return view("panel/sellers/products", ['seller' => $seller, 'products' => $products, 'stores' => $store_names]);
+  }
 }

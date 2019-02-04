@@ -223,5 +223,40 @@ return [
         'Hashids' => Vinkla\Hashids\Facades\Hashids::class
     ],
 
-    'currency' => 'EUR'
+    'currency' => 'EUR',
+
+    'versions' => [
+        'it' => [
+            'name' => 'IT',
+            'flag' => '🇮🇹',
+            'url' => 'https://www.recensire.eu/it/pannello'
+        ],
+        'de' => [
+            'name' => 'DE',
+            'flag' => '🇩🇪',
+            'url' => 'https://www.recensire.eu/de/pannello'
+        ],
+        'uk' => [
+            'name' => 'UK',
+            'flag' => '🇬🇧',
+            'url' => 'https://www.recensire.eu/uk/pannello'
+        ],
+        'fr' => [
+            'name' => 'FR',
+            'flag' => '🇫🇷',
+            'url' => 'https://www.recensire.eu/fr/pannello'
+        ],
+        'es' => [
+            'name' => 'ES',
+            'flag' => '🇪🇸',
+            'url' => 'https://www.recensire.eu/es/pannello'
+        ],
+        'us' => [
+            'name' => 'US',
+            'flag' => '🇺🇸',
+            'url' => 'https://www.recensire.eu/us/pannello'
+        ]
+    ],
+
+    'current_version' => env("CURRENT_VERSION", "")
 ];

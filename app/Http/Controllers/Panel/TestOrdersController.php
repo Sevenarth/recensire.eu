@@ -34,6 +34,7 @@ class TestOrdersController extends Controller
           $combinations = [
             'product' => 'product.id',
             'store' => 'store.id',
+            'seller' => 'store.seller_id',
             'ASIN' => 'product.ASIN'
           ];
 

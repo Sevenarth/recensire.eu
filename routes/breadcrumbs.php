@@ -9,6 +9,11 @@ Breadcrumbs::register('options', function ($breadcrumbs) {
     $breadcrumbs->push('Opzioni', route('panel.options'));
 });
 
+Breadcrumbs::register('refunds', function ($breadcrumbs) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push('Rimborsi', route('panel.refunds'));
+});
+
 Breadcrumbs::register('sellers', function ($breadcrumbs) {
     $breadcrumbs->parent('home');
     $breadcrumbs->push('Venditori', route('panel.sellers.home'));
@@ -77,6 +82,11 @@ Breadcrumbs::register('sellers.view', function ($breadcrumbs, $seller) {
 Breadcrumbs::register('sellers.edit', function ($breadcrumbs, $seller) {
     $breadcrumbs->parent('sellers.view', $seller);
     $breadcrumbs->push('Modifica', route('panel.sellers.edit', $seller->id));
+});
+
+Breadcrumbs::register('sellers.products', function ($breadcrumbs, $seller) {
+    $breadcrumbs->parent('sellers.view', $seller);
+    $breadcrumbs->push('Prodotti', route('panel.sellers.products', $seller->id));
 });
 
 Breadcrumbs::register('stores.create', function ($breadcrumbs) {

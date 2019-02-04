@@ -5,11 +5,12 @@
     <meta name="referrer" content="no-referrer">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="shortcut icon" type="image/png" href="{{ config('app.url') . '/images/' . config('app.current_version') . '.png'  }}"/>
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }} - @yield('title')</title>
+    <title>{{ config('app.versions')[config('app.current_version')]['name'] }} {{ config('app.name', 'Laravel') }} - @yield('title')</title>
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -22,8 +23,7 @@
                 <a class="navbar-brand" href="{{ url('/') }}">
                     <img src="/images/arts.svg" class="image-responsive" height="50" alt="{{ config('app.name', 'Laravel') }}">
                 </a>
-                <a href="https://www.recensire.eu/it/pannello" target="_blank" style="font-size: 2em; margin-right: .75rem">🇮🇹</a>
-                <a href="https://www.recensire.eu/de/pannello" target="_blank" style="font-size: 2em; margin-right: .75rem">🇩🇪</a>
+                <img src="{{ config('app.url') . '/images/' . config('app.current_version') . '.png'  }}" style="font-size: 2em; margin-right: .75rem">
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>

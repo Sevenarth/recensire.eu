@@ -37,6 +37,8 @@ Route::namespace('Panel')->name('panel.')->middleware('auth')->prefix('pannello'
     Route::post('/upload', 'HomeController@postUpload')->name('postUpload');
     Route::get('/reportistica', 'HomeController@report')->name('report');
     Route::post('/reportistica', 'HomeController@postReport')->name('postReport');
+    Route::get('/rimborsi', 'TestUnitsController@refunds')->name('refunds');
+    Route::post('/reportistica/salda', 'HomeController@completeUnits')->name('completeUnits');
 
     Route::prefix('venditori')->name('sellers.')->group(function () {
       Route::get('/', 'SellersController@index')->name('home');
@@ -48,6 +50,7 @@ Route::namespace('Panel')->name('panel.')->middleware('auth')->prefix('pannello'
       Route::delete('/visualizza-{seller}', 'SellersController@delete')->name('delete');
       Route::post('/fetch', 'SellersController@fetch')->name('fetch');
       Route::get('/fetch', 'SellersController@fetch')->name('fetch');
+      Route::get('/prodotti-{seller}', 'SellersController@products')->name('products');
     });
     Route::prefix('negozi')->name('stores.')->group(function () {
       Route::get('/', 'StoresController@index')->name('home');

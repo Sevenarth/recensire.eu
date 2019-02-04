@@ -175,7 +175,7 @@ class HomeController extends Controller
           }
 
           if(count($row) > 0)
-            $report .= implode("\t", $row) . PHP_EOL;
+            $report .= "<input type=\"checkbox\" name=\"complete[]\" value=\"{$status->unit_id}\" style=\"margin-right: .5em\">" . implode("\t", $row) . PHP_EOL;
         }
         $total = count($statuses);
       }
@@ -275,5 +275,26 @@ class HomeController extends Controller
       return response()->streamDownload(function () use($output) {
         echo $output;
       }, 'Ban list Recensire.eu ' . date('d M Y') . '.csv');
+    }
+
+    public function completeUnits(Request $request) {
+      $testUnits = TestUnit::whereIn($request->input('complete'))->get();
+      $total = $testUnits->count();
+
+      foreach($testUnits as $testUnit) {
+        if(intval($testUnit->status) !== 9) {
+          $testUnit->statuses()->create([
+            'status' => 9
+          ]);
+          $testUnit->status_updated_at = Carbon::now(config('app.timezone'));
+        }
+
+        $testUnit->status = 9;
+        $testUnit->save();
+      }
+
+      return redirect()
+        ->route('panel.report')
+        ->with('status', $total . ' risultat'. ($total == 1 ? 'o' : 'i') . ' sono stati saldati!');
     }
 }

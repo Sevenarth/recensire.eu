@@ -277,4 +277,30 @@ class TestUnitsController extends Controller
         ->route('panel.testUnits.view', $testUnit->id)
         ->with('status', 'Duplicato creato con hash <b><a href="'.route('panel.testUnits.view', $unit_new->id).'">#'.$unit_new->hash_code.'</a></b>');
     }
+
+    public function refunds() {
+      $testUnits = DB::table('test_unit')
+          ->leftJoin('tester', 'test_unit.tester_id', '=', 'tester.id')
+          ->whereStatus(2)
+          ->orWhereStatus(11)
+          ->orWhereStatus(7)
+          ->orderBy('test_unit.created_at', 'desc')
+          ->orderBy('test_unit.id', 'desc');
+
+      $testUnits = $testUnits
+          ->select(
+            "test_order_id",
+            "test_unit.status",
+            "tester.id as tester_id",
+            "tester.name as tester_name",
+            "tester.status as tester_status",
+            "tester.profile_image as tester_image",
+            "test_unit.id as id",
+            "test_unit.created_at as created_at",
+            "expires_on",
+            "hash_code"
+          )->get();
+        
+      return view('panel.refunds', compact('refunds'));
+    }
 }

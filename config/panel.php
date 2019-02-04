@@ -2,6 +2,7 @@
 return [
   'nav' => [
     "home" => ['Home', 'pannello', 'fa-home'],
+    "refunds" => ['Rimborsi', 'pannello/rimborsi', 'fa-money-bill-wave'],
     "sellers.home" => ['Venditori', 'pannello/venditori*', 'fa-address-card'],
     "stores.home" => ['Negozi', 'pannello/negozi*', 'fa-shopping-cart'],
     "products.home" => ['Prodotti', 'pannello/prodotti*', 'fa-shopping-bag'],
