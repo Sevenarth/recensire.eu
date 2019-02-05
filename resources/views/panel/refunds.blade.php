@@ -43,7 +43,7 @@ Rimborsi
           </tr>
         </thead>
         <tbody>
-          @forelse ($refunds as $testUnit)
+          @forelse ($testUnits as $testUnit)
           <tr>
             <th class="align-middle" scope="row">
                 @if(!empty($testUnit->test_order_id))

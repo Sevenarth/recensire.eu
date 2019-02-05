@@ -301,6 +301,6 @@ class TestUnitsController extends Controller
             "hash_code"
           )->get();
         
-      return view('panel.refunds', compact('refunds'));
+      return view('panel.refunds', compact('testUnits'));
     }
 }
