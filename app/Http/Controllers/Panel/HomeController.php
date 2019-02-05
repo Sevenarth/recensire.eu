@@ -179,12 +179,33 @@ class HomeController extends Controller
         }
         $total = count($statuses);
       }
-      if(isset($total) && is_numeric($total))
+
+      if(isset($total) && is_numeric($total)) {
+        $status = 'La query ha generato ' . $total . ' risultat'. ($total == 1 ? 'o' : 'i');
+        if(!empty($request->input('completeUnits'))) {
+          $testUnits = TestUnit::whereIn('id', $request->input('complete'))->get();
+          $total_completed = $testUnits->count();
+    
+          foreach($testUnits as $testUnit) {
+            if(intval($testUnit->status) !== 9) {
+              $testUnit->statuses()->create([
+                'status' => 9
+              ]);
+              $testUnit->status_updated_at = Carbon::now(config('app.timezone'));
+            }
+    
+            $testUnit->status = 9;
+            $testUnit->save();
+          }
+    
+          $status .= $total_completed . ' risultat'. ($total_completed == 1 ? 'o' : 'i') . ' sono stati saldati!';
+        }
+
         return redirect()
           ->route('panel.report')
           ->withInput(array_merge($request->all(), ["report" => $report]))
-          ->with('status', 'La query ha generato ' . $total . ' risultat'. ($total == 1 ? 'o' : 'i'));
-      else
+          ->with('status', $status);
+      } else
         return redirect()
           ->route('panel.report')
           ->withInput(array_merge($request->all(), ["report" => $report]));
@@ -275,26 +296,5 @@ class HomeController extends Controller
       return response()->streamDownload(function () use($output) {
         echo $output;
       }, 'Ban list Recensire.eu ' . date('d M Y') . '.csv');
-    }
-
-    public function completeUnits(Request $request) {
-      $testUnits = TestUnit::whereIn('id', $request->input('complete'))->get();
-      $total = $testUnits->count();
-
-      foreach($testUnits as $testUnit) {
-        if(intval($testUnit->status) !== 9) {
-          $testUnit->statuses()->create([
-            'status' => 9
-          ]);
-          $testUnit->status_updated_at = Carbon::now(config('app.timezone'));
-        }
-
-        $testUnit->status = 9;
-        $testUnit->save();
-      }
-
-      return redirect()
-        ->route('panel.report')
-        ->with('status', $total . ' risultat'. ($total == 1 ? 'o' : 'i') . ' sono stati saldati!');
     }
 }

@@ -181,12 +181,10 @@
         </div>
       </div>
       <button type="submit" class="mb-2 btn btn-primary">Genera report</button> <button type="button" onclick="window.location.reload()" class="mb-2 btn btn-outline-primary">Reset</button>
-      @closeForm
       @if(!empty(old('report', null)))
         <hr>
         <h4 class="mb-4">Report</h4>
         @if(old('current_state') == "on")
-        @openForm('panel.completeUnits', 'post')
         <div class="btn-group">
           <button type="button" onClick="document.getElementsByName('complete[]').forEach(el => el.checked = true)" class="btn btn-secondary">Seleziona tutto</button>
           <button type="button" onClick="document.getElementsByName('complete[]').forEach(el => el.checked = false)" class="btn btn-outline-secondary">Deseleziona tutto</button>
@@ -194,10 +192,10 @@
         @endif
         <pre class="form-control" style="max-height: 350px; overflow-y: auto">{!! old('report') !!}</pre>
         @if(old('current_state') == "on")
-        <button type="submit" class="btn btn-primary" data-placement="bottom" data-html="true" data-toggle="popover" data-trigger="focus" title="Richiesta di conferma" data-content="Sei sicuro di voler impostare come saldato?">Imposta come saldato</button>
-        @closeForm
+        <input type="submit" name="completeUnits" class="btn btn-primary" data-placement="bottom" data-html="true" data-toggle="popover" data-trigger="focus" title="Richiesta di conferma" data-content="Sei sicuro di voler impostare come saldato?" value="Imposta come saldato">
         @endif
       @endif
+      @closeForm
     </div>
     <div id="select-store" class="modal fade" tabindex="-1" role="dialog">
       <div class="modal-dialog" role="document">
