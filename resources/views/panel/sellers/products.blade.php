@@ -10,7 +10,7 @@ Prodotti di {{ $seller->name }}
 
 @section('content')
   <div class="px-4 py-3 h3 border-bottom">
-    Prodotti di {{ $store->name }}
+    Prodotti di {{ $seller->name }}
   </div>
   <div class="px-4 py-3">
     @if (session('status'))
