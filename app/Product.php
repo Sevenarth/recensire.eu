@@ -27,6 +27,14 @@ class Product extends Model implements TaggableInterface
       return $this->hasMany('App\TestOrder');
     }
 
+    public function sellerTestOrders(Seller $seller) {
+      $store_ids = [];
+      foreach($seller->stores as $store) {
+        $store_ids[] = $store->id;
+      }
+      return $this->hasMany('App\TestOrder')->whereIn('store_id', $store_ids);
+    }
+
     public function storeTestOrders(Store $store) {
       return $this->hasMany('App\TestOrder')->where('store_id', $store->id);
     }

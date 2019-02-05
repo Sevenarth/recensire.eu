@@ -62,7 +62,7 @@ Prodotti di {{ $seller->name }}
               {{ $product->ASIN }}
             </td>
             <td class="align-middle">
-              {{ $product->storeTestOrders($store)->count() }}
+              {{ $product->sellerTestOrders($seller)->count() }}
               <a title="Vai agli ordini di lavoro" href="{{ route('panel.testOrders.home') }}?s={{ urlencode(':product='.$product->id.',seller='.$seller->id) }}" class="btn btn-sm btn-primary">
                 <i class="fa fa-external-link-alt"></i>
               </a>
