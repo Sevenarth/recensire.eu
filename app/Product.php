@@ -32,7 +32,7 @@ class Product extends Model implements TaggableInterface
       foreach($seller->stores as $store) {
         $store_ids[] = $store->id;
       }
-      return $this->hasMany('App\Store')->whereIn('store_id', $store_ids);
+      return $this->stores()->whereIn('store_id', $store_ids);
     }
 
     public function sellerTestOrders(Seller $seller) {
