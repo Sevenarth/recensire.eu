@@ -284,7 +284,7 @@ class TestUnitsController extends Controller
           ->orWhere('test_unit.status', 2)
           ->orWhere('test_unit.status', 11)
           ->orWhere('test_unit.status', 7)
-          ->orderBy('test_unit.created_at', 'desc')
+          ->orderBy('test_unit.status_updated_at', 'desc')
           ->orderBy('test_unit.id', 'desc');
 
       $testUnits = $testUnits
@@ -296,7 +296,7 @@ class TestUnitsController extends Controller
             "tester.status as tester_status",
             "tester.profile_image as tester_image",
             "test_unit.id as id",
-            "test_unit.created_at as created_at",
+            "test_unit.status_updated_at as status_updated_at",
             "expires_on",
             "hash_code"
           )->get();

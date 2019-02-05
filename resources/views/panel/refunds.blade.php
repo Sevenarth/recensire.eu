@@ -19,6 +19,9 @@ Rimborsi
         {{ session('status') }}
     </div>
     @endif
+    @if($testUnits->count() > 0)
+    <p>Ci sono {{ $testUnits->count()}} rimborsi da effettuare.</p>
+    @endif
     <div class="table-responsive">
       <table class="table table-condensed-sm">
         <thead class="thead-light">
@@ -84,7 +87,7 @@ Rimborsi
                 {{ config('testUnit.statuses')[$testUnit->status] }}
             </td>
             <td class="align-middle">
-              {{ \Carbon\Carbon::today(config('app.timezone'))->endOfDay()->diffInDays(new \Carbon\Carbon($testUnit->created_at, config('app.timezone'))) }} giorni
+              {{ \Carbon\Carbon::today(config('app.timezone'))->endOfDay()->diffInDays(new \Carbon\Carbon($testUnit->status_updated_at, config('app.timezone'))) }} giorni
             </td>
           </tr>
           @empty

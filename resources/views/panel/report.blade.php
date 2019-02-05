@@ -194,7 +194,7 @@
         @endif
         <pre class="form-control" style="max-height: 350px; overflow-y: auto">{!! old('report') !!}</pre>
         @if(old('current_state') == "on")
-        <button type="submit" class="btn btn-primary">Imposta come saldato</button>
+        <button type="submit" class="btn btn-primary" data-placement="bottom" data-html="true" data-toggle="popover" data-trigger="focus" title="Richiesta di conferma" data-content="Sei sicuro di voler impostare come saldato?">Imposta come saldato</button>
         @closeForm
         @endif
       @endif

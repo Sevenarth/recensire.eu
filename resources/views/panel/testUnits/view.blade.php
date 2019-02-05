@@ -189,7 +189,7 @@ Unità di test #{{ $testUnit->hash_code }}
           <div class="input-group">
             <input type="text" class="form-control-plaintext" value="{{ route('tests.go', $testUnit->hash_code) }}" readonly>
             <div class="input-group-append">
-              <a href="{{ $testUnit->review_url }}" target="_blank" class="btn btn-outline-primary"><i class="fa fa-fw fa-external-link-alt"></i></a>
+              <a href="{{ $testUnit->review_url }}" target="_blank" class="btn btn-info"><i class="fa fa-fw fa-link"></i></a>
             </div>
           </div>
         </fieldset>
