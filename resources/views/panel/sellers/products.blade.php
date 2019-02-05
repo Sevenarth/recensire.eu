@@ -20,7 +20,7 @@ Prodotti di {{ $seller->name }}
     @endif
 
       <div class="row">
-        <form class="fakelink-get col-sm-6" data-action="{{ route("panel.stores.products", $store->id) }}" method="get">
+        <form class="fakelink-get col-sm-6" data-action="{{ route("panel.sellers.products", $seller->id) }}" method="get">
           <div class="input-group mb-3">
               <input type="text" name="s" value="{{ Request::query("s") }}" class="form-control" placeholder="Marchio, nome prodotto, ASIN...">
               <div class="input-group-append">
