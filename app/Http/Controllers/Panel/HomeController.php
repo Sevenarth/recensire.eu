@@ -175,7 +175,7 @@ class HomeController extends Controller
           }
 
           if(count($row) > 0)
-            $report .= "<input type=\"checkbox\" name=\"complete[]\" value=\"{$status->unit_id}\" style=\"margin-right: .5em\">" . implode("\t", $row) . PHP_EOL;
+            $report .= ($onlyCurrent ? "<input type=\"checkbox\" name=\"complete[]\" value=\"{$status->unit_id}\" style=\"margin-right: .5em\">" : "") . implode("\t", $row) . PHP_EOL;
         }
         $total = count($statuses);
       }

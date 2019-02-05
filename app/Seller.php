@@ -17,10 +17,6 @@ class Seller extends Model
     public function stores() {
       return $this->hasMany('App\Store');
     }
-
-    public function products() {
-      return $this->hasManyThrough('App\Product', 'App\Store');
-    }
     
     public function getNotesAttribute() {
       if(!empty($this->attributes['notes']))

@@ -281,9 +281,9 @@ class TestUnitsController extends Controller
     public function refunds() {
       $testUnits = DB::table('test_unit')
           ->leftJoin('tester', 'test_unit.tester_id', '=', 'tester.id')
-          ->whereStatus(2)
-          ->orWhereStatus(11)
-          ->orWhereStatus(7)
+          ->orWhere('status', 2)
+          ->orWhere('status', 11)
+          ->orWhere('status', 7)
           ->orderBy('test_unit.created_at', 'desc')
           ->orderBy('test_unit.id', 'desc');
 
