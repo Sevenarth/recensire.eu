@@ -278,7 +278,7 @@ class HomeController extends Controller
     }
 
     public function completeUnits(Request $request) {
-      $testUnits = TestUnit::whereIn($request->input('complete'))->get();
+      $testUnits = TestUnit::whereIn('id', $request->input('complete'))->get();
       $total = $testUnits->count();
 
       foreach($testUnits as $testUnit) {

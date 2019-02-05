@@ -65,7 +65,7 @@ Prodotti di {{ $seller->name }}
               {{ $product->ASIN }}
             </td>
             <td class="align-middle">
-              @foreach($product->sellerStores($seller) as $store)
+              @foreach($product->sellerStores($seller)->get() as $store)
                 <a href="{{ route('panel.stores.view', ['store' => $store->id]) }}">{{ $store->name }}</a> 
               @endforeach
             </td>
