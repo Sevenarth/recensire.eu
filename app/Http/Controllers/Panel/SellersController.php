@@ -120,7 +120,7 @@ class SellersController extends Controller
     }
 
     $products = Product::whereHas('stores', function($q) use($store_ids) {
-      $q->whereIn('id', $store_ids);
+      $q->whereIn('store.id', $store_ids);
     });
 
     if(!empty($search))
