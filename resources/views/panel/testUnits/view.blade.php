@@ -177,7 +177,7 @@ Unità di test #{{ $testUnit->hash_code }}
       <div class="input-group">
         <input type="text" class="form-control" value="{{ $testUnit->reference_url }}" readonly>
         <div class="input-group-append">
-          <a href="{{ $testUnit->reference_url }}" target="_blank" class="btn btn-outline-primary"><i class="fa fa-fw fa-external-link-alt"></i></a>
+          <a href="{{ $testUnit->reference_url }}" target="_blank" class="btn btn-info"><i class="fa fa-fw fa-link"></i></a>
         </div>
       </div>
     </fieldset>
@@ -186,12 +186,7 @@ Unità di test #{{ $testUnit->hash_code }}
       <div class="col-sm-9">
         <fieldset class="form-group">
           <label><b>Link Amazon per il tester</b></label>
-          <div class="input-group">
-            <input type="text" class="form-control-plaintext" value="{{ route('tests.go', $testUnit->hash_code) }}" readonly>
-            <div class="input-group-append">
-              <a href="{{ $testUnit->review_url }}" target="_blank" class="btn btn-info"><i class="fa fa-fw fa-link"></i></a>
-            </div>
-          </div>
+          <input type="text" class="form-control-plaintext" value="{{ route('tests.go', $testUnit->hash_code) }}" readonly>
         </fieldset>
       </div>
       <div class="col-sm-3">
