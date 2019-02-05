@@ -10,7 +10,7 @@ Prodotti di {{ $seller->name }}
 
 @section('content')
   <div class="px-4 py-3 h3 border-bottom">
-    Prodotti di {{ $seller->name }}
+    Prodotti di {{ $seller->nickname }}
   </div>
   <div class="px-4 py-3">
     @if (session('status'))
@@ -44,6 +44,9 @@ Prodotti di {{ $seller->name }}
               @orderable('ASIN', 'ASIN')
             </th>
             <th scope="col" class="p-2">
+              Negozi
+            </th>
+            <th scope="col" class="p-2">
               Ordini di lavoro
             </th>
           </tr>
@@ -60,6 +63,11 @@ Prodotti di {{ $seller->name }}
             </td>
             <td class="align-middle">
               {{ $product->ASIN }}
+            </td>
+            <td class="align-middle">
+              @foreach($product->sellerStores($seller) as $store)
+                <a href="{{ route('panel.stores.view', ['store' => $store->id]) }}">{{ $store->name }}</a> 
+              @endforeach
             </td>
             <td class="align-middle">
               {{ $product->sellerTestOrders($seller)->count() }}
