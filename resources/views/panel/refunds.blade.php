@@ -29,7 +29,7 @@ Rimborsi
             <th scope="col" class="p-2">
               Venditore
             </th>
-            <th scope="col" class="p-2">No Ordine</th>
+            <th scope="col" class="p-2">Ordine di lavoro</th>
             <th scope="col" class="p-2">
               Unità di test
             </th>

@@ -182,7 +182,7 @@ class HomeController extends Controller
 
       if(isset($total) && is_numeric($total)) {
         $status = 'La query ha generato ' . $total . ' risultat'. ($total == 1 ? 'o' : 'i');
-        if(!empty($request->input('completeUnits'))) {
+        if(!empty($request->input('completeUnits')) && is_array($request->input('complete')) && count($request->input('complete')) > 0) {
           $testUnits = TestUnit::whereIn('id', $request->input('complete'))->get();
           $total_completed = $testUnits->count();
     
@@ -198,7 +198,7 @@ class HomeController extends Controller
             $testUnit->save();
           }
     
-          $status .= $total_completed . ' risultat'. ($total_completed == 1 ? 'o' : 'i') . ' sono stati saldati!';
+          $status .= ', ' . $total_completed . ' risultat'. ($total_completed == 1 ? 'o' : 'i') . ' sono stati saldati!';
         }
 
         return redirect()
