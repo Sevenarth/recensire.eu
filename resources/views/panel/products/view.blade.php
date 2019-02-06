@@ -41,8 +41,8 @@ Prodotto #{{ $product->id }}
       <div class="col-sm-9">
         <fieldset class="form-group">
           <label for="title"><b>Nome prodotto
-          <a title="Apri su Amazon" target="_blank" href="{{ $product->URL }}" class="btn btn-sm btn-primary">
-            <i class="fa fa-external-link-alt"></i>
+          <a title="Apri su Amazon" target="_blank" href="{{ $product->URL }}" class="btn btn-sm btn-info">
+            <i class="fa fa-link"></i>
           </a></b></label>
           <input type="text" readonly class="form-control-plaintext" name="title" value="{{ $product->title }}">
         </fieldset>

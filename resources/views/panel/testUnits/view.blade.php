@@ -138,7 +138,7 @@ Unità di test #{{ $testUnit->hash_code }}
         <div class="row">
           <div class="col-sm-6">
             <fieldset class="form-group">
-              <label><b>Marchio e nome prodotto</b> @if(!empty($testUnit->testOrder->product->id))<a class="btn btn-sm btn-primary" href="{{ route('panel.products.view', $testUnit->testOrder->product->id)}}"><i class="fa fa-fw fa-external-link-alt"></i></a>@endif</label>
+              <label><b>Marchio e nome prodotto</b> @if(!empty($testUnit->testOrder->product->id))<span class="btn-group"><a class="btn btn-sm btn-primary" href="{{ route('panel.products.view', $testUnit->testOrder->product->id)}}"><i class="fa fa-fw fa-external-link-alt"></i></a><a class="btn btn-sm btn-info" href="{{ $testUnit->testOrder->product->URL }}" target="_blank"><i class="fa fa-fw fa-link"></i></a></span>@endif</label>
               <input type="text" readonly class="form-control-plaintext" value="{{ !empty($testUnit->testOrder->product->id) ? $testUnit->testOrder->product->brand . ' '. $testUnit->testOrder->product->title : 'Prodotto assente' }}">
             </fieldset>
           </div>

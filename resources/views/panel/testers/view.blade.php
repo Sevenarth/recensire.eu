@@ -81,7 +81,7 @@ Tester #{{ $tester->id }}
         <input type="text" class="form-control{{ !empty($amz)?'':'-plaintext'}}" readonly value="{{ !empty($amz) ? $amz : '-' }}">
         @if(!empty($amz)) <div class="input-group-append">
           <input type="text" class="form-control{{ !empty($amz)?'':'-plaintext'}}" readonly value="{{ is_numeric($tester->amazon_profiles_statuses[$idx]) ? config('testers.amz_statuses')[$tester->amazon_profiles_statuses[$idx]] : '-'}}">
-          <a title="Apri link in una nuova pagina" class="btn btn-primary" href="{{ $amz }}" target="_blank"><i class="fa fa-fw fa-external-link-alt"></i></a>
+          <a title="Apri link in una nuova pagina" class="btn btn-info" href="{{ $amz }}" target="_blank"><i class="fa fa-fw fa-link"></i></a>
         </div></div> @endif
       @endforeach
     </fieldset>
@@ -91,7 +91,7 @@ Tester #{{ $tester->id }}
         @if(!empty($fb)) <div class="input-group mb-2"> @endif
         <input type="text" class="form-control{{ !empty($fb)?'':'-plaintext'}}" readonly value="{{ !empty($fb) ? "https://www.facebook.com/profile.php?id=".$fb : '-' }}">
         @if(!empty($fb)) <div class="input-group-append">
-          <a title="Apri link in una nuova pagina" class="btn btn-primary" href="{{ "https://www.facebook.com/profile.php?id=".$fb }}" target="_blank"><i class="fa fa-fw fa-external-link-alt"></i></a>
+          <a title="Apri link in una nuova pagina" class="btn btn-info" href="{{ "https://www.facebook.com/profile.php?id=".$fb }}" target="_blank"><i class="fa fa-fw fa-link"></i></a>
         </div></div> @endif
 
       @endforeach

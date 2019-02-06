@@ -86,6 +86,8 @@ class SendReportsController extends Controller
                         }
                     }
                 }
+
+                sleep(1);
             }
         }
     }

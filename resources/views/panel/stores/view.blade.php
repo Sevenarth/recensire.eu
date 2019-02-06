@@ -36,8 +36,8 @@ Negozio #{{ $store->id }}
         <fieldset class="form-group">
           <label for="name"><b>Nome negozio
           @if(!empty($store->url))
-            <a title="Apri il sito del negozio" target="_blank" href="{{ $store->url }}" class="btn btn-sm btn-primary">
-              <i class="fa fa-external-link-alt"></i>
+            <a title="Apri il sito del negozio" target="_blank" href="{{ $store->url }}" class="btn btn-sm btn-info">
+              <i class="fa fa-link"></i>
             </a>
           @endif</b></label>
           <input type="text" readonly class="form-control-plaintext" name="name" value="{{ $store->name }}">
