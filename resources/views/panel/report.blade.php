@@ -192,7 +192,8 @@
         @endif
         <pre class="form-control" style="max-height: 350px; overflow-y: auto">{!! old('report') !!}</pre>
         @if(old('current_state') == "on")
-        <input type="submit" name="completeUnits" class="remove-confirmation btn btn-primary" data-placement="bottom" data-html="true" data-toggle="popover" data-trigger="focus" title="Richiesta di conferma" data-content="Sei sicuro di voler impostare come saldato?" value="Imposta come saldato">
+        <input type="submit" name="completeUnits" class="float-right remove-confirmation btn btn-info" data-placement="bottom" data-html="true" data-toggle="popover" data-trigger="focus" title="Richiesta di conferma" data-content="Sei sicuro di voler impostare come saldato?" value="Imposta come saldato">
+        <div class="clearfix"></div>
         @endif
       @endif
       @closeForm

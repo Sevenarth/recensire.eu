@@ -114,7 +114,9 @@ class HomeController extends Controller
         elseif($request->input('status') == "expiring")
           $statuses = $statuses->where('test_unit.status', '0');
 
-        $statuses = $statuses->orderBy('store.name')->orderBy('test_unit.test_order_id');
+        $statuses = $statuses->orderBy('store.seller_id')
+          ->orderBy('store.name')
+          ->orderBy('test_unit.test_order_id');
         
         if(!$onlyCurrent)
           $statuses = $statuses->orderBy('test_unit_status.status', 'desc');
@@ -131,13 +133,20 @@ class HomeController extends Controller
           'hash_code',
           'test_unit.id as unit_id',
           'store.name as store_name',
+          'store.seller_id as seller_id',
           'product_id',
           'store.id as store_id'
         ])->get();
 
         $store = null;
+        $seller = null;
 
         foreach($statuses as $status) {
+          if($status->seller_id != $seller) {
+            $seller_name = Seller::find($status->seller_id)->nickname;
+            $report .= "-- Seller name: <a href=\"".route('panel.sellers.view', $status->seller_id)."\">" . $seller_name . "</a>" . PHP_EOL;
+            $store = $status->seller_id;
+          }
           if($status->store_name != $store) {
             $report .= "---- Store name: <a href=\"".route('panel.stores.view', $status->store_id)."\">" . $status->store_name . "</a>" . PHP_EOL;
             $store = $status->store_name;
