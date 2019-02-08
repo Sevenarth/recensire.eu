@@ -145,7 +145,7 @@ class HomeController extends Controller
           if($status->seller_id != $seller) {
             $seller_name = Seller::find($status->seller_id)->nickname;
             $report .= "-- Seller name: <a href=\"".route('panel.sellers.view', $status->seller_id)."\">" . $seller_name . "</a>" . PHP_EOL;
-            $store = $status->seller_id;
+            $seller = $status->seller_id;
           }
           if($status->store_name != $store) {
             $report .= "---- Store name: <a href=\"".route('panel.stores.view', $status->store_id)."\">" . $status->store_name . "</a>" . PHP_EOL;
